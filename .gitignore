@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+*.swp
+
+# Brainstorming / visual companion scratch files
+.superpowers/
