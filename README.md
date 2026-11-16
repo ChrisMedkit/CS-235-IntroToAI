@@ -1,5 +1,7 @@
 # Momentum in Tennis — Play-Money Odds Site
 
+Creating a website using AI, documenting the pitfalls and successes of the LLM while ensuring correctness along the way.
+
 CS235 Project 1 (AI-Assisted Coding). A static website that turns public
 "Momentum in Tennis" models into point-by-point win chances and play-money odds.
 No real money, no accounts.
