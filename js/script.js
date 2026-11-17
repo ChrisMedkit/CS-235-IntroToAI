@@ -112,7 +112,19 @@ function setUpBanner() {
   restart();
 }
 
+// ---------- FAQ accordion (Play Safe page) ----------
+// <details> already opens and closes without JavaScript; this keeps only one open at a time.
+function setUpFaq() {
+  const items = [...document.querySelectorAll('#faq details')];
+  items.forEach((item) => {
+    item.addEventListener('toggle', () => {
+      if (item.open) items.forEach((other) => { if (other !== item) other.open = false; });
+    });
+  });
+}
+
 // Module scripts run after the HTML is parsed, so the DOM is ready here.
 setUpWallet();
 setUpNavToggle();
 setUpBanner();
+setUpFaq();

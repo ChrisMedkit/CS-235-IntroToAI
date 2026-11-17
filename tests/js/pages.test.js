@@ -64,3 +64,26 @@ for (const page of PAGES) {
     assert.ok(marks[0].includes(`href="${page}"`));
   });
 }
+
+test('play-safe: FAQ has at least 5 expandable questions', () => {
+  const faq = read('play-safe.html').match(/<section id="faq"[\s\S]*?<\/section>/)[0];
+  assert.ok((faq.match(/<details/g) ?? []).length >= 5);
+});
+
+test('play-safe: lists the national and Wisconsin helplines', () => {
+  const html = read('play-safe.html');
+  assert.ok(html.includes('1-800-MY-RESET'));
+  assert.ok(html.includes('1-800-426-2535'));
+});
+
+test('model: cites its sources and shows the momentum chart', () => {
+  const html = read('model.html');
+  assert.ok(html.includes('Klaassen'));
+  assert.ok(html.includes('Problem C'));
+  assert.match(html, /<svg[^>]*class="model-chart"/);
+  assert.doesNotMatch(html, /Placeholder/);
+});
+
+test('play-safe: no placeholders left', () => {
+  assert.doesNotMatch(read('play-safe.html'), /Placeholder/);
+});

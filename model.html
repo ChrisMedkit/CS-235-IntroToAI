@@ -32,32 +32,72 @@
   <main>
     <section id="overview" class="content">
       <h1>How the Model Works</h1>
-      <p>Placeholder: a plain-language summary of how the site turns match data into win chances.</p>
+      <p>Every number on the Match Replay comes from a simple, well-known tennis model applied to real
+        point-by-point data from the 2023 Wimbledon men's singles. The model only ever looks at points that have
+        <em>already</em> been played, so it can't peek at the future.</p>
       <img class="content-img" src="images/model-ball.jpg" alt="A yellow tennis ball resting on the white baseline of a court">
     </section>
+
     <section id="point-model" class="content">
-      <h2>Winning a point on serve</h2>
-      <p>Placeholder.</p>
+      <h2>1. Winning a point on serve</h2>
+      <p>The server wins most points — about 67% across this dataset. The model tracks, for each player, the share of
+        their own service points they've won so far in the match. Early on there's very little data, so the estimate is
+        pulled toward the tournament average:</p>
+      <p class="formula">p = (serve points won + 20 × 0.673) ÷ (serve points played + 20)</p>
+      <p>At the first point both players start at 0.673. After 40 service points a player who has won 30 of them is at
+        (30 + 13.46) ÷ 60 ≈ 0.72.</p>
     </section>
+
     <section id="roll-up" class="content">
-      <h2>From points to games, sets and the match</h2>
-      <p>Placeholder.</p>
+      <h2>2. From points to games, sets and the match</h2>
+      <p>The model assumes every point is independent: the chance of winning a point depends only on who is serving.
+        That makes it possible to work out the chance of winning a game, a tiebreak, a set and the match from any score,
+        by adding up every way the rest of the match could go.</p>
+      <p>Small edges grow: a server who wins 60% of points holds serve about <strong>74%</strong> of the time, and over a
+        best-of-five match that edge compounds further.</p>
+      <p>The 2023 rules are built in: a first-to-7 tiebreak at 6–6 in sets one to four, and a first-to-10 tiebreak at
+        6–6 in the fifth set.</p>
     </section>
+
     <section id="momentum" class="content">
-      <h2>What "momentum" means here</h2>
-      <p>Placeholder.</p>
+      <h2>3. What "momentum" means here</h2>
+      <p>After each point the model compares what happened with what it expected. Winning a point you were expected
+        to win adds a little; winning one you were expected to lose (like breaking serve) adds a lot. Older points fade:</p>
+      <p class="formula">momentum = 0.9 × momentum + 0.1 × (result − expected chance)</p>
+      <p>Above the line favors the first player, below favors the second. In this version momentum is shown, not used:
+        it does not change the win chances.</p>
+      <figure class="momentum">
+        <svg class="model-chart" viewBox="0 0 600 160" role="img" aria-label="Momentum through the 2023 Wimbledon final. Djokovic leads early in set 1, Alcaraz surges in sets 2 and 3, and it swings back and forth in sets 4 and 5."><line class="momentum-axis" x1="0" y1="80.0" x2="600" y2="80.0"></line><line class="momentum-set" x1="81.1" y1="0" x2="81.1" y2="160"></line><line class="momentum-set" x1="250.5" y1="0" x2="250.5" y2="160"></line><line class="momentum-set" x1="376.6" y1="0" x2="376.6" y2="160"></line><line class="momentum-set" x1="491.9" y1="0" x2="491.9" y2="160"></line><polyline class="momentum-line" points="0.0,80.0 1.8,88.2 3.6,70.3 5.4,54.9 7.2,66.6 9.0,51.9 10.8,64.1 12.6,74.8 14.4,59.4 16.2,70.8 18.0,80.7 19.8,97.4 21.6,111.5 23.4,123.4 25.2,108.8 27.0,96.1 28.8,109.8 30.6,115.8 32.4,95.6 34.2,78.3 36.0,87.9 37.8,96.1 39.6,103.6 41.4,116.0 43.2,101.6 45.0,114.0 46.8,124.7 48.6,109.0 50.5,95.4 52.3,108.1 54.1,119.2 55.9,123.9 57.7,127.9 59.5,106.6 61.3,112.5 63.1,117.7 64.9,102.6 66.7,89.2 68.5,102.3 70.3,114.0 72.1,99.1 73.9,86.0 75.7,93.7 77.5,100.4 79.3,106.1 81.1,111.0 82.9,97.1 84.7,109.5 86.5,95.6 88.3,83.5 90.1,72.6 91.9,55.9 93.7,41.5 95.5,53.4 97.3,64.1 99.1,73.5 100.9,57.2 102.7,42.8 104.5,54.7 106.3,40.8 108.1,28.4 109.9,48.0 111.7,40.8 113.5,34.3 115.3,53.7 117.1,45.7 118.9,63.9 120.7,79.8 122.5,93.9 124.3,76.5 126.1,61.1 127.9,72.3 129.7,82.5 131.5,66.3 133.3,77.0 135.1,86.5 136.9,94.9 138.7,107.3 140.5,93.2 142.3,80.7 144.1,69.8 145.9,85.0 147.7,98.4 149.5,85.5 151.4,98.6 153.2,85.7 155.0,74.0 156.8,58.6 158.6,45.2 160.4,57.9 162.2,69.3 164.0,79.5 165.8,88.7 167.6,76.8 169.4,66.6 171.2,57.4 173.0,49.2 174.8,61.1 176.6,47.0 178.4,59.1 180.2,70.1 182.0,79.8 183.8,94.4 185.6,82.5 187.4,72.1 189.2,62.6 191.0,54.4 192.8,40.8 194.6,53.4 196.4,64.9 198.2,50.0 200.0,61.9 201.8,47.5 203.6,59.6 205.4,70.3 207.2,86.2 209.0,75.5 210.8,66.1 212.6,57.7 214.4,50.2 216.2,61.9 218.0,47.5 219.8,59.4 221.6,45.2 223.4,57.7 225.2,68.6 227.0,85.0 228.8,93.2 230.6,100.4 232.4,88.4 234.2,78.0 236.0,61.9 237.8,72.3 239.6,63.6 241.4,55.9 243.2,66.8 245.0,76.5 246.8,67.6 248.6,59.6 250.5,45.2 252.3,32.3 254.1,45.7 255.9,57.9 257.7,43.8 259.5,31.1 261.3,45.0 263.1,32.3 264.9,21.2 266.7,42.8 268.5,37.3 270.3,32.6 272.1,28.4 273.9,49.5 275.7,43.3 277.5,56.2 279.3,42.5 281.1,30.6 282.9,44.7 284.7,57.4 286.5,68.8 288.3,60.9 290.1,78.8 291.9,94.6 293.7,108.8 295.5,96.6 297.3,85.7 299.1,75.8 300.9,67.1 302.7,52.7 304.5,64.6 306.3,75.0 308.1,84.7 309.9,68.3 311.7,53.7 313.5,65.4 315.3,51.2 317.1,63.4 318.9,49.2 320.7,36.8 322.5,50.7 324.3,62.9 326.1,49.0 327.9,36.8 329.7,50.5 331.5,62.9 333.3,49.2 335.1,36.8 336.9,51.0 338.7,63.4 340.5,49.7 342.3,37.3 344.1,51.4 345.9,39.0 347.7,52.9 349.5,40.3 351.4,54.2 353.2,66.3 355.0,52.7 356.8,40.3 358.6,29.1 360.4,25.4 362.2,21.9 364.0,18.9 365.8,41.0 367.6,36.1 369.4,25.6 371.2,16.2 373.0,8.0 374.8,25.4 376.6,16.2 378.4,38.5 380.2,58.6 382.0,51.7 383.8,45.5 385.6,40.0 387.4,35.1 389.2,25.1 391.0,16.2 392.8,33.1 394.6,23.4 396.4,39.5 398.2,53.9 400.0,67.1 401.8,78.5 403.6,70.1 405.4,87.2 407.2,77.5 409.0,69.1 410.8,86.2 412.6,101.6 414.4,90.4 416.2,105.3 418.0,93.9 419.8,108.3 421.6,96.4 423.4,85.7 425.2,95.4 427.0,104.1 428.8,87.0 430.6,71.6 432.4,82.7 434.2,67.8 436.0,79.5 437.8,89.7 439.6,79.8 441.4,95.9 443.2,85.2 445.0,100.6 446.8,114.3 448.6,101.8 450.5,115.3 452.3,102.6 454.1,116.0 455.9,127.9 457.7,133.4 459.5,113.3 461.3,120.2 463.1,126.4 464.9,107.1 466.7,114.5 468.5,101.6 470.3,115.0 472.1,102.1 473.9,90.4 475.7,80.2 477.5,90.2 479.3,99.4 481.1,107.3 482.9,114.5 484.7,126.7 486.5,137.6 488.3,147.3 490.1,130.9 491.9,141.1 493.7,144.8 495.5,148.3 497.3,126.4 499.1,106.8 500.9,89.2 502.7,98.4 504.5,106.6 506.3,88.9 508.1,98.1 509.9,106.1 511.7,118.7 513.5,105.3 515.3,118.0 517.1,104.3 518.9,117.0 520.7,103.6 522.5,91.4 524.3,80.7 526.1,65.6 527.9,77.0 529.7,62.4 531.5,74.3 533.3,59.9 535.1,47.2 536.9,40.8 538.7,35.3 540.5,30.3 542.3,25.9 544.1,41.3 545.9,55.2 547.7,67.8 549.5,54.2 551.4,66.6 553.2,83.5 555.0,73.8 556.8,89.9 558.6,79.3 560.4,70.1 562.2,61.6 564.0,73.5 565.8,59.1 567.6,71.3 569.4,57.2 571.2,69.6 573.0,80.5 574.8,96.1 576.6,85.0 578.4,75.3 580.2,66.3 582.0,58.6 583.8,70.6 585.6,81.5 587.4,91.2 589.2,75.0 591.0,85.2 592.8,100.4 594.6,89.2 596.4,79.0 598.2,94.9 600.0,84.0"></polyline></svg>
+        <figcaption>Momentum through the 2023 final, Carlos Alcaraz (above) vs Novak Djokovic (below). Vertical lines mark new sets.</figcaption>
+      </figure>
     </section>
+
     <section id="odds" class="content">
-      <h2>From probability to odds</h2>
-      <p>Placeholder.</p>
+      <h2>4. From probability to odds</h2>
+      <p>Odds are shown in decimal form: the total a 1-credit bet pays back if it wins. Fair odds would be 1 ÷ chance,
+        but like a real sportsbook the site adds a 5% house margin, so every price is a little shorter:</p>
+      <p class="formula">odds = 1 ÷ (chance × 1.05)</p>
+      <p>A 50% chance pays <strong>1.90</strong>, not 2.00. Over many bets, that gap is how the house wins. Chances are
+        capped between 2% and 98%, and odds never go below 1.01.</p>
     </section>
+
     <section id="limits" class="content">
-      <h2>Limits of the model</h2>
-      <p>Placeholder.</p>
+      <h2>5. Limits of the model</h2>
+      <ul>
+        <li>Points aren't truly independent — nerves, fatigue and tactics all matter, which is exactly what "momentum" research asks about.</li>
+        <li>It only knows this one tournament: 31 matches, third round onward.</li>
+        <li>It ignores rankings, surface history and head-to-head records.</li>
+        <li>Next-game odds treat the next game as an ordinary service game, even when it turns out to be a tiebreak.</li>
+      </ul>
     </section>
+
     <section id="sources" class="content">
       <h2>Sources</h2>
-      <p>Placeholder.</p>
+      <ul>
+        <li>Klaassen, F. &amp; Magnus, J. (2014). <cite>Analyzing Wimbledon: The Power of Statistics</cite>. Oxford University Press.</li>
+        <li>COMAP (2024). Mathematical Contest in Modeling, Problem C: "Momentum in Tennis" — 2023 Wimbledon point-by-point data.</li>
+        <li>Code and data pipeline: <code>model/</code> in this site's GitHub repository.</li>
+      </ul>
     </section>
   </main>
 

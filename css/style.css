@@ -299,3 +299,9 @@ main {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Set dividers on the model page's momentum chart */
+.momentum-set { stroke: var(--border); stroke-width: 1; stroke-dasharray: 4 4; }
+.model-chart { width: 100%; height: auto; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; }
+.content ul { padding-left: 1.2rem; }
+.content li + li { margin-top: .35rem; }
