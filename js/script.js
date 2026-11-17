@@ -50,6 +50,9 @@ function renderWallet(balance) {
 function setUpWallet() {
   renderWallet(wallet.getBalance());
   wallet.onChange(renderWallet);
+  // Refresh the header when another tab changes credits, or the Back button restores this page.
+  window.addEventListener('storage', () => renderWallet(wallet.getBalance()));
+  window.addEventListener('pageshow', () => renderWallet(wallet.getBalance()));
   document.getElementById('wallet-reset')?.addEventListener('click', () => {
     if (confirm('Reset credits to 1000?')) wallet.reset();
   });

@@ -63,3 +63,14 @@ test('reset returns to 1000 and notifies listeners', () => {
   assert.equal(w.getBalance(), 1000);
   assert.deepEqual(seen, [600, 1000]);
 });
+
+test('two wallets on the same storage stay in sync (other tab / back button)', () => {
+  const s = fakeStorage();
+  const homePage = createWallet(s);
+  const gamesPage = createWallet(s);
+  gamesPage.debit(500);
+  assert.equal(homePage.getBalance(), 500);
+  homePage.debit(10);
+  assert.equal(gamesPage.getBalance(), 490);
+  assert.equal(s.getItem('mt_wallet'), '490');
+});

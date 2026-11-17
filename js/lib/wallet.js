@@ -13,16 +13,20 @@ const isWholePositive = (n) => Number.isInteger(n) && n > 0;
 export function createWallet(storage) {
   const listeners = [];
 
-  // Read the saved balance; anything that isn't a whole number >= 0 means "start fresh".
-  function load() {
+  // Start fresh unless storage holds a valid whole number.
+  let balance = START_BALANCE;
+
+  // Re-read the saved balance before every use, so another tab or a page restored
+  // with the Back button can't overwrite newer credits with an old number.
+  // Junk or blocked storage keeps the current in-memory balance.
+  function sync() {
     try {
       const raw = storage?.getItem(KEY);
-      if (raw !== null && raw !== undefined && /^\d+$/.test(raw)) return Number(raw);
-    } catch { /* storage blocked: fall through */ }
-    return START_BALANCE;
+      if (raw !== null && raw !== undefined && /^\d+$/.test(raw)) balance = Number(raw);
+    } catch { /* storage blocked: keep the in-memory value */ }
   }
 
-  let balance = load();
+  sync();
 
   function save() {
     try { storage?.setItem(KEY, String(balance)); } catch { /* keep the in-memory value */ }
@@ -30,10 +34,11 @@ export function createWallet(storage) {
   }
 
   return {
-    getBalance: () => balance,
-    canAfford: (n) => isWholePositive(n) && n <= balance,
+    getBalance() { sync(); return balance; },
+    canAfford(n) { sync(); return isWholePositive(n) && n <= balance; },
     /** Take credits out. Returns false (and changes nothing) for a bad amount. */
     debit(n) {
+      sync();
       if (!isWholePositive(n) || n > balance) return false;
       balance -= n;
       save();
@@ -42,6 +47,7 @@ export function createWallet(storage) {
     /** Pay credits in (winnings or refunds). */
     credit(n) {
       if (!isWholePositive(n)) return;
+      sync();
       balance += n;
       save();
     },
