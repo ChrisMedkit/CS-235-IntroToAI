@@ -2,6 +2,7 @@
 // Page-specific features (replay, blackjack, slots) import from this file.
 
 import { createWallet } from './lib/wallet.js';
+import { nextIndex } from './lib/carousel.js';
 
 // ---------- Wallet ----------
 // localStorage can throw (privacy modes), so test it before using it.
@@ -64,6 +65,54 @@ function setUpNavToggle() {
   });
 }
 
+// ---------- Banner carousel (home page only) ----------
+const SLIDE_MS = 6000;
+
+function setUpBanner() {
+  const banner = document.getElementById('banner');
+  if (!banner) return;
+  const slides = [...banner.querySelectorAll('.banner-slide')];
+  const pauseBtn = banner.querySelector('.banner-pause');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let index = 0;
+  let paused = reduceMotion;   // no auto-advance when the visitor asked for less motion
+  let hovering = false;
+  let timer = null;
+
+  function show(i) {
+    slides[index].classList.remove('is-active');
+    index = i;
+    slides[index].classList.add('is-active');
+  }
+
+  function restart() {
+    clearInterval(timer);
+    timer = setInterval(() => {
+      if (!paused && !hovering) show(nextIndex(index, slides.length, 1));
+    }, SLIDE_MS);
+  }
+
+  function setPaused(p) {
+    paused = p;
+    pauseBtn.textContent = p ? 'Play' : 'Pause';
+    pauseBtn.setAttribute('aria-pressed', String(p));
+  }
+
+  banner.querySelector('.banner-prev').addEventListener('click', () => { show(nextIndex(index, slides.length, -1)); restart(); });
+  banner.querySelector('.banner-next').addEventListener('click', () => { show(nextIndex(index, slides.length, 1)); restart(); });
+  pauseBtn.addEventListener('click', () => setPaused(!paused));
+
+  // Hold still while the visitor is reading or using the banner.
+  banner.addEventListener('mouseenter', () => { hovering = true; });
+  banner.addEventListener('mouseleave', () => { hovering = false; });
+  banner.addEventListener('focusin', () => { hovering = true; });
+  banner.addEventListener('focusout', () => { hovering = false; });
+
+  setPaused(paused);
+  restart();
+}
+
 // Module scripts run after the HTML is parsed, so the DOM is ready here.
 setUpWallet();
 setUpNavToggle();
+setUpBanner();
