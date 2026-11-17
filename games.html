@@ -75,7 +75,24 @@
     </section>
     <section id="slots" class="content game" aria-labelledby="slots-heading">
       <h2 id="slots-heading">Slots</h2>
-      <p>Placeholder.</p>
+      <p>Three reels, one line. Match three symbols, or land exactly two tennis balls.
+        Returns about <strong id="slots-rtp-text">—</strong> credits per 100 bet over time.</p>
+      <div id="slot-reels" class="reels" aria-live="polite" aria-label="Reels">
+        <div class="reel">🎾</div><div class="reel">🍓</div><div class="reel">🏆</div>
+      </div>
+      <div class="game-controls">
+        <label class="field">
+          <span>Stake (credits)</span>
+          <input id="slots-stake" type="number" min="1" step="1" inputmode="numeric" value="5">
+        </label>
+        <button id="slots-spin" class="btn btn-accent" type="button">Spin</button>
+      </div>
+      <p id="slots-status" class="replay-status" role="status"></p>
+      <table class="paytable">
+        <caption>Pay table (credits back per 1 credit bet)</caption>
+        <thead><tr><th scope="col">Line</th><th scope="col">Pays</th></tr></thead>
+        <tbody id="slots-paytable"></tbody>
+      </table>
     </section>
   </main>
 
