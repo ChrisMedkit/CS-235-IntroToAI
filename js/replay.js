@@ -20,7 +20,7 @@ const els = {
 
 const state = {
   matches: [], match: null, idx: 0,        // points[0..idx-1] have been played
-  timer: null, speed: 1, mode: 'point', pick: 1, openBets: [],
+  timer: null, speed: 1, mode: 'point', pick: 1, openBets: [], loading: false,
 };
 
 // ---------- Helpers ----------
@@ -140,7 +140,16 @@ function renderOpenBets() {
   }));
 }
 
+/** Turn every replay and bet-slip control on or off. */
+function setControlsEnabled(on) {
+  const controls = [els.play, els.step, els.speed, els.jump, els.stake, els.place,
+    ...els.picks.querySelectorAll('button'), ...document.querySelectorAll('#mode-picker [data-mode]')];
+  controls.forEach((c) => { c.disabled = !on; });
+}
+
 function render() {
+  if (!state.match || state.loading) { setControlsEnabled(false); return; }
+  setControlsEnabled(true);
   renderScoreboard();
   renderChart();
   renderSlip();
@@ -150,19 +159,23 @@ function render() {
 }
 
 // ---------- Bets ----------
+/** Settle every bet that can be decided now. Returns one message per settled bet. */
 function settleOpenBets() {
   const stillOpen = [];
+  const results = [];
   for (const bet of state.openBets) {
     const result = settle(bet, points(), state.idx, state.match.winner);
     if (!result) { stillOpen.push(bet); continue; }
+    const what = `${MODE_LABELS[bet.mode].toLowerCase()} (${playerName(bet.pick)})`;
     if (result.won) {
       wallet.credit(result.payout);
-      say(`Won ${result.payout} credits on ${MODE_LABELS[bet.mode].toLowerCase()}: ${playerName(bet.pick)}!`, 'win');
+      results.push({ won: true, text: `Won ${result.payout} credits on ${what}!` });
     } else {
-      say(`Lost ${bet.stake} credits on ${MODE_LABELS[bet.mode].toLowerCase()}: ${playerName(bet.pick)}.`, 'loss');
+      results.push({ won: false, text: `Lost ${bet.stake} credits on ${what}.` });
     }
   }
   state.openBets = stillOpen;
+  return results;
 }
 
 /** Give back the stakes of every open bet (switching match, jumping, leaving the page). */
@@ -191,11 +204,18 @@ function placeBet() {
 function advance() {
   if (isOver()) return;
   state.idx += 1;
-  settleOpenBets();
+  const results = settleOpenBets();
+  const lines = results.map((r) => r.text);
   if (isOver()) {
     stop();
     const refunded = refundOpenBets(); // anything settle couldn't resolve
-    say(`${playerName(state.match.winner)} wins the match!${refunded ? ` ${refunded} credits refunded.` : ''}`, 'win');
+    lines.unshift(`${playerName(state.match.winner)} wins the match!`);
+    if (refunded) lines.push(`${refunded} credits refunded.`);
+  }
+  if (lines.length) {
+    const anyWin = results.some((r) => r.won);
+    const allLost = results.length > 0 && results.every((r) => !r.won);
+    say(lines.join(' '), anyWin ? 'win' : allLost ? 'loss' : '');
   }
   render();
 }
@@ -218,15 +238,24 @@ function confirmRefund(action) {
   return confirm(`${action} will cancel your open bets and refund their stakes. Continue?`);
 }
 
+/** Load and show a match. Returns true on success. On failure the previous match (if any) stays. */
 async function showMatch(id) {
   const entry = state.matches.find((m) => m.id === id);
   stop();
+  state.loading = true;
+  render();
+  let match;
   try {
-    state.match = await loadData('tennis', entry.file);
+    match = await loadData('tennis', entry.file);
   } catch (err) {
+    state.loading = false;
+    if (state.match) els.select.value = state.match.id; // put the dropdown back
+    render();
     say(err.message, 'loss');
-    return;
+    return false;
   }
+  state.loading = false;
+  state.match = match;
   state.idx = 0;
   els.m1.textContent = state.match.players[0];
   els.m2.textContent = state.match.players[1];
@@ -236,6 +265,7 @@ async function showMatch(id) {
   els.jump.replaceChildren(...firsts.map((f) => new Option(`Set ${f.set}`, f.i)));
   say(`Replay ready: ${state.match.players[0]} vs ${state.match.players[1]} (${entry.round}). Press Play.`);
   render();
+  return true;
 }
 
 // ---------- Wire up ----------
@@ -254,9 +284,9 @@ function wire() {
     render();
   });
   els.select.addEventListener('change', () => {
-    if (!confirmRefund('Switching match')) { els.select.value = state.match.id; return; }
+    if (!confirmRefund('Switching match')) { if (state.match) els.select.value = state.match.id; return; }
     const refunded = refundOpenBets();
-    showMatch(els.select.value).then(() => { if (refunded) say(`${refunded} credits refunded. New replay ready.`); });
+    showMatch(els.select.value).then((ok) => { if (ok && refunded) say(`${refunded} credits refunded. New replay ready.`); });
   });
   document.querySelectorAll('#mode-picker [data-mode]').forEach((b) => {
     b.addEventListener('click', () => { state.mode = b.dataset.mode; renderSlip(); });
