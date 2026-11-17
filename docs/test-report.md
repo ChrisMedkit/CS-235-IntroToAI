@@ -17,7 +17,7 @@ GitHub Pages checks are still to do after deploy (marked **Pending**).
 | Every nav link works on every page | Pass | All 16 links return the right page. |
 | No horizontal scroll at 375px (and 320px) | Pass after fix | Home page was 524px wide at 375px once the match list loaded: the longest match name stretched the page grid. **Fix:** `grid-template-columns: minmax(0, 1fr)` on `main` and a shrinkable dropdown. At 320px the scoreboard was 368px wide; **fix:** tighter scoreboard under 400px. Re-tested all pages at 320, 375, 768 and 1200px. |
 | Desktop layout | Pass | Replay and bet slip sit side by side above 860px. |
-| No console errors | Pass except images | Only the two placeholder photos (`banner-court.jpg`, `model-ball.jpg`) 404 until images are added. A missing favicon error was fixed by adding `images/favicon.svg`. |
+| No console errors | Pass | Fresh tab, all 4 pages: no console errors. Photos added (`banner-court.jpg`, `model-ball.jpg`, credited in `images/CREDITS.md`) and `images/favicon.svg` linked. |
 | Banner: arrows, pause, auto-advance | Pass | Next/prev wrap around; Pause shows "Play" and `aria-pressed="true"`; advances after 6 s. |
 | Banner: reduce motion | Pass (code check) | Banner starts paused when `prefers-reduced-motion` is on; CSS turns off animations. The browser pane couldn't emulate the setting. |
 | Replay loads every match | Pass | 31 matches listed, final first. |
@@ -35,7 +35,7 @@ GitHub Pages checks are still to do after deploy (marked **Pending**).
 | Reset works; balance 0 shows the reset notice | Pass | |
 | Wallet with blocked or junk storage | Pass (unit tests) | Falls back to 1,000 in memory. |
 | Data can't load | Pass | Friendly message: "Could not load data. Open the site with Live Server or reload." |
-| All images have alt text | Pass | Enforced by `tests/js/pages.test.js`. |
+| All images have alt text | Pass | Enforced by `tests/js/pages.test.js`; alt text describes the actual photos. |
 | Color contrast (WCAG AA) | Pass | Lowest pair: muted text on cards, 6.8:1. |
 | FAQ opens by keyboard, one at a time | Pass | Uses `<details>`; works without JavaScript too. |
 | GitHub Pages: nav, data load, console | **Pending** | Owner turns on Pages, then re-checks. |
