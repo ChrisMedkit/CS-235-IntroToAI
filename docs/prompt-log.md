@@ -67,3 +67,16 @@ One entry per significant feature or debugging exchange (need at least 3).
 - **Commit:** see `git log` — "feat: match replay with play-money betting"
 
 ---
+
+## Entry 5 — Debugging: page scrolled sideways on phones
+
+- **Date:** 2026-11-16
+- **Tool / LLM:** Claude Code (Opus 5.5)
+- **Goal:** Pass the "no horizontal scroll at 375px" test after the replay was built.
+- **What happened:** The home page passed at 375px in Task 3, but failed (524px wide) in final testing. The LLM listed every element wider than the screen, which showed the whole `main` grid had grown, not just one widget.
+- **Cause:** A CSS grid column defaults to `min-width: auto`, so the longest option in the match dropdown ("Third round: … vs …") forced the column wider than the phone. It didn't show up earlier because the dropdown was empty then.
+- **Fix:** `grid-template-columns: minmax(0, 1fr)` on `main`, plus a dropdown that can shrink; and a tighter scoreboard under 400px for 320px phones.
+- **What I learned:** Re-test layout after content loads, not just on the empty page. "Find every element wider than the viewport" is a fast way to debug overflow.
+- **Commit:** see `git log` — "fix: phone layout overflow; test report"
+
+---
