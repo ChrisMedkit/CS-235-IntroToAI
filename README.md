@@ -16,7 +16,7 @@ The site's JavaScript reads those files and shows them in the browser.
 - **VS Code:** install the Live Server extension, right-click `index.html` → *Open with Live Server*.
 - **Terminal:** `python3 -m http.server 5500`, then open http://localhost:5500.
 
-Live site: *(add the GitHub Pages URL here after deploying)*
+Live site: https://chrismedkit.github.io/Momentum-Tennis/
 
 ## Rebuild the data
 

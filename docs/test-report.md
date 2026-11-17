@@ -1,7 +1,7 @@
 # Test Report
 
 Date: 2026-11-16 · Tested on a local no-cache server (same as VS Code Live Server) in a Chromium browser.
-GitHub Pages checks are still to do after deploy (marked **Pending**).
+GitHub Pages checks were repeated on the live site: https://chrismedkit.github.io/Momentum-Tennis/
 
 ## Automated tests
 
@@ -38,4 +38,4 @@ GitHub Pages checks are still to do after deploy (marked **Pending**).
 | All images have alt text | Pass | Enforced by `tests/js/pages.test.js`; alt text describes the actual photos. |
 | Color contrast (WCAG AA) | Pass | Lowest pair: muted text on cards, 6.8:1. |
 | FAQ opens by keyboard, one at a time | Pass | Uses `<details>`; works without JavaScript too. |
-| GitHub Pages: nav, data load, console | **Pending** | Owner turns on Pages, then re-checks. |
+| GitHub Pages: nav, data load, console | Pass | Live site: all 4 pages, both photos, credits and `data/tennis/index.json` return 200; replay loads 31 matches with odds; a slot spin and the wallet work across pages; no console errors. |
