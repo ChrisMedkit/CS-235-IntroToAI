@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-export const PAGES = ['index.html'];
+export const PAGES = ['index.html', 'model.html', 'games.html', 'play-safe.html'];
 const read = (page) => readFileSync(new URL(`../../${page}`, import.meta.url), 'utf8');
 
 for (const page of PAGES) {
@@ -40,5 +40,27 @@ for (const page of PAGES) {
     for (const href of ['index.html', 'model.html', 'games.html', 'play-safe.html']) {
       assert.ok(html.includes(`href="${href}"`), `missing link ${href}`);
     }
+  });
+}
+
+// The header, nav and footer must match index.html exactly (except aria-current).
+const chrome = (html) => {
+  const pick = (re) => (html.match(re) ?? [''])[0].replace(/ aria-current="page"/g, '');
+  return {
+    header: pick(/<header[\s\S]*?<\/header>/),
+    nav: pick(/<nav[\s\S]*?<\/nav>/),
+    footer: pick(/<footer[\s\S]*?<\/footer>/),
+  };
+};
+
+for (const page of PAGES) {
+  test(`${page}: shared chrome is identical`, () => {
+    assert.deepEqual(chrome(read(page)), chrome(read('index.html')));
+  });
+
+  test(`${page}: exactly one aria-current, on its own link`, () => {
+    const marks = read(page).match(/<a href="([^"]+)" aria-current="page">/g) ?? [];
+    assert.equal(marks.length, 1);
+    assert.ok(marks[0].includes(`href="${page}"`));
   });
 }

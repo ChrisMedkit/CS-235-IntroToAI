@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Momentum Tennis — Mini Games</title>
+  <meta name="description" content="Play-money blackjack and slots that share your site credits.">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/script.js"></script>
+  <script type="module" src="js/blackjack.js"></script>
+  <script type="module" src="js/slots.js"></script>
+</head>
+<body>
+  <!-- Shared header: identical on every page -->
+  <header class="site-header">
+    <a class="brand" href="index.html">Momentum<span class="brand-accent">Tennis</span></a>
+    <div class="wallet" aria-live="polite">
+      <span class="wallet-label">Balance</span>
+      <span class="wallet-amount"><span id="wallet-balance">1000</span> credits</span>
+      <button id="wallet-reset" class="btn btn-small" type="button">Reset credits</button>
+      <p id="wallet-empty" class="wallet-empty" hidden>Out of credits — reset to keep playing.</p>
+    </div>
+    <button id="nav-toggle" class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button>
+  </header>
+  <nav id="site-nav" class="site-nav" aria-label="Main">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="model.html">How the Model Works</a></li>
+      <li><a href="games.html" aria-current="page">Mini Games</a></li>
+      <li><a href="play-safe.html">Play Safe</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="game-grid" class="content" aria-labelledby="games-heading">
+      <h1 id="games-heading">Mini Games</h1>
+      <p>Same play-money credits as the replay. Each card shows how much the game pays back over time.</p>
+      <div class="card-grid">
+        <article class="game-card">
+          <h2>🃏 Blackjack</h2>
+          <p class="rtp">Returns about <span id="rtp-blackjack">99.5</span> credits per 100 bet over time (approx.)</p>
+          <a class="btn btn-accent" href="#blackjack">Play</a>
+        </article>
+        <article class="game-card">
+          <h2>🎰 Slots</h2>
+          <p class="rtp">Returns about <span id="rtp-slots">—</span> credits per 100 bet over time</p>
+          <a class="btn btn-accent" href="#slots">Play</a>
+        </article>
+        <article class="game-card is-locked">
+          <h2>🔒 Coming soon</h2>
+          <p>More games on the way.</p>
+        </article>
+      </div>
+    </section>
+    <section id="blackjack" class="content game" aria-labelledby="bj-heading">
+      <h2 id="bj-heading">Blackjack</h2>
+      <p>Placeholder.</p>
+    </section>
+    <section id="slots" class="content game" aria-labelledby="slots-heading">
+      <h2 id="slots-heading">Slots</h2>
+      <p>Placeholder.</p>
+    </section>
+  </main>
+
+  <!-- Shared footer: identical on every page -->
+  <footer class="site-footer">
+    <p><strong>Play money only. No real betting.</strong> Credits have no cash value. <a href="play-safe.html">Play Safe</a></p>
+    <p>CS235 Project 1 · Data: 2024 MCM Problem C (2023 Wimbledon). <a href="images/CREDITS.md">Image credits</a></p>
+  </footer>
+</body>
+</html>

@@ -19,3 +19,19 @@ One entry per significant feature or debugging exchange (need at least 3).
 - **Commit:** see `git log` — "feat: home page structure"
 
 ---
+
+## Entry 2 — Navigation and remaining pages
+
+- **Date:** 2026-11-16
+- **Tool / LLM:** Claude Code (Opus 5.5)
+- **Goal:** Create the three subpages with the exact same header, nav and footer as the home page.
+- **Prompt (exact):**
+
+  > correct, one subpage will be for to explain correct relationships with gambling and include disclaimers. Additionally the second sub page will be for how to model works, and a 3rd page for mini games
+
+- **What the LLM gave back:** `model.html`, `games.html` and `play-safe.html`, each built from the home page's header/nav/footer with `aria-current="page"` on its own link, plus placeholder sections.
+- **What I changed / fixed:** The first test command (`node --test tests/js/`) crashed because Node treated the folder as a module path; switched to `tests/js/*.test.js`.
+- **What I learned:** A test that compares the header/nav/footer of every page to `index.html` catches copy-paste drift automatically, so the nav can't silently get out of sync.
+- **Commit:** see `git log` — "feat: add model, games and play-safe pages"
+
+---

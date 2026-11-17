@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Momentum Tennis — How the Model Works</title>
+  <meta name="description" content="How public tennis models turn point-by-point data into win chances and odds.">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/script.js"></script>
+</head>
+<body>
+  <!-- Shared header: identical on every page -->
+  <header class="site-header">
+    <a class="brand" href="index.html">Momentum<span class="brand-accent">Tennis</span></a>
+    <div class="wallet" aria-live="polite">
+      <span class="wallet-label">Balance</span>
+      <span class="wallet-amount"><span id="wallet-balance">1000</span> credits</span>
+      <button id="wallet-reset" class="btn btn-small" type="button">Reset credits</button>
+      <p id="wallet-empty" class="wallet-empty" hidden>Out of credits — reset to keep playing.</p>
+    </div>
+    <button id="nav-toggle" class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button>
+  </header>
+  <nav id="site-nav" class="site-nav" aria-label="Main">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="model.html" aria-current="page">How the Model Works</a></li>
+      <li><a href="games.html">Mini Games</a></li>
+      <li><a href="play-safe.html">Play Safe</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="overview" class="content">
+      <h1>How the Model Works</h1>
+      <p>Placeholder: a plain-language summary of how the site turns match data into win chances.</p>
+      <img class="content-img" src="images/model-ball.jpg" alt="A yellow tennis ball resting on the white baseline of a court">
+    </section>
+    <section id="point-model" class="content">
+      <h2>Winning a point on serve</h2>
+      <p>Placeholder.</p>
+    </section>
+    <section id="roll-up" class="content">
+      <h2>From points to games, sets and the match</h2>
+      <p>Placeholder.</p>
+    </section>
+    <section id="momentum" class="content">
+      <h2>What "momentum" means here</h2>
+      <p>Placeholder.</p>
+    </section>
+    <section id="odds" class="content">
+      <h2>From probability to odds</h2>
+      <p>Placeholder.</p>
+    </section>
+    <section id="limits" class="content">
+      <h2>Limits of the model</h2>
+      <p>Placeholder.</p>
+    </section>
+    <section id="sources" class="content">
+      <h2>Sources</h2>
+      <p>Placeholder.</p>
+    </section>
+  </main>
+
+  <!-- Shared footer: identical on every page -->
+  <footer class="site-footer">
+    <p><strong>Play money only. No real betting.</strong> Credits have no cash value. <a href="play-safe.html">Play Safe</a></p>
+    <p>CS235 Project 1 · Data: 2024 MCM Problem C (2023 Wimbledon). <a href="images/CREDITS.md">Image credits</a></p>
+  </footer>
+</body>
+</html>
