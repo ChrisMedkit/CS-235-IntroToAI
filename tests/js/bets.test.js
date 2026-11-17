@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { validateStake, makeBet, settle, matchBettingOpen, betProbability } from '../../js/lib/bets.js';
+import { validateStake, makeBet, settle, settleNow, matchBettingOpen, betProbability } from '../../js/lib/bets.js';
 
 // Sample: points 1-8 are game (1,1) won by player 1 on point 8;
 // points 9-12 are game (1,2), won by player 1. Match winner: 1.
@@ -65,4 +65,16 @@ test('betProbability picks the right number per mode', () => {
   assert.equal(betProbability('game', 1, pts, 0), pts[0].p_game[0]);       // game at 0-0
   assert.equal(betProbability('game', 2, pts, 3), pts[3].p_next_game[1]);  // mid-game
   assert.equal(betProbability('match', 2, pts, 5), pts[5].p_match[1]);
+});
+
+test('settleNow decides an open bet on the real result, so leaving early is not a free refund', () => {
+  // Point bet on point 2 (won by player 2), placed before it was played.
+  const point = makeBet({ mode: 'point', pick: 2, stake: 10, odds: 2, points: pts, idx: 1 });
+  assert.deepEqual(settleNow(point, pts, 1), { won: true, payout: 20 });
+  // Game bet on game (1,2), which player 1 wins: a bet on player 2 loses.
+  const game = makeBet({ mode: 'game', pick: 2, stake: 10, odds: 3, points: pts, idx: 3 });
+  assert.deepEqual(settleNow(game, pts, 1), { won: false, payout: 0 });
+  // Match bet on the winner pays.
+  const match = makeBet({ mode: 'match', pick: 1, stake: 10, odds: 1.5, points: pts, idx: 0 });
+  assert.deepEqual(settleNow(match, pts, 1), { won: true, payout: 15 });
 });

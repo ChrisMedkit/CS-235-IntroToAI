@@ -7,7 +7,7 @@ GitHub Pages checks are still to do after deploy (marked **Pending**).
 
 | Suite | Command | Result |
 |---|---|---|
-| JavaScript (pages, wallet, banner, odds, bets, blackjack, slots) | `node --test tests/js/*.test.js` | 66 passed, 0 failed |
+| JavaScript (pages, wallet, banner, odds, bets, blackjack, slots) | `node --test tests/js/*.test.js` | 68 passed, 0 failed |
 | Python (tennis math, data build) | `python3 -m pytest tests/model -q` | 23 passed, 0 failed |
 
 ## Manual checklist (spec §11)
@@ -26,8 +26,8 @@ GitHub Pages checks are still to do after deploy (marked **Pending**).
 | Odds match probabilities and margin | Pass | 50% → 1.90; unit tests cover clamping. |
 | Odds lock at click; slip updates while playing | Pass | |
 | Bad stakes refused (0, 10.5, abc, more than balance) | Pass | Clear message, balance unchanged. |
-| Switching match / jumping refunds open bets | Pass | 30 credits refunded after confirm. |
-| Leaving the page refunds open bets | Pass | `pagehide` gave back a 50-credit stake. |
+| Switching match / jumping settles open bets on the real result | Pass | After confirm: a 100-credit match bet on the loser stayed lost on jump; a 100-credit bet on the winner paid 190 on switch. (Changed from refunds after review — refunds let visitors cancel losing bets.) |
+| Leaving the page settles open bets | Pass | `pagehide` settled a 50-credit point bet as lost (the pick lost that point); a second `pagehide` changed nothing. |
 | Match betting closes in the final set | Pass | Button disabled with a reason. |
 | Blackjack payouts | Pass | 10 hands checked by hand: wins pay 2×, dealer stands on soft 17, bust loses even when dealer would bust. |
 | Slots payouts match pay table | Pass | 20 spins checked; exact return 92.4%, a 200,000-spin simulation agrees within 2%. |

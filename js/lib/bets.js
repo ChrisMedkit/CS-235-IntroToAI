@@ -68,3 +68,12 @@ export function settle(bet, points, idx, matchWinner) {
 export function matchBettingOpen(point) {
   return !(point.sets[0] === 2 && point.sets[1] === 2);
 }
+
+/**
+ * Settle a bet on the match's real outcome right away (the whole match is known).
+ * Used when the visitor leaves, switches match or jumps, so open bets can't be
+ * cancelled for free when they're going badly.
+ */
+export function settleNow(bet, points, matchWinner) {
+  return settle(bet, points, points.length, matchWinner);
+}

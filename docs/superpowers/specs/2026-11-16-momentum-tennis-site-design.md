@@ -145,9 +145,12 @@ Sections from top to bottom:
   (next point, next game, match winner). Each settles when its event ends.
 - The stake leaves the wallet when the bet is placed. Winnings (stake × locked
   decimal odds) are paid in when it settles.
-- Open bets live only in memory. If the visitor reloads, leaves, or switches
-  match with open bets, the stakes are **refunded**, with a warning first when
-  switching match. Bets are not saved in `localStorage`.
+- Open bets live only in memory. **Owner's decision (changed after review):** if
+  the visitor reloads, leaves, switches match or jumps to a set with open bets,
+  those bets are **settled immediately on the match's real result** (the whole
+  match is already loaded), with a warning first when switching or jumping.
+  Refunding instead would let visitors cancel any bet that was going badly.
+  Bets are not saved in `localStorage`.
 - Betting is closed once the match is over. "Match winner" betting closes
   after the final set begins, so the bet isn't free money.
 

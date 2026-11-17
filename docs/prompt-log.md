@@ -80,3 +80,19 @@ One entry per significant feature or debugging exchange (need at least 3).
 - **Commit:** see `git log` — "fix: phone layout overflow; test report"
 
 ---
+
+## Entry 6 — Code review: closing a betting loophole
+
+- **Date:** 2026-11-16
+- **Tool / LLM:** Claude Code (Opus 5.5), with a separate reviewer agent
+- **Goal:** Have a fresh reviewer check the whole site before submission, then fix what it found.
+- **What the reviewer found:** Open bets were refunded when you left the page, switched match or jumped to a set — so you could cancel any bet that was going badly and keep the ones that were winning. It also found a wallet bug (the Back button could restore an old balance) and errors when a match file failed to load.
+- **Prompt (exact):**
+
+  > Settle, don't refund
+
+- **What the LLM gave back:** `settleNow()` in `js/lib/bets.js` (with a test first), used on leave, switch and jump, so open bets are decided on the match's real result immediately.
+- **What I learned:** A design can pass every test and still be wrong. The reviewer thought like a player trying to game the system, which the tests didn't.
+- **Commit:** see `git log` — "fix: settle open bets on the real result instead of refunding"
+
+---

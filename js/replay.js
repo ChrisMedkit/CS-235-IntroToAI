@@ -1,10 +1,11 @@
 // Match Replay (home page): replays a real match point by point, shows the model's
 // win chances and momentum, and lets the visitor place play-money bets.
 // The replay keeps playing while the bet slip is open; odds lock when "Place bet" is clicked.
+// Leaving, switching match or jumping settles open bets on the real result (no free refunds).
 
 import { wallet, loadData } from './script.js';
 import { toDecimalOdds } from './lib/odds.js';
-import { validateStake, makeBet, settle, matchBettingOpen, betProbability } from './lib/bets.js';
+import { validateStake, makeBet, settle, settleNow, matchBettingOpen, betProbability } from './lib/bets.js';
 
 const BASE_TICK_MS = 2500;       // one point every 2.5 s at 1× speed
 const MODE_LABELS = { point: 'Next point', game: 'Next game', match: 'Match winner' };
@@ -159,12 +160,17 @@ function render() {
 }
 
 // ---------- Bets ----------
-/** Settle every bet that can be decided now. Returns one message per settled bet. */
-function settleOpenBets() {
+/**
+ * Settle every bet that can be decided. Returns one message per settled bet.
+ * With `now`, every open bet is decided on the match's real result immediately.
+ */
+function settleOpenBets(now = false) {
   const stillOpen = [];
   const results = [];
   for (const bet of state.openBets) {
-    const result = settle(bet, points(), state.idx, state.match.winner);
+    const result = now
+      ? settleNow(bet, points(), state.match.winner)
+      : settle(bet, points(), state.idx, state.match.winner);
     if (!result) { stillOpen.push(bet); continue; }
     const what = `${MODE_LABELS[bet.mode].toLowerCase()} (${playerName(bet.pick)})`;
     if (result.won) {
@@ -178,12 +184,12 @@ function settleOpenBets() {
   return results;
 }
 
-/** Give back the stakes of every open bet (switching match, jumping, leaving the page). */
-function refundOpenBets() {
-  const total = state.openBets.reduce((sum, b) => sum + b.stake, 0);
-  if (total > 0) wallet.credit(total);
-  state.openBets = [];
-  return total;
+/** Show a list of settle results in the status line. */
+function sayResults(lines, results) {
+  if (!lines.length) return;
+  const anyWin = results.some((r) => r.won);
+  const allLost = results.length > 0 && results.every((r) => !r.won);
+  say(lines.join(' '), anyWin ? 'win' : allLost ? 'loss' : '');
 }
 
 function placeBet() {
@@ -208,15 +214,9 @@ function advance() {
   const lines = results.map((r) => r.text);
   if (isOver()) {
     stop();
-    const refunded = refundOpenBets(); // anything settle couldn't resolve
     lines.unshift(`${playerName(state.match.winner)} wins the match!`);
-    if (refunded) lines.push(`${refunded} credits refunded.`);
   }
-  if (lines.length) {
-    const anyWin = results.some((r) => r.won);
-    const allLost = results.length > 0 && results.every((r) => !r.won);
-    say(lines.join(' '), anyWin ? 'win' : allLost ? 'loss' : '');
-  }
+  sayResults(lines, results);
   render();
 }
 
@@ -233,9 +233,16 @@ function start() {
   els.play.textContent = 'Pause';
 }
 
-function confirmRefund(action) {
+function confirmSettle(action) {
   if (state.openBets.length === 0) return true;
-  return confirm(`${action} will cancel your open bets and refund their stakes. Continue?`);
+  return confirm(`${action} will settle your open bets right now on the match's real result. Continue?`);
+}
+
+/** Decide every open bet immediately and report it. Returns the results. */
+function settleAllNow() {
+  const results = settleOpenBets(true);
+  sayResults(results.map((r) => r.text), results);
+  return results;
 }
 
 /** Load and show a match. Returns true on success. On failure the previous match (if any) stays. */
@@ -277,23 +284,24 @@ function wire() {
     if (state.timer) start();
   });
   els.jump.addEventListener('change', () => {
-    if (!confirmRefund('Jumping')) { els.jump.selectedIndex = -1; return; }
-    const refunded = refundOpenBets();
+    if (!confirmSettle('Jumping')) { els.jump.selectedIndex = -1; return; }
+    settleAllNow();
     state.idx = Number(els.jump.value);
-    if (refunded) say(`${refunded} credits refunded.`);
     render();
   });
   els.select.addEventListener('change', () => {
-    if (!confirmRefund('Switching match')) { if (state.match) els.select.value = state.match.id; return; }
-    const refunded = refundOpenBets();
-    showMatch(els.select.value).then((ok) => { if (ok && refunded) say(`${refunded} credits refunded. New replay ready.`); });
+    if (!confirmSettle('Switching match')) { if (state.match) els.select.value = state.match.id; return; }
+    const results = state.match ? settleAllNow() : [];
+    showMatch(els.select.value).then((ok) => {
+      if (ok && results.length) sayResults([...results.map((r) => r.text), 'New replay ready.'], results);
+    });
   });
   document.querySelectorAll('#mode-picker [data-mode]').forEach((b) => {
     b.addEventListener('click', () => { state.mode = b.dataset.mode; renderSlip(); });
   });
   els.place.addEventListener('click', placeBet);
-  // Stakes leave the wallet when a bet is placed, so give them back if the visitor leaves.
-  window.addEventListener('pagehide', refundOpenBets);
+  // Leaving the page settles open bets on the real result, so winnings are kept and losses stand.
+  window.addEventListener('pagehide', () => { if (state.match) settleOpenBets(true); });
 }
 
 async function init() {
