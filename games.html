@@ -54,7 +54,24 @@
     </section>
     <section id="blackjack" class="content game" aria-labelledby="bj-heading">
       <h2 id="bj-heading">Blackjack</h2>
-      <p>Placeholder.</p>
+      <p>Get closer to 21 than the dealer without going over. The dealer stands on all 17s, blackjack pays 3:2, and you can double down on your first two cards.</p>
+      <div class="table-felt">
+        <h3>Dealer <span id="bj-dealer-total" class="hand-total"></span></h3>
+        <div id="bj-dealer" class="hand" aria-label="Dealer's cards"></div>
+        <h3>You <span id="bj-player-total" class="hand-total"></span></h3>
+        <div id="bj-player" class="hand" aria-label="Your cards"></div>
+      </div>
+      <div class="game-controls">
+        <label class="field">
+          <span>Stake (credits)</span>
+          <input id="bj-stake" type="number" min="1" step="1" inputmode="numeric" value="10">
+        </label>
+        <button id="bj-deal" class="btn btn-accent" type="button">Deal</button>
+        <button id="bj-hit" class="btn" type="button" disabled>Hit</button>
+        <button id="bj-stand" class="btn" type="button" disabled>Stand</button>
+        <button id="bj-double" class="btn" type="button" disabled>Double</button>
+      </div>
+      <p id="bj-status" class="replay-status" role="status"></p>
     </section>
     <section id="slots" class="content game" aria-labelledby="slots-heading">
       <h2 id="slots-heading">Slots</h2>
