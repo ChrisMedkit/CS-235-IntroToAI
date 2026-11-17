@@ -134,7 +134,13 @@ Sections from top to bottom:
 **Bet flow (designer's calls, owner can change):**
 - A replay starts at point 1. A "jump to set" control lets the visitor skip
   ahead to the start of any set.
-- Opening the bet slip pauses auto-play. Odds lock when the bet is placed.
+- **Owner's decision:** the replay keeps playing while the bet slip is open,
+  for a fast, live feel. Odds in the open slip update with each point. They
+  lock at the moment the visitor clicks "Place bet". A bet always applies to
+  the next point/game that has not started yet. If the replay moves on while
+  the slip is open, the slip shows the new odds before the click, never stale
+  ones. The default replay speed should leave time to bet (the builder picks
+  it, and the speed control still lets the visitor slow down).
 - At most one open bet per mode at a time, so up to three open bets in total
   (next point, next game, match winner). Each settles when its event ends.
 - The stake leaves the wallet when the bet is placed. Winnings (stake × locked
