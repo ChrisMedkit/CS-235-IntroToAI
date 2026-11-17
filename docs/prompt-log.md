@@ -51,3 +51,19 @@ One entry per significant feature or debugging exchange (need at least 3).
 - **Commit:** see `git log` — "feat: sportsbook stylesheet"
 
 ---
+
+## Entry 4 — Match replay and betting (JavaScript feature)
+
+- **Date:** 2026-11-16
+- **Tool / LLM:** Claude Code (Opus 5.5)
+- **Goal:** Replay a real Wimbledon match point by point with the model's win chances, a momentum chart, and play-money bets on the next point, next game or match.
+- **Prompt (exact):**
+
+  > keep the match playing to build a quick enviornment
+
+- **What the LLM gave back:** `js/lib/odds.js` (probability → decimal odds with a 5% house margin), `js/lib/bets.js` (stake checks, bet targets, settling), and `js/replay.js` (scoreboard, SVG momentum chart, bet slip whose odds refresh every point and lock on click). Unit tests in `tests/js/odds.test.js` and `tests/js/bets.test.js`.
+- **What I changed / fixed:** At the end of the replay the scoreboard showed the games from *before* the final point (5–4 instead of 6–4). Fixed by adding the last game and set to the winner in the final view.
+- **What I learned:** Keeping the rules (odds, settling) in small files with tests made the UI file much easier to debug — the bugs left were display bugs, not math bugs.
+- **Commit:** see `git log` — "feat: match replay with play-money betting"
+
+---
