@@ -7,3 +7,6 @@
 
 # Brainstorming / visual companion scratch files
 .superpowers/
+
+# Local Claude Code preview config
+.claude/

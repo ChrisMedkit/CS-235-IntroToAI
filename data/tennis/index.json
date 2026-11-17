@@ -1,0 +1,15 @@
+{
+ "sport": "tennis",
+ "matches": [
+  {
+   "id": "sample",
+   "players": [
+    "Player A",
+    "Player B"
+   ],
+   "round": "Sample",
+   "file": "match-sample.json",
+   "summary": "Hand-made 12-point sample"
+  }
+ ]
+}
