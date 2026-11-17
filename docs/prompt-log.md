@@ -35,3 +35,19 @@ One entry per significant feature or debugging exchange (need at least 3).
 - **Commit:** see `git log` — "feat: add model, games and play-safe pages"
 
 ---
+
+## Entry 3 — Sportsbook CSS and responsive layout
+
+- **Date:** 2026-11-16
+- **Tool / LLM:** Claude Code (Opus 5.5)
+- **Goal:** One shared stylesheet with a sportsbook look that works on phones.
+- **Prompt (exact):**
+
+  > It should be a sportsbook look.
+
+- **What the LLM gave back:** `css/style.css` with color tokens (dark surfaces, green accent, gold balance), pill tabs, odds buttons, a collapsible menu under 600px, a stacked replay layout under 860px, and a reduce-motion block.
+- **What I changed / fixed:** The first browser check looked unstyled. The cause was the browser caching the earlier empty `style.css`, not a CSS bug; a hard reload fixed it.
+- **What I learned:** Check `scrollWidth` vs `innerWidth` at 375px to prove there's no sideways scroll, and check contrast ratios with numbers instead of eyeballing.
+- **Commit:** see `git log` — "feat: sportsbook stylesheet"
+
+---
