@@ -190,7 +190,7 @@ such as "Can I cash out credits?" (no) and "Why does the house always win?"
 
 **Data:** the 2024 MCM Problem C dataset, which the owner has and may publish.
 `2024_Wimbledon_featured_matches.csv` holds 31 matches and 7,284 points from
-the 2023 Wimbledon men's singles (round of 64 onward), with one row per point.
+the 2023 Wimbledon men's singles (third round (last 32) onward), with one row per point.
 Its columns include `match_id`, players, set/game/point numbers, score,
 `server`, `point_victor`, aces, winners, errors, break points, distance run,
 rally count, and serve speed. That CSV and `2024_data_dictionary.csv` are

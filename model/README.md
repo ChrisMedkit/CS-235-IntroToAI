@@ -6,7 +6,7 @@ Turns point-by-point Wimbledon data into the JSON files the website replays.
 
 `raw/2024_Wimbledon_featured_matches.csv` and `raw/2024_data_dictionary.csv` come from
 COMAP's 2024 MCM Problem C ("Momentum in Tennis"): 31 matches and 7,284 points from the
-2023 Wimbledon men's singles, round of 64 onward. The owner has permission to publish them.
+2023 Wimbledon men's singles, third round (last 32) onward. The owner has permission to publish them.
 
 ## Methods (public)
 
