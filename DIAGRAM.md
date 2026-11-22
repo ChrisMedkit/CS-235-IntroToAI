@@ -16,13 +16,15 @@ Each step ends with a commit, as the spec requires.
 ## Sitemap
 ```mermaid
 flowchart TD
-  H["Home<br>index.html"] <--> A["About<br>about.html"]
+  H["Home<br>index.html"] <--> P["Play<br>play.html"]
+  P <--> A["About<br>about.html"]
   A <--> G["Gallery<br>gallery.html"]
   G <--> H
   G --> L["Lightbox dialog<br>#lightbox"]
-  H -- "game cards" --> R["About #horse-racing / #slots / #blackjack / #roulette"]
+  H -- "game cards" --> P
+  P -- "Rules links" --> A
 ```
-All three pages share the same nav, so each links to the other two.
+All four pages share the same nav, so each links to the others. Home game cards open the Play page; each game links to its rules on About.
 
 ## Page wireframe (every page)
 ```mermaid

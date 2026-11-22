@@ -343,6 +343,199 @@ section {
   --glow: var(--red);
 }
 
+/* ---------- Play page ---------- */
+.chip-bank {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space);
+  font-family: var(--font-pixel);
+  font-size: 0.8rem;
+}
+
+.chip-bank strong {
+  color: var(--red-text);
+  font-weight: normal;
+}
+
+.game {
+  margin-bottom: var(--space);
+  padding: var(--space);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--red);
+  scroll-margin-top: var(--space);
+}
+
+.game:nth-of-type(odd) {
+  border-top-color: var(--blue);
+}
+
+.game h2 {
+  margin-top: 0;
+}
+
+.game-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem var(--space);
+  margin: var(--space) 0;
+  padding: 0;
+  border: 0;
+}
+
+.game-controls legend {
+  margin-bottom: 0.5rem;
+  padding: 0;
+  font-weight: bold;
+}
+
+/* A label and its control always stay on the same line */
+.field:not([hidden]) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.game-controls input,
+.game-controls select {
+  padding: 0.5rem;
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--text-muted);
+}
+
+.game-controls input[type="number"] {
+  width: 5.5rem;
+}
+
+.game button,
+.chip-bank button {
+  padding: 0.6rem 1rem;
+  font-family: var(--font-pixel);
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+.game button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.game-result {
+  min-height: 1.6em; /* keeps the layout still when a message appears */
+  font-weight: bold;
+}
+
+.game-rules-link {
+  margin-bottom: 0;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* Horse racing */
+.race-picks {
+  display: grid;
+  gap: 0.25rem;
+  width: 100%;
+}
+
+.race-track {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-right: 4px dashed var(--text); /* finish line */
+}
+
+.race-lane {
+  position: relative;
+  height: 2.5rem;
+  border-bottom: 1px dashed var(--border);
+}
+
+.horse {
+  position: absolute;
+  top: 0.25rem;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  font-family: var(--font-pixel);
+  font-size: 0.8rem;
+  color: #fff;
+  background: var(--red);
+}
+
+.race-lane:nth-child(even) .horse {
+  background: var(--blue);
+}
+
+/* Slots */
+.slot-reels {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.slot-reel {
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  font-family: var(--font-pixel);
+  font-size: 1.5rem;
+  color: var(--red-text);
+  background: var(--bg);
+  border: 4px solid var(--blue);
+}
+
+/* Blackjack */
+.bj-table {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem var(--space);
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+}
+
+.bj-table dt {
+  color: var(--text-muted);
+}
+
+.bj-table dd {
+  margin: 0;
+}
+
+/* Roulette */
+.roulette-wheel {
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-size: 1.25rem;
+  color: #fff;
+  background: var(--bg);
+  border: 4px solid var(--text-muted);
+  border-radius: 50%;
+}
+
+.roulette-wheel[data-color="red"] {
+  background: var(--red);
+}
+
+.roulette-wheel[data-color="black"] {
+  border-color: var(--text);
+}
+
+.roulette-wheel[data-color="green"] {
+  background: #137a3a; /* white on it is 5.4:1 */
+}
+
 /* ---------- Footer ---------- */
 .site-footer {
   margin-top: calc(var(--space) * 2);

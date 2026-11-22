@@ -89,6 +89,16 @@ TODO: ask your LLM "What semantic elements should a personal website homepage in
 | What it produced | (1) The game cards' hover glow was cut off on the top and left: a box that scrolls sideways (`overflow-x: auto`) also clips vertically, and the cards touched its edges. Fix: padding on the scroller plus `scroll-padding-inline` so cards still snap correctly. Checked in the browser: glow shows on all sides, no sideways page scroll at 375px. (2) Merged two separate `prefers-reduced-motion` blocks into one so a future animation can't be added to one and missed in the other. |
 | Your decision | TODO |
 
+## 7. Playable games
+| Field | Entry |
+|---|---|
+| Feature | Make Horse Racing, Slots, Blackjack and Roulette actually playable |
+| LLM used | Claude Code (Claude Opus 5.5, chat in the desktop app) |
+| Your prompt | "make the games playable" |
+| What it produced | A new `play.html` page (added to the nav; Home cards now open it) and `js/games.js`. Shared play-money chips (start 100, saved in `localStorage`, Reset button; works without storage too). Pure, tested functions for the rules: `betError`, `slotsPayout`, `rouletteColor`/`roulettePayout`, `newDeck` (Fisher-Yates shuffle), `handValue` (aces 11 or 1), `blackjackPayout` (3:2 natural, push, bust), `pickWinner` (weighted horse odds); `tests/games.test.js` has 9 tests. Page wiring below: bet validation with messages, an `aria-live` result line per game, blackjack hides the dealer's second card and enables Deal/Hit/Stand at the right times, an animated race (skipped for reduced-motion users). |
+| Testing + fixes | Played every game through the real buttons and checked each chip change against the rules (no mismatches). Found and fixed: (1) the race took ~40 s when the browser slowed timers (an unfocused pane, same as a background tab), because horses moved a fixed step per tick → steps now scale with real elapsed time; (2) on phones the roulette "Bet" label wrapped away from its box → label + control grouped. Also caught its own test mistake: a same-page `#hash` navigation isn't a reload, so it re-tested chip saving with a real reload. |
+| Your decision | TODO: e.g. a separate Play page vs. games on About; the payout rules; anything you'd change |
+
 ## Reflection
 <!-- Write this yourself: the rubric grades your own thinking on corrections and ownership.
      Delete these notes when done. -->

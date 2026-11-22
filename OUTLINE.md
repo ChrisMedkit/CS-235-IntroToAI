@@ -32,6 +32,7 @@ Build a 3+ page website about a personal interest, using an LLM as the developme
 | `index.html` Home | `#hero` (8-bit ASCII-art circus, first thing on screen), `#game-select` (horizontal scrolling gallery of game cards), `#intro` (your text) | nav; swipe/scroll the game cards (CSS scroll-snap, no JS needed) |
 | `about.html` About | `#the-casino`, `#the-games` (rules for Horse Racing, Slots, Blackjack, Roulette) | nav |
 | `gallery.html` Gallery | `#gallery` grid of 6 thumbnails, `#lightbox` dialog | click thumbnail → lightbox; prev/next, arrow keys, Esc / X / backdrop to close |
+| `play.html` Play | chip balance + Reset, `#horse-racing`, `#slots`, `#blackjack`, `#roulette` | bet and play each game; the chip balance is shared and saved in `localStorage` |
 
 ## Design
 - Header bar on top, content in the middle, footer at the bottom; nav as a horizontal bar (stacked on phones).
@@ -80,6 +81,8 @@ Files: index.html, about.html, gallery.html, css/style.css, js/script.js, images
 | `css/style.css` | Shared stylesheet, design tokens in `:root` |
 | `js/script.js` | Lightbox: `wrapIndex`, `showImage`, `openLightbox`, `closeLightbox`, `moveBy`, `initGallery` |
 | `tests/script.test.js` | `npm test` checks for `wrapIndex` |
+| `js/games.js` | The four games: pure rules/payout functions (top) and page wiring (bottom) |
+| `tests/games.test.js` | `npm test` checks for bets, payouts, hand values, deck, horse odds |
 | `images/` | Your images (`home.png`, `about.png`, `game-1.png` … `game-6.png`, or rename in the HTML) |
 | `PROMPT_LOG.md` | Prompt log + reflection (submitted) |
 | `TEST_REPORT.md` | Test report (submitted) |
