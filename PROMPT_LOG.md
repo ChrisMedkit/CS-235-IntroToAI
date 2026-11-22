@@ -198,6 +198,16 @@ Record at least three significant features (page structure, navigation, CSS, res
 | Your decision | TODO: what you kept or changed, and why |
 | Debugging | Checked all 13 Mermaid blocks parse with Mermaid itself, and that every relative link and file path in the docs exists. |
 
+## 18. Glass panes and light blue on the 98 look
+| Field | Entry |
+|---|---|
+| Feature | Bring back the first theme's frosted glass and light-blue colors on top of the 98.css windows |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "Combine the old glass panes and light blue color scheme with the new 98.css look" |
+| What it produced | New tokens in `css/style.css` (`--sky`, `--glass`, `--title-bar`, `--gloss`, `--pressed`, `--select`, `--accent`); every hard-coded 98 gray, navy selection and pressed color swapped for a token; an override block giving 98 windows a translucent blurred face, glossy blue title bars and glossy buttons; a bubbly sky gradient replacing the teal desktop; dark captions with a white glow on the splash and Home. Kept 98's bevels, pixel font and layout. |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | Contrast check: white on the first title-bar blue was 3.6:1 and the inactive title bar 1.89:1, both under 4.5:1; darkened them (4.85:1, 4.76:1). Audited all 19 pages at 1280 px and 375 px: no sideways scroll, no script errors, no broken links. |
+
 ## Warm-up (Step 2.4)
 TODO: ask "What semantic elements should a personal website homepage include?" and note one thing you learned.
 

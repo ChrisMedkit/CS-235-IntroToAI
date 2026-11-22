@@ -7,7 +7,7 @@ flowchart TD
   subgraph DONE["Done"]
     D1["Site shell: nav, galleries, Lab filters"]
     D2["CS tools: sorting, data structures, graphs, Big-O, regex"]
-    D3["Indie-web redesign 1-8: 98.css, taskbar, Tools desktop, splash + Home, stickers, Me, Friends, tool polish"]
+    D3["Indie-web redesign 1-9 + glass and sky-blue look"]
     D1 --> D2 --> D3
   end
   subgraph NEXT["Still to do"]
@@ -81,7 +81,7 @@ Every tool page: two 98 windows, controls on the left and the stage on the right
 ## Sticker layers
 ```mermaid
 flowchart BT
-  BG["page background (teal desktop or collage; math paper)"] --> L0["sticker layer: behind (z 0)"]
+  BG["page background (sky gradient or collage; math paper)"] --> L0["sticker layer: behind (z 0)"]
   L0 --> C["page content: main, ticker, address bar, footer (z 1)"]
   C --> L5["sticker layer: front (z 5)"]
   L5 --> H["sticky header (z 10)"]
@@ -210,7 +210,7 @@ flowchart LR
   R1["3+ pages"] --> C1["19 html pages"]
   R2["Consistent nav"] --> C2["same header on every page, aria-current, Start menu sitemap"]
   R3["2+ images with alt"] --> C3["images/ (icons, desk, stickers, badges)"]
-  R4["Consistent design"] --> C4["98.css + style.css tokens + fonts"]
+  R4["Consistent design"] --> C4["98.css + glass/blue tokens in style.css + fonts"]
   R5["JS feature"] --> C5["script.js + tool scripts"]
   R6["Responsive"] --> C6["media queries, Menu button, phone grids"]
   R7["Semantic HTML, no inline styles"] --> C7["header/nav/main/section/footer; positions in CSS classes"]

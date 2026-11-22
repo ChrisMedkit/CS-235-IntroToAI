@@ -87,6 +87,8 @@ A tool page's main title bar carries its icon and a program name that screen rea
 `<h1 class="title-bar-text" id="…"><img src="../images/icons/plotter.svg" alt="" width="16" height="16" /> Function Plotter<span class="title-bar-program" aria-hidden="true"> - plotter.exe</span></h1>`.
 Panels inside windows use 98's sunken look: `box-shadow: var(--bevel-in)` on a white background.
 
+The glass and blue are overrides on top of 98.css, set by tokens at the top of `css/style.css`: `--sky` (page background), `--glass` (window face), `--title-bar`, `--gloss` (buttons), `--pressed`, `--select` and `--accent`. Change a token to recolor the whole site; keep white text on blue at 4.5:1 contrast or better.
+
 ## Fonts and credits
 - [98.css](https://github.com/jdan/98.css) by Jordan Scales (MIT), including its Pixelated MS Sans Serif font, loaded from unpkg.
 
