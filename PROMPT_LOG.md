@@ -78,6 +78,16 @@ Record at least three significant features (page structure, navigation, CSS, res
 | Your decision | TODO: what you kept or changed, and why |
 | Debugging | (1) A new test failed: inserting a duplicate still copied every node on the path, so the "unchanged" tree was a new object; now a node is copied only if its subtree changed (same fix for deleting a missing value). (2) The drawings used an 800-wide viewBox scaled into a ~330 px panel, so text shrank to ~6 px; they now draw at real size inside a box that scrolls sideways only when the structure is wide, and BST spacing was tightened so a 10-node tree fits. |
 
+## 6. Graphs & pathfinding visualizer (Plan CS step 3)
+| Field | Entry |
+|---|---|
+| Feature | BFS, DFS, Dijkstra and A* on a grid you draw, plus random mazes |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "implement the graphs and pathfinding visualizer" |
+| What it produced | `gridSearch` in `js/cs-lib.js` (BFS queue, DFS stack, Dijkstra/A* with a scanned priority list, Manhattan heuristic, ties broken toward the goal) returning the visit order, path and cost; `generateMaze` (recursive backtracker). Tests: 30 random weighted grids where every path is continuous and avoids walls, all algorithms agree on reachability, BFS has the fewest moves, A* matches Dijkstra's cost; start = end; a 21x41 maze with every open cell reachable. `js/graphs.js`: drag to draw walls/weights (dragging from a wall erases), move start/end, keyboard drawing with arrow keys + Enter/Space and a single Tab stop, Run/Pause/Resume, Step, Clear path/all, Random maze, visited/length/cost stats and a summary line. |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | (1) Weighted cells disappeared under the visited color; cell colors now use `background-color` so the weight dot stays. (2) Dark-mode walls looked like visited cells; darker gray. (3) On a 375 px phone the 41-column grid had 6 px cells, too small to tap; phones now get a 21x21 grid (13 px cells). |
+
 ## Warm-up (Step 2.4)
 TODO: ask "What semantic elements should a personal website homepage include?" and note one thing you learned.
 

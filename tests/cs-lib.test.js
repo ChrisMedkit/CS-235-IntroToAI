@@ -177,6 +177,50 @@ test("gridSearch: Dijkstra and A* avoid an expensive cell; BFS doesn't care", ()
   assert.equal(gridSearch(grid, [0, 0], [0, 2], "bfs").path.length, 3);
 });
 
+test("gridSearch: random weighted grids, all four algorithms", () => {
+  let seed = 3;
+  const random = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let trial = 0; trial < 30; trial++) {
+    const grid = Array.from({ length: 9 }, () =>
+      Array.from({ length: 12 }, () => (random() < 0.25 ? 0 : random() < 0.2 ? 5 : 1)),
+    );
+    grid[0][0] = 1;
+    grid[8][11] = 1;
+    const results = Object.fromEntries(
+      ["bfs", "dfs", "dijkstra", "astar"].map((a) => [a, gridSearch(grid, [0, 0], [8, 11], a)]),
+    );
+    const reachable = results.bfs.path.length > 0;
+    for (const [name, { path, cost }] of Object.entries(results)) {
+      assert.equal(path.length > 0, reachable, `${name} agrees on reachability`);
+      for (let k = 1; k < path.length; k++) {
+        const [[r1, c1], [r2, c2]] = [path[k - 1], path[k]];
+        assert.equal(Math.abs(r1 - r2) + Math.abs(c1 - c2), 1, `${name} path steps are adjacent`);
+        assert.ok(grid[r2][c2] > 0, `${name} path avoids walls`);
+      }
+      assert.equal(cost, path.slice(1).reduce((s, [r, c]) => s + grid[r][c], 0));
+    }
+    if (!reachable) continue;
+    // BFS has the fewest moves; Dijkstra and A* the lowest cost, and they agree.
+    for (const name of ["dfs", "dijkstra", "astar"]) assert.ok(results[name].path.length >= results.bfs.path.length);
+    assert.equal(results.astar.cost, results.dijkstra.cost);
+    for (const name of ["bfs", "dfs"]) assert.ok(results[name].cost >= results.dijkstra.cost);
+  }
+});
+
+test("gridSearch: start equals end; unknown algorithm", () => {
+  assert.deepEqual(gridSearch(OPEN, [1, 2], [1, 2], "astar"), { visited: [[1, 2]], path: [[1, 2]], cost: 0 });
+  assert.throws(() => gridSearch(OPEN, [0, 0], [2, 2], "teleport"), RangeError);
+});
+
+test("generateMaze: every open cell is reachable (one connected maze)", () => {
+  let seed = 11;
+  const maze = generateMaze(21, 41, () => (seed = (seed * 16807) % 2147483647) / 2147483647);
+  const open = maze.flat().filter((v) => v === 1).length;
+  const { visited } = gridSearch(maze, [1, 1], [-1, -1], "bfs"); // unreachable end: BFS floods everything
+  assert.equal(visited.length, open);
+  assert.ok(maze[0].every((v) => v === 0) && maze.every((row) => row[0] === 0), "outer wall intact");
+});
+
 test("generateMaze: size, values, open corners", () => {
   let seed = 1;
   const random = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);

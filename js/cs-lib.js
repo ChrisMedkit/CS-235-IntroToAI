@@ -389,10 +389,102 @@ export function hashIndex(key, size) {
  *   [] if unreachable; cost = sum of grid values along the path excluding start (0 if no path).
  */
 export function gridSearch(grid, start, end, algorithm) {
-  // TODO (Plan CS step 3): BFS = queue, DFS = stack, Dijkstra/A* = priority queue (an array
-  // you scan for the minimum is fine at this grid size). Keep a `cameFrom` map to rebuild the path.
-  void grid, start, end, algorithm;
-  throw new Error("Not implemented");
+  const rows = grid.length;
+  const cols = grid[0]?.length ?? 0;
+  const id = (r, c) => r * cols + c;
+  const cell = (i) => [Math.floor(i / cols), i % cols];
+  const startId = id(...start);
+  const endId = id(...end);
+  const neighbors = (i) => {
+    const [r, c] = cell(i);
+    const out = [];
+    for (const [dr, dc] of [[-1, 0], [0, 1], [1, 0], [0, -1]]) {
+      const nr = r + dr;
+      const nc = c + dc;
+      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] > 0) out.push(id(nr, nc));
+    }
+    return out;
+  };
+  const cameFrom = new Map([[startId, null]]);
+  const visited = [];
+  let reached = false;
+
+  if (algorithm === "bfs") {
+    const queue = [startId];
+    for (let head = 0; head < queue.length; head++) {
+      const i = queue[head];
+      visited.push(i);
+      if (i === endId) {
+        reached = true;
+        break;
+      }
+      for (const n of neighbors(i)) {
+        if (cameFrom.has(n)) continue;
+        cameFrom.set(n, i);
+        queue.push(n);
+      }
+    }
+  } else if (algorithm === "dfs") {
+    // Each stack entry remembers who pushed it; a cell is settled the first time it is popped.
+    cameFrom.clear();
+    const stack = [[startId, null]];
+    while (stack.length) {
+      const [i, from] = stack.pop();
+      if (cameFrom.has(i)) continue;
+      cameFrom.set(i, from);
+      visited.push(i);
+      if (i === endId) {
+        reached = true;
+        break;
+      }
+      // Push in reverse so "up" is popped (explored) first.
+      for (const n of neighbors(i).reverse()) if (!cameFrom.has(n)) stack.push([n, i]);
+    }
+  } else if (algorithm === "dijkstra" || algorithm === "astar") {
+    const [er, ec] = end;
+    const h = (i) => {
+      if (algorithm !== "astar") return 0;
+      const [r, c] = cell(i);
+      return Math.abs(r - er) + Math.abs(c - ec); // every move costs >= 1, so this never overestimates
+    };
+    const dist = new Map([[startId, 0]]);
+    const done = new Set();
+    const open = [startId]; // shortcut: scan for the minimum (fine for ~1000 cells); a binary heap scales better
+    while (open.length) {
+      let best = 0;
+      for (let k = 1; k < open.length; k++) {
+        const a = open[k];
+        const b = open[best];
+        const fa = dist.get(a) + h(a);
+        const fb = dist.get(b) + h(b);
+        if (fa < fb || (fa === fb && h(a) < h(b))) best = k; // ties: closer to the goal first
+      }
+      const i = open.splice(best, 1)[0];
+      if (done.has(i)) continue;
+      done.add(i);
+      visited.push(i);
+      if (i === endId) {
+        reached = true;
+        break;
+      }
+      for (const n of neighbors(i)) {
+        const [nr, nc] = cell(n);
+        const d = dist.get(i) + grid[nr][nc];
+        if (!done.has(n) && d < (dist.get(n) ?? Infinity)) {
+          dist.set(n, d);
+          cameFrom.set(n, i);
+          open.push(n);
+        }
+      }
+    }
+  } else {
+    throw new RangeError(`Unknown algorithm: ${algorithm}`);
+  }
+
+  const path = [];
+  if (reached) for (let i = endId; i !== null; i = cameFrom.get(i)) path.unshift(cell(i));
+  const cost = path.slice(1).reduce((sum, [r, c]) => sum + grid[r][c], 0);
+  return { visited: visited.map(cell), path, cost };
 }
 
 /**
@@ -403,9 +495,24 @@ export function gridSearch(grid, start, end, algorithm) {
  * @returns {number[][]}  0 = wall, 1 = open; [1][1] and [rows-2][cols-2] are open
  */
 export function generateMaze(rows, cols, random) {
-  // TODO (Plan CS step 3)
-  void rows, cols, random;
-  throw new Error("Not implemented");
+  const grid = Array.from({ length: rows }, () => Array(cols).fill(0));
+  grid[1][1] = 1;
+  const stack = [[1, 1]];
+  while (stack.length) {
+    const [r, c] = stack.at(-1);
+    const options = [[-2, 0], [0, 2], [2, 0], [0, -2]].filter(
+      ([dr, dc]) => r + dr > 0 && r + dr < rows - 1 && c + dc > 0 && c + dc < cols - 1 && !grid[r + dr][c + dc],
+    );
+    if (!options.length) {
+      stack.pop(); // dead end: back up
+      continue;
+    }
+    const [dr, dc] = options[Math.floor(random() * options.length)];
+    grid[r + dr / 2][c + dc / 2] = 1; // knock down the wall between
+    grid[r + dr][c + dc] = 1;
+    stack.push([r + dr, c + dc]);
+  }
+  return grid;
 }
 
 /* ---------------- Big-O ---------------- */
