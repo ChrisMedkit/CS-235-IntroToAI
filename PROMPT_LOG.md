@@ -99,6 +99,15 @@ TODO: ask your LLM "What semantic elements should a personal website homepage in
 | Testing + fixes | Played every game through the real buttons and checked each chip change against the rules (no mismatches). Found and fixed: (1) the race took ~40 s when the browser slowed timers (an unfocused pane, same as a background tab), because horses moved a fixed step per tick → steps now scale with real elapsed time; (2) on phones the roulette "Bet" label wrapped away from its box → label + control grouped. Also caught its own test mistake: a same-page `#hash` navigation isn't a reload, so it re-tested chip saving with a real reload. |
 | Your decision | TODO: e.g. a separate Play page vs. games on About; the payout rules; anything you'd change |
 
+## 8. Move the games into the shared script
+| Field | Entry |
+|---|---|
+| Feature | Put the games code in `js/script.js` so the site has one shared JavaScript file, as the spec asks |
+| LLM used | Claude Code (Claude Opus 5.5, chat in the desktop app) |
+| Your prompt | "move the games code into script.js" |
+| What it produced | Merged `js/games.js` into `js/script.js` as "Part 2" after the lightbox ("Part 1"), with one start-up that runs `initGallery()` and `initGames()` (each returns early on pages that don't need it) and one combined export list for `npm test`. Deleted `games.js`, removed its `<script>` tag from `play.html`, and pointed `tests/games.test.js` at `script.js`. Checked: 13/13 tests pass; no JS errors on any of the 4 pages; lightbox and all four games still work. (Entry 7 above describes the code when it was still in `games.js`.) |
+| Your decision | TODO: e.g. why one file (matches the spec) vs. two (smaller files) |
+
 ## Reflection
 <!-- Write this yourself: the rubric grades your own thinking on corrections and ownership.
      Delete these notes when done. -->

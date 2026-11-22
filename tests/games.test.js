@@ -1,7 +1,7 @@
-// Run with `npm test`. Covers the game rules and payouts in js/games.js.
+// Run with `npm test`. Covers the game rules and payouts in js/script.js (Part 2).
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
-const g = require("../js/games.js");
+const g = require("../js/script.js");
 
 const hand = (...ranks) => ranks.map((rank) => ({ rank, suit: "♠" }));
 

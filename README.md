@@ -9,7 +9,7 @@ A four-page website about a retro, 8-bit circus of play-money casino mini games:
 - **Gallery** (`gallery.html`): six pictures; select one to open it in a lightbox with previous/next, arrow keys, and Esc/X/backdrop to close.
 
 ## Built with
-Plain HTML, CSS and JavaScript (no frameworks): one shared `css/style.css` and one shared `js/script.js` (gallery lightbox) plus `js/games.js` for the Play page. Headings use the "Press Start 2P" font from Google Fonts.
+Plain HTML, CSS and JavaScript (no frameworks): one shared `css/style.css` and one shared `js/script.js` (Part 1: gallery lightbox; Part 2: the games on the Play page). Headings use the "Press Start 2P" font from Google Fonts.
 
 ## Run it
 Open `index.html` in a browser, or in VS Code right-click it and choose **Show Preview**.

@@ -79,9 +79,8 @@ Files: index.html, about.html, gallery.html, css/style.css, js/script.js, images
 | `about.html` | About page (two text sections) |
 | `gallery.html` | Gallery grid + lightbox `<dialog>` |
 | `css/style.css` | Shared stylesheet, design tokens in `:root` |
-| `js/script.js` | Lightbox: `wrapIndex`, `showImage`, `openLightbox`, `closeLightbox`, `moveBy`, `initGallery` |
+| `js/script.js` | The one shared script. Part 1, lightbox: `wrapIndex`, `showImage`, `openLightbox`, `closeLightbox`, `moveBy`, `initGallery`. Part 2, games: pure rules/payout functions, then page wiring (`initGames`). One start-up runs both; each returns early on pages without it. |
 | `tests/script.test.js` | `npm test` checks for `wrapIndex` |
-| `js/games.js` | The four games: pure rules/payout functions (top) and page wiring (bottom) |
 | `tests/games.test.js` | `npm test` checks for bets, payouts, hand values, deck, horse odds |
 | `images/` | Your images (`home.png`, `about.png`, `game-1.png` … `game-6.png`, or rename in the HTML) |
 | `PROMPT_LOG.md` | Prompt log + reflection (submitted) |
