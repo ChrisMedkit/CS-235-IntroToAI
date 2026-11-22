@@ -49,6 +49,15 @@ Record at least three significant features (page structure, navigation, CSS, res
 | What it produced | `renderToolGallery()` in `js/script.js`: filters `TOOLS` to live tools (and to the list's `data-section` on Math/CS/Social), builds each card with `createElement` + `textContent` (no `innerHTML`), prefixes links and images with `body[data-root]` so the same code works from section folders, lazy-loads card images, and swaps the static fallback cards with `replaceChildren`. Checked in the browser: Home 12 cards, Math 4, CS 5, Social 3, every link and image returns 200, no console errors. Updated the "Add a tool" steps (static cards are now only a no-JS fallback). |
 | Your decision | TODO: what you kept or changed, and why |
 
+## 3. Hub page rendering and filters (Plan step 11)
+| Field | Entry |
+|---|---|
+| Feature | Hub cards from `js/tools.js` with All / Live / Planned filters |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "implement the hub page rendering and filters" |
+| What it produced | `filterTools` in `js/utils.js` (one line; its unit test now passes); `renderHub` in `js/hub.js` builds cards with `textContent` (name, summary, Live/Planned and section badges), links only tools that have a page (the link's `::after` makes the whole card clickable), shows an empty state, and updates a `role="status"` line ("Showing 12 of 14 tools") so screen readers hear the result; `onFilter` keeps exactly one button `aria-pressed`. CSS: glossy hub cards, dashed planned cards, badge colors for light and dark. Checked in the browser: All 14, Live 12, Planned 2, all links 200, no console errors. Changed after seeing it: the pressed filter was only a thin border, so pressed group buttons now use the solid aqua style. |
+| Your decision | TODO: what you kept or changed, and why |
+
 ## Warm-up (Step 2.4)
 TODO: ask "What semantic elements should a personal website homepage include?" and note one thing you learned.
 

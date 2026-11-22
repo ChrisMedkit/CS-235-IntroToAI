@@ -316,6 +316,7 @@ button:active,
   transform: translateY(1px) scale(0.98);
 }
 #site-nav a[aria-current="page"],
+[role="group"] > button[aria-pressed="true"],
 .button.primary,
 button[type="submit"] {
   background: var(--gloss-accent);
@@ -508,7 +509,82 @@ label {
   gap: var(--space);
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
 }
-/* TODO (Step 6): status badges (.status-live / .status-planned). */
+.hub-card {
+  position: relative; /* the title link's ::after covers the whole card */
+  display: grid;
+  align-content: start;
+  gap: 0.4rem;
+  padding: var(--space);
+  background: var(--gloss);
+  border: 3px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+.hub-card h3,
+.hub-card p {
+  margin: 0;
+}
+.hub-card h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+.hub-card h3 a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+.hub-card:has(a):hover,
+.hub-card:focus-within {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 4px var(--accent-glow),
+    var(--shadow);
+  transform: translateY(-3px);
+}
+.hub-card.status-planned {
+  border-style: dashed;
+  opacity: 0.85;
+}
+.hub-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.badge {
+  display: inline-block;
+  padding: 0.05rem 0.6rem;
+  border-radius: var(--pill);
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.badge.status-live {
+  background: #dcf5e6;
+  border-color: #7fd3a1;
+  color: #155c33;
+}
+.badge.status-planned {
+  background: #fdf0d5;
+  border-color: #f0c36b;
+  color: #6e4a00;
+}
+[data-theme="dark"] .badge.status-live {
+  background: #123a24;
+  border-color: #2f8a55;
+  color: #9ff0c0;
+}
+[data-theme="dark"] .badge.status-planned {
+  background: #3a2c0c;
+  border-color: #a77b1e;
+  color: #ffd98a;
+}
 
 /* ---------- Footer: hit counter + 88x31 badges ---------- */
 .site-footer {

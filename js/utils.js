@@ -117,7 +117,5 @@ export function toLatexDocument(body, title = "") {
  * @returns {import("./tools.js").Tool[]}  new array, original order
  */
 export function filterTools(tools, status) {
-  // TODO (Plan step 11a)
-  void tools, status;
-  throw new Error("Not implemented");
+  return status === "all" ? [...tools] : tools.filter((tool) => tool.status === status);
 }

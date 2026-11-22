@@ -75,7 +75,7 @@ Milestones follow the spec's steps; commit after each.
 8. **Matrix Lab:** (a) `parseMatrix`, (b) `rref` with steps, (c) `formatNumber` (tests pass), (d) `matrixTable`, (e) `compute` for each op. Commit.
 9. **Scanner:** (a) `cleanOcrText` (test), (b) preview, (c) `scan` + progress, (d) copy/download. Commit.
 10. **LaTeX:** (a) `toLatexDocument` (test), (b) live preview, (c) scanner → LaTeX handoff, (d) download .tex. Commit.
-11. **Hub:** (a) `filterTools` (test), (b) `renderHub`, (c) filter buttons. Commit.
+11. **Hub:** ✅ (a) `filterTools` (test passes), (b) `renderHub` (cards with status + section badges, title link covers the card, live count), (c) filter buttons with `aria-pressed`. Commit.
 12. **CS** (`js/cs-lib.js` + tests, then page scripts):
     1. Sorting: `sortSteps` + `applyStep` + `PSEUDOCODE` (tests), then bars, pseudocode, step/play in `sorting.js`.
     2. Data structures: `bstInsert/Delete/Search`, `treeLayout`, `heapPush/Pop`, `hashIndex` (tests), then `renderOps`, `run`, `draw` in `structures.js`.
