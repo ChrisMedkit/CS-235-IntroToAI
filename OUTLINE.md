@@ -80,7 +80,7 @@ Files: index.html, about.html, gallery.html, css/style.css, js/script.js, images
 | `css/style.css` | Shared stylesheet, design tokens in `:root` |
 | `js/script.js` | Lightbox: `wrapIndex`, `showImage`, `openLightbox`, `closeLightbox`, `moveBy`, `initGallery` |
 | `tests/script.test.js` | `npm test` checks for `wrapIndex` |
-| `images/` | Your images (`hero.png`, `about.png`, `game-1.png` … `game-6.png`, or rename in the HTML) |
+| `images/` | Your images (`home.png`, `about.png`, `game-1.png` … `game-6.png`, or rename in the HTML) |
 | `PROMPT_LOG.md` | Prompt log + reflection (submitted) |
 | `TEST_REPORT.md` | Test report (submitted) |
 | `assignment/` | Original spec screenshots |

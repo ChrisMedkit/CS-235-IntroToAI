@@ -25,14 +25,14 @@ Record at least three significant features (page structure, navigation, CSS, res
 ## Warm-up (Step 2.4)
 TODO: ask your LLM "What semantic elements should a personal website homepage include?" and note one thing you learned from the answer.
 
-## 1. TODO: feature (e.g. Home page structure)
+## 1. Home page structure (Step 4)
 | Field | Entry |
 |---|---|
-| Feature | |
-| LLM used | |
-| Your prompt | |
-| What it produced | |
-| Your decision | |
+| Feature | `index.html`: the Home page |
+| LLM used | Claude Code (Claude Opus 5.5, chat in the desktop app) |
+| Your prompt | "Yes, start Step 4" (with the site plan from `OUTLINE.md` as context: ASCII circus hero first, then a sideways-scrolling game-select gallery, Home/About/Gallery nav, `css/style.css` and `js/script.js`) |
+| What it produced | Full Home page: `header` + `nav` (with `aria-current`), `main` with three `section`s: `#hero` (original ASCII big-top tent in a `<pre role="img">` with an `aria-label`, `h1`, tagline, "Pick a game" link to `#game-select`), `#game-select` (`ul.game-scroller` of 4 linked game cards, one-line blurbs it drafted), `#intro` (placeholder for my text + one `<img>` with alt text and width/height to avoid layout shift), and `footer`. Checked in the browser: renders, no console errors. |
+| Your decision | TODO: e.g. kept the structure; rewrite the four card blurbs in my own words; replace the alt text once `images/home.png` exists; changes to the ASCII art? |
 
 ## 2. TODO: feature (e.g. CSS design + responsive layout)
 | Field | Entry |
