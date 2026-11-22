@@ -46,12 +46,6 @@
   box-shadow: 0 0 16px color-mix(in srgb, var(--glow) 45%, transparent);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .abyss {
-    transition: none;
-  }
-}
-
 /* ---------- Base ---------- */
 *,
 *::before,
@@ -63,9 +57,14 @@ html {
   scroll-behavior: smooth; /* "Pick a game" glides to the cards */
 }
 
+/* Visitors who asked their system for less motion: no smooth scroll, no fade animation */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .abyss {
+    transition: none;
   }
 }
 
@@ -224,10 +223,12 @@ section {
   display: flex;
   gap: var(--space);
   margin: 0;
-  padding: 0 0 var(--space); /* room for the scrollbar */
+  /* A sideways-scrolling box clips in both directions, so leave room for the hover glow */
+  padding: var(--space);
   list-style: none;
   overflow-x: auto; /* only this row scrolls sideways, never the page */
   scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--space); /* cards snap inside the padding, not under it */
 }
 
 .game-card {

@@ -80,6 +80,15 @@ TODO: ask your LLM "What semantic elements should a personal website homepage in
 | What it produced | Checked contrast for candidate colors first, then picked red `#d6202b` / blue `#1f4fd8` for fills and brighter `#ff4d57` / `#6b95ff` for text on black. New `.abyss` class: a gradient from black (bottom) up into red or blue, twice the button's height, which slides up on hover/focus so the color "rises out of the abyss" (turned off for reduced-motion users). Applied to nav links (blue, current page red), "Pick a game", the game cards (alternating red/blue) and the lightbox buttons. Red/blue striped header, footer and lightbox borders. New 45-column ASCII art (a striped big top with two side tents, flags and a banner), generated with a small Python script to keep it symmetric after its first hand-drawn draft had the entrance one column off-center; CSS font shrinks to ~9.75px so it fits a 375px phone. Re-tested at 1280px and 375px: no sideways scroll, lightbox works, no JS errors. |
 | Your decision | TODO: e.g. kept/changed the red and blue shades, the ASCII design, which elements got the fade |
 
+## 6. Code review fixes (after the redesign)
+| Field | Entry |
+|---|---|
+| Feature | Fixes from an LLM code review of the redesign |
+| LLM used | Claude Code (Claude Opus 5.5), `/ponytail:ponytail-review` then "fix 1 and 2" |
+| Your prompt | "fix 1 and 2" |
+| What it produced | (1) The game cards' hover glow was cut off on the top and left: a box that scrolls sideways (`overflow-x: auto`) also clips vertically, and the cards touched its edges. Fix: padding on the scroller plus `scroll-padding-inline` so cards still snap correctly. Checked in the browser: glow shows on all sides, no sideways page scroll at 375px. (2) Merged two separate `prefers-reduced-motion` blocks into one so a future animation can't be added to one and missed in the other. |
+| Your decision | TODO |
+
 ## Reflection
 <!-- Write this yourself: the rubric grades your own thinking on corrections and ownership.
      Delete these notes when done. -->
