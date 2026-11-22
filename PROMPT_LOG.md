@@ -53,23 +53,23 @@ TODO: ask your LLM "What semantic elements should a personal website homepage in
 | Testing + fixes | It ran a local server and checked each page at 1280px and 375px: no horizontal page scroll anywhere. Found two problems and fixed them: (1) on phones the title broke at the hyphen as "8-" / "Bit" → wrapped "8-Bit Casino" in a `.nowrap` span; (2) the server log showed a `favicon.ico` 404 on every page → added an inline SVG favicon. Computed contrast for every color pair: all pass WCAG AA (lowest 5.15:1, pink on card background). The remaining 404s are the image files I haven't added yet. |
 | Your decision | TODO: e.g. kept the palette; changed X because Y; one focused follow-up prompt you tried (the spec asks you to iterate one change at a time) |
 
-## 3. TODO: feature (e.g. Gallery lightbox JavaScript)
+## 3. Gallery lightbox JavaScript (Step 7)
 | Field | Entry |
 |---|---|
-| Feature | |
-| LLM used | |
-| Your prompt | |
-| What it produced | |
-| Your decision | |
+| Feature | `js/script.js`: click a gallery thumbnail to view it large, with previous/next and close |
+| LLM used | Claude Code (Claude Opus 5.5, chat in the desktop app) |
+| Your prompt | "Yes, start Step 7" (context: the stubbed functions and TODOs in `script.js`, and the lightbox behaviour in `OUTLINE.md`) |
+| What it produced | `wrapIndex` (wrap-around with `((i % n) + n) % n`, because JS `%` keeps the sign so `-1 % 6` is `-1`), `showImage` (copies src + alt, caption "alt (n of 6)"), `openLightbox` (`dialog.showModal()`: backdrop, focus trap, Esc and focus return come free), `closeLightbox`, `moveBy`, and `initGallery` (click listeners, ←/→ keys, backdrop click; returns early on Home/About, which have no gallery). `npm test`: 4/4 pass. |
+| Your decision | TODO: e.g. kept `<dialog>` instead of a hand-built overlay because…; anything you'd change |
 
-## 4. TODO: debugging exchange (paste the exact error)
+## 4. Debugging: lightbox didn't open, and backdrop close (Step 7)
 | Field | Entry |
 |---|---|
-| Feature | |
-| LLM used | |
-| Your prompt | |
-| What it produced | |
-| Your decision | |
+| Feature | Fixing two problems found while testing the lightbox |
+| LLM used | Claude Code (Claude Opus 5.5, chat in the desktop app) |
+| Your prompt | (found during its own browser testing in the same Step 7 request) |
+| What it produced | (1) Clicking a thumbnail did nothing, with no console error. Instead of changing code, it checked what the page had loaded: `openLightbox.toString()` still showed the old `// TODO` stub, so the browser was using a cached old `script.js` from the local Python server. A cache-bypassing reload fixed it, with no code change. (2) Before testing, it noticed its own first backdrop check (`event.target === lightbox`) would also close the dialog when clicking its padding, and changed it to also check the click is outside the dialog's rectangle. |
+| Your decision | TODO: lesson, e.g. "hard-reload (⇧⌘R) after editing JS before assuming the code is broken" |
 
 ## Reflection
 TODO: what the LLM got wrong and how you caught it, which corrections you made yourself, what you would prompt differently, and how you made sure you understand and own the final code.
