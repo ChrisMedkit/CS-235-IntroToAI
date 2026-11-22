@@ -19,9 +19,9 @@
       <a class="site-logo" href="index.html">8-Bit Casino</a>
       <nav class="site-nav" aria-label="Main">
         <ul>
-          <li><a href="index.html" aria-current="page">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="gallery.html">Gallery</a></li>
+          <li><a class="abyss" href="index.html" aria-current="page">Home</a></li>
+          <li><a class="abyss" href="about.html">About</a></li>
+          <li><a class="abyss" href="gallery.html">Gallery</a></li>
         </ul>
       </nav>
     </header>
@@ -29,24 +29,29 @@
     <main>
       <!-- Hero: the ASCII circus is the first thing visitors see.
            role="img" + aria-label so screen readers read one description, not every symbol.
-           Art is kept under 32 columns so it can fit a phone screen. -->
+           Art is 45 columns wide; CSS shrinks the font so it fits a phone screen. -->
       <section id="hero" class="hero">
-        <pre class="ascii-art" role="img" aria-label="ASCII-art circus big top tent with a flag on top and a striped entrance">
-             |&gt;
-             |
-            /|\
-           / | \
-          / /|\ \
-         / / | \ \
-        / /  |  \ \
-       /_/___|___\_\
-        |  |   |  |
-        |  | _ |  |
-    ____|__|| ||__|____
-  * * STEP RIGHT UP! * *</pre>
+        <pre class="ascii-art" role="img" aria-label="ASCII-art circus: a striped big top tent with a flag, two smaller tents on either side, and a STEP RIGHT UP banner">
+                      |&gt;&gt;&gt;
+            *         |         *
+   *                 /^\                 *
+         .          //|\\          .
+     |&gt;&gt;&gt;          ///|\\\             |&gt;&gt;&gt;
+     |            ////|\\\\            |
+    /^\          /////|\\\\\          /^\
+   //|\\        //////|\\\\\\        //|\\
+  ///|\\\      ///////|\\\\\\\      ///|\\\
+ \/\/\/\/\    \/\/\/\/\/\/\/\/\    \/\/\/\/\
+  |  |  |      |  ||  |  ||  |      |  |  |
+  |  |  |      |  || /^\ ||  |      |  |  |
+  |  |  |      |  ||/   \||  |      |  |  |
+  | /^\ |      |  |||   |||  |      | /^\ |
+  | | | |      |  |||   |||  |      | | | |
+_____________________________________________
+        o  o  o  STEP RIGHT UP!  o  o  o</pre>
         <h1>Welcome to the <span class="nowrap">8-Bit Casino</span></h1>
         <p class="hero-tagline">A retro circus of mini games. Play-money chips only, no real gambling.</p>
-        <a class="hero-cta" href="#game-select">Pick a game</a>
+        <a class="hero-cta abyss" href="#game-select">Pick a game</a>
       </section>
 
       <!-- Game select: sideways-scrolling row of cards (scroll-snap in CSS, no JS).
@@ -55,25 +60,25 @@
         <h2 id="game-select-title">Choose Your Game</h2>
         <ul class="game-scroller">
           <li class="game-card">
-            <a href="about.html#horse-racing">
+            <a class="abyss" href="about.html#horse-racing">
               <h3>Horse Racing</h3>
               <p>Pick a pixel pony and cheer it to the finish line.</p>
             </a>
           </li>
           <li class="game-card">
-            <a href="about.html#slots">
+            <a class="abyss" href="about.html#slots">
               <h3>Slots</h3>
               <p>Pull the lever and line up three matching symbols.</p>
             </a>
           </li>
           <li class="game-card">
-            <a href="about.html#blackjack">
+            <a class="abyss" href="about.html#blackjack">
               <h3>Blackjack</h3>
               <p>Beat the dealer to 21 without going bust.</p>
             </a>
           </li>
           <li class="game-card">
-            <a href="about.html#roulette">
+            <a class="abyss" href="about.html#roulette">
               <h3>Roulette</h3>
               <p>Bet on red, black or a lucky number, then spin.</p>
             </a>

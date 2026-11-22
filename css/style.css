@@ -1,22 +1,55 @@
-/* 8-Bit Casino: shared stylesheet for every page (Step 6).
-   Mobile first: base rules are for phones, the 600px media query widens the layout. */
+/* 8-Bit Casino: shared stylesheet for every page.
+   Theme: black "abyss" background with circus red and blue accents.
+   Mobile first: base rules are for phones, the media queries widen the layout. */
 
 /* ---------- Design tokens ---------- */
 :root {
-  --bg: #12122a; /* dark arcade navy */
-  --surface: #1f1f45; /* header, cards, lightbox */
-  --border: #3d3d7a;
-  --text: #f4f4f4;
-  --text-muted: #b8b8d9;
-  --accent: #ffd23f; /* chip gold */
-  --accent-2: #ff4fa3; /* neon pink, hover */
-  --on-accent: #12122a; /* text on gold */
+  --bg: #000000; /* the abyss */
+  --surface: #111111; /* cards, header, lightbox */
+  --border: #2a2a2a;
+  --text: #f2f2f2;
+  --text-muted: #b3b3b3;
+  --red: #d6202b; /* circus red: fills (white text on it is 5.1:1) */
+  --blue: #1f4fd8; /* circus blue: fills (white text on it is 6.6:1) */
+  --red-text: #ff4d57; /* brighter red for text on black (6.5:1) */
+  --blue-text: #6b95ff; /* brighter blue for text on black (7.4:1) */
   --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-pixel: "Press Start 2P", monospace; /* headings only: hard to read in paragraphs */
   --font-mono: ui-monospace, Menlo, Consolas, monospace;
   --space: 1rem;
   --max-width: 60rem;
-  --pixel-shadow: 4px 4px 0 #000; /* hard, unblurred shadow for the 8-bit look */
+  /* Circus-tent stripes for header/footer edges */
+  --stripes: repeating-linear-gradient(90deg, var(--red) 0 24px, var(--blue) 24px 48px);
+}
+
+/* ---------- "Rising from the abyss" fade ----------
+   Buttons and menu items are black at the bottom fading up into a color. The gradient is
+   twice the element's height: normally the bottom half shows (mostly black), and on hover/focus
+   it slides up so the color rises out of the dark. Set --glow on an element to pick its color. */
+.abyss {
+  --glow: var(--red);
+  color: #fff;
+  background-image: linear-gradient(to top, #000 0%, #000 25%, var(--glow) 75%, var(--glow) 100%);
+  background-size: 100% 200%;
+  background-position: 0 100%;
+  border: 1px solid var(--glow);
+  text-shadow: 0 2px 0 #000; /* keeps text crisp over the fade */
+  transition:
+    background-position 0.4s ease-out,
+    box-shadow 0.4s ease-out;
+}
+
+.abyss:hover,
+.abyss:focus-visible {
+  color: #fff;
+  background-position: 0 0;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--glow) 45%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .abyss {
+    transition: none;
+  }
 }
 
 /* ---------- Base ---------- */
@@ -50,7 +83,15 @@ h3 {
   font-family: var(--font-pixel);
   font-weight: normal;
   line-height: 1.4;
-  color: var(--accent);
+}
+
+h1,
+h3 {
+  color: var(--red-text);
+}
+
+h2 {
+  color: var(--blue-text);
 }
 
 h1 {
@@ -66,15 +107,15 @@ h3 {
 }
 
 a {
-  color: var(--accent);
+  color: var(--blue-text);
 }
 
 a:hover {
-  color: var(--accent-2);
+  color: var(--red-text);
 }
 
 :focus-visible {
-  outline: 3px solid var(--accent-2);
+  outline: 3px solid var(--blue-text);
   outline-offset: 3px;
 }
 
@@ -108,13 +149,14 @@ section {
   gap: 0.75rem;
   padding: var(--space);
   background: var(--surface);
-  border-bottom: 4px solid var(--accent);
+  border-bottom: 6px solid;
+  border-image: var(--stripes) 1;
 }
 
 .site-logo {
   font-family: var(--font-pixel);
   font-size: 0.9rem;
-  color: var(--accent);
+  color: var(--red-text);
   text-decoration: none;
 }
 
@@ -129,23 +171,18 @@ section {
 }
 
 .site-nav a {
+  --glow: var(--blue);
   display: block;
-  padding: 0.5rem 0.75rem; /* roomy tap target */
+  padding: 0.6rem 0.8rem; /* roomy tap target */
   font-family: var(--font-pixel);
   font-size: 0.7rem;
-  color: var(--text);
   text-decoration: none;
-  border: 2px solid transparent;
 }
 
-.site-nav a:hover {
-  color: var(--accent-2);
-  border-color: var(--accent-2);
-}
-
+/* Current page: red and fully risen */
 .site-nav a[aria-current="page"] {
-  color: var(--on-accent);
-  background: var(--accent);
+  --glow: var(--red);
+  background-position: 0 0;
 }
 
 /* ---------- Home: hero ---------- */
@@ -155,11 +192,13 @@ section {
 
 .ascii-art {
   display: inline-block;
+  max-width: 100%;
   margin: 0 0 var(--space);
   font-family: var(--font-mono);
-  font-size: clamp(0.75rem, 3.5vw, 1.25rem); /* scales with the screen, never overflows a phone */
+  /* 45 columns: ~9.75px font on a 375px phone, capped at 16px on desktop */
+  font-size: clamp(0.5rem, 2.6vw, 1rem);
   line-height: 1.15;
-  color: var(--accent);
+  color: var(--red-text);
   text-align: left; /* keep the art's columns lined up */
 }
 
@@ -170,23 +209,14 @@ section {
 .hero-cta {
   display: inline-block;
   margin-top: var(--space);
-  padding: 0.75rem 1.25rem;
+  padding: 0.85rem 1.4rem;
   font-family: var(--font-pixel);
   font-size: 0.75rem;
-  color: var(--on-accent);
-  background: var(--accent);
   text-decoration: none;
-  box-shadow: var(--pixel-shadow);
-}
-
-.hero-cta:hover {
-  color: var(--on-accent);
-  background: var(--accent-2);
 }
 
 .hero-cta:active {
-  transform: translate(4px, 4px); /* "presses" into its shadow */
-  box-shadow: none;
+  transform: translateY(2px); /* "presses" down */
 }
 
 /* ---------- Home: game select scroller ---------- */
@@ -205,18 +235,20 @@ section {
   scroll-snap-align: start;
 }
 
+/* Cards alternate circus red and blue */
+.game-card:nth-child(even) .abyss {
+  --glow: var(--blue);
+}
+
 .game-card a {
   display: block;
   height: 100%;
   padding: var(--space);
-  color: var(--text);
   text-decoration: none;
-  background: var(--surface);
-  border: 2px solid var(--border);
 }
 
-.game-card a:hover {
-  border-color: var(--accent-2);
+.game-card h3 {
+  color: #fff;
 }
 
 .game-card p {
@@ -233,7 +265,7 @@ section {
 .note {
   padding: 0.75rem var(--space);
   color: var(--text-muted);
-  border-left: 4px solid var(--accent);
+  border-left: 4px solid var(--red);
   background: var(--surface);
 }
 
@@ -241,8 +273,13 @@ section {
   margin-bottom: var(--space);
   padding: var(--space);
   background: var(--surface);
-  border: 2px solid var(--border);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--red);
   scroll-margin-top: var(--space); /* heading isn't flush to the top after a card link jump */
+}
+
+.game-rules:nth-of-type(even) {
+  border-top-color: var(--blue);
 }
 
 .game-rules h3 {
@@ -267,23 +304,26 @@ section {
   background: var(--surface);
   color: var(--text); /* alt text color while an image is missing */
   cursor: pointer;
+  transition: border-color 0.3s;
 }
 
-.gallery-item:hover {
-  border-color: var(--accent-2);
+.gallery-item:hover,
+.gallery-item:focus-visible {
+  border-color: var(--red);
 }
 
-/* ---------- Lightbox (behaviour comes in Step 7) ---------- */
+/* ---------- Lightbox ---------- */
 .lightbox {
   max-width: min(90vw, 56rem);
   padding: var(--space);
   color: var(--text);
   background: var(--surface);
-  border: 4px solid var(--accent);
+  border: 4px solid;
+  border-image: var(--stripes) 1;
 }
 
 .lightbox::backdrop {
-  background: rgb(0 0 0 / 0.8);
+  background: rgb(0 0 0 / 0.9);
 }
 
 .lightbox-caption {
@@ -291,17 +331,15 @@ section {
 }
 
 .lightbox button {
+  --glow: var(--blue);
   padding: 0.5rem 0.9rem;
   font-family: var(--font-pixel);
   font-size: 0.75rem;
-  color: var(--on-accent);
-  background: var(--accent);
-  border: 0;
   cursor: pointer;
 }
 
-.lightbox button:hover {
-  background: var(--accent-2);
+#lightbox-close {
+  --glow: var(--red);
 }
 
 /* ---------- Footer ---------- */
@@ -312,7 +350,8 @@ section {
   font-size: 0.875rem;
   color: var(--text-muted);
   background: var(--surface);
-  border-top: 4px solid var(--accent);
+  border-top: 6px solid;
+  border-image: var(--stripes) 1;
 }
 
 /* ---------- Wider screens ---------- */

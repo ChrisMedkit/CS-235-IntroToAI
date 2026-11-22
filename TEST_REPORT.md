@@ -11,7 +11,7 @@ Tested in: Chromium (Claude desktop app's built-in browser), served from a local
 | 5 | Console | Loaded all three pages and checked for JavaScript errors | No JavaScript errors on any page. The only console messages are "Failed to load resource" for the missing images (same cause as item 2). | Will clear once images are added |
 | 6 | Links and paths | Network requests on all three pages | `css/style.css`, `js/script.js` and the Google Font load on every page (status 200). The only 404s are the 8 missing images. | Step 6: every page requested a missing `favicon.ico` (404); added an inline SVG favicon. Images still open (item 2). |
 | 7 | Unit tests | `npm test` (wrapIndex) | 4 tests, 4 pass: in range, past last → 0, before first → 5, single image stays 0 | None needed |
-| 8 | Color contrast | Computed WCAG contrast ratio for every text/background pair in `:root` | All pass AA (at least 4.5:1). Lowest: pink on card background, 5.15:1. Body text on background: 16.67:1. | None needed |
+| 8 | Color contrast | Computed WCAG contrast ratio for every text/background pair in `:root` (re-done after the black/red/blue redesign) | All pass AA (at least 4.5:1). White on the red fill 5.12:1 (lowest; the black end of each fade only raises it), white on blue 6.63:1, red text on black 6.45:1, blue text on black 7.37:1, body text on black 18.76:1. Original navy/gold theme also passed (lowest 5.15:1). | None needed |
 
 ## Summary
 Items 1, 3, 4, 7 and 8 pass. Items 2, 5 and 6 have one shared open issue: the 8 image files haven't been added yet. Everything else about them (alt text, paths, no other 404s or errors) passes.

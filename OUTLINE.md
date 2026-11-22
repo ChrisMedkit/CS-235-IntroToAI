@@ -35,7 +35,7 @@ Build a 3+ page website about a personal interest, using an LLM as the developme
 
 ## Design
 - Header bar on top, content in the middle, footer at the bottom; nav as a horizontal bar (stacked on phones).
-- Colors (tokens in `:root`): dark arcade navy background, chip gold accent, neon pink hover. Check contrast.
+- Colors (tokens in `:root`): black "abyss" background with circus red and blue accents; red/blue striped header and footer edges. Buttons and menus (nav, "Pick a game", game cards, lightbox buttons) fade from black up into red or blue, and the color rises on hover/focus (`.abyss` class). (Redesign 2026-11-22; Step 6 originally used navy/gold/pink.)
 - Fonts: a pixel font for headings only, system sans-serif for body text (pixel fonts are hard to read in paragraphs).
 - `image-rendering: pixelated` keeps pixel art sharp; square corners.
 - Home hero: ASCII art in a `<pre>` with `role="img"` + `aria-label` (screen readers would otherwise read every character). Monospace font; shrink the font size on phones (e.g. `clamp()`) so it fits at 375px without page scroll.
@@ -66,7 +66,7 @@ Home: first screen is an 8-bit ASCII-art circus; scroll down to a sideways-scrol
   gallery of game cards to pick a game mode (each links to its rules); short intro.
 About: what the casino is; rules of each of the 4 games.
 Gallery: 6 pixel-art screenshots in a grid, click to open a lightbox with prev/next.
-Design: dark navy background, gold accent, pink hover; pixel font for headings, sans-serif body.
+Design: black background, circus red and blue accents, buttons fading up from black; pixel font for headings, sans-serif body.
 Layout: header + horizontal nav on top, content in the middle, footer at the bottom; stacks under 600px.
 Files: index.html, about.html, gallery.html, css/style.css, js/script.js, images/.
 ```
