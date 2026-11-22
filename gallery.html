@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gallery | 8-Bit Casino</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-logo" href="index.html">8-Bit Casino</a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="gallery.html" aria-current="page">Gallery</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section id="gallery" class="gallery">
+        <h1>Gallery</h1>
+        <!-- TODO (Step 5): six thumbnails. Each is a <button> so it is keyboard-usable;
+             script.js reads the <img> inside for the lightbox. Replace src/alt with your images. -->
+        <ul class="gallery-grid">
+          <li><button class="gallery-item" type="button"><img src="images/game-1.png" alt="TODO: describe image 1" /></button></li>
+          <li><button class="gallery-item" type="button"><img src="images/game-2.png" alt="TODO: describe image 2" /></button></li>
+          <li><button class="gallery-item" type="button"><img src="images/game-3.png" alt="TODO: describe image 3" /></button></li>
+          <li><button class="gallery-item" type="button"><img src="images/game-4.png" alt="TODO: describe image 4" /></button></li>
+          <li><button class="gallery-item" type="button"><img src="images/game-5.png" alt="TODO: describe image 5" /></button></li>
+          <li><button class="gallery-item" type="button"><img src="images/game-6.png" alt="TODO: describe image 6" /></button></li>
+        </ul>
+      </section>
+
+      <!-- Lightbox (Step 7). <dialog> gives Esc-to-close and focus trapping for free. -->
+      <dialog id="lightbox" class="lightbox" aria-label="Image viewer">
+        <img id="lightbox-image" src="" alt="" />
+        <p id="lightbox-caption" class="lightbox-caption"></p>
+        <button id="lightbox-prev" type="button" aria-label="Previous image">&lt;</button>
+        <button id="lightbox-next" type="button" aria-label="Next image">&gt;</button>
+        <button id="lightbox-close" type="button" aria-label="Close">X</button>
+      </dialog>
+    </main>
+
+    <footer class="site-footer">
+      <p>TODO: &copy; 2026 Your Name</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+/* 8-Bit Casino: shared stylesheet for every page (Step 6). */
+
+/* Design tokens: change these first. TODO: confirm colors pass 4.5:1 contrast. */
+:root {
+  --bg: #12122a; /* TODO: dark arcade background */
+  --surface: #1f1f45; /* TODO: cards, header */
+  --text: #f4f4f4;
+  --accent: #ffd23f; /* TODO: chip gold */
+  --accent-2: #ff4fa3; /* TODO: neon pink for hover */
+  --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-pixel: var(--font-body); /* TODO: pixel font for headings only (body must stay readable) */
+  --space: 1rem;
+  --radius: 0; /* square corners suit the 8-bit look */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.5;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  image-rendering: pixelated; /* keeps pixel art crisp when scaled */
+}
+
+/* TODO: .site-header, .site-logo: header bar */
+
+/* TODO: .site-nav: links in a row, hover + :focus-visible styles, aria-current="page" highlight */
+
+/* TODO: .hero, .featured-games, .game-card (Home) */
+
+/* TODO: .about-section (About) */
+
+/* TODO: .gallery-grid (grid of 6), .gallery-item (button reset, hover) */
+
+/* TODO: .lightbox, ::backdrop, prev/next/close buttons, .lightbox-caption */
+
+/* TODO: .site-footer */
+
+/* Mobile first: rules above are for phones; widen here.
+   Spec example uses 600px: under it, everything stacks vertically. */
+@media (min-width: 600px) {
+  /* TODO: nav in a row, gallery-grid to 2-3 columns, game cards side by side */
+}
