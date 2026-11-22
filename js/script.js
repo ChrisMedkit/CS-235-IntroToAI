@@ -1,4 +1,4 @@
-// 8-Bit Casino: shared script for every page.
+// Longshot: shared script for every page.
 // Part 1: gallery lightbox (gallery.html). Part 2: the four mini games (play.html).
 // Each part's start-up function returns early on pages that don't have it.
 // Classic script (not a module) so pages work when opened straight from the file system.
@@ -118,7 +118,7 @@ function betError(bet, chips) {
 // 0 = lose, bet = push (stake back), more than bet = win.
 
 /* ----- Slots ----- */
-const SLOT_SYMBOLS = ["7", "$", "@", "#", "*"];
+const SLOT_SYMBOLS = ["7", "$", "★", "♦", "♣"];
 
 /**
  * @param {string[]} reels three symbols
@@ -216,9 +216,9 @@ function blackjackPayout(player, dealer, bet) {
 /* ----- Horse racing ----- */
 // chance values add up to 1; each payout is a bit under fair odds, like a real track.
 const HORSES = [
-  { name: "Pixel Pony", chance: 0.4, pays: 2 },
-  { name: "Byte Runner", chance: 0.3, pays: 3 },
-  { name: "Glitch", chance: 0.2, pays: 4 },
+  { name: "Gold Standard", chance: 0.4, pays: 2 },
+  { name: "Night Shift", chance: 0.3, pays: 3 },
+  { name: "Photo Finish", chance: 0.2, pays: 4 },
   { name: "Long Shot", chance: 0.1, pays: 8 },
 ];
 
@@ -235,6 +235,13 @@ function pickWinner(random = Math.random) {
   }
   return HORSES.length - 1;
 }
+
+/**
+ * Sportsbook-style American odds for a payout: pays 2x (stake back doubled) is "+100".
+ * @param {number} pays total paid back per chip bet, at least 2
+ * @returns {string}
+ */
+const americanOdds = (pays) => `+${(pays - 1) * 100}`;
 
 /* ===================== Page wiring ===================== */
 
@@ -264,9 +271,14 @@ function setChips(amount) {
 
 const $ = (id) => document.getElementById(id);
 
-/** Show a message in a game's result line (an aria-live region, so screen readers hear it). */
-function say(game, text) {
-  $(`${game}-result`).textContent = text;
+/**
+ * Show a message in a game's result line (an aria-live region, so screen readers hear it).
+ * @param {"win"|"push"|"lose"|""} outcome colors the line via CSS; "" for plain messages
+ */
+function say(game, text, outcome = "") {
+  const line = $(`${game}-result`);
+  line.textContent = text;
+  line.dataset.outcome = outcome;
 }
 
 /** Read and check the game's bet; take it from the balance. Returns the bet, or 0 if invalid. */
@@ -284,9 +296,9 @@ function takeBet(game) {
 /** Pay out and describe the result. */
 function settle(game, paid, bet, text) {
   setChips(chips + paid);
-  if (paid > bet) say(game, `${text} You win ${paid - bet} chips!`);
-  else if (paid === bet) say(game, `${text} Push: your ${bet} chips come back.`);
-  else say(game, `${text} You lose ${bet} chips.`);
+  if (paid > bet) say(game, `${text} You win ${paid - bet} chips!`, "win");
+  else if (paid === bet) say(game, `${text} Push: your ${bet} chips come back.`, "push");
+  else say(game, `${text} You lose ${bet} chips.`, "lose");
 }
 
 /* ----- Slots ----- */
@@ -323,11 +335,33 @@ const bj = { deck: [], player: [], dealer: [], bet: 0 };
 
 const cardText = (card) => card.rank + card.suit;
 
+/** One card as a small white playing card (red text for hearts and diamonds). */
+function cardElement(card) {
+  const el = document.createElement("span");
+  el.className = card.suit === "♥" || card.suit === "♦" ? "playing-card red" : "playing-card";
+  el.textContent = cardText(card);
+  return el;
+}
+
+/** Draw a hand into its row; with hideSecond the dealer's hole card shows face down, no total. */
+function showHand(id, hand, hideSecond) {
+  const parts = hand.map((card, i) => {
+    if (!(hideSecond && i === 1)) return cardElement(card);
+    const back = document.createElement("span");
+    back.className = "playing-card card-back";
+    back.innerHTML = '<span class="visually-hidden">face-down card</span>';
+    return back;
+  });
+  const total = document.createElement("span");
+  total.className = "hand-total";
+  total.textContent = hideSecond ? "" : `(${handValue(hand)})`;
+  // spaces between cards so screen readers say "7♥ 8♠", not "7♥8♠"
+  $(id).replaceChildren(...parts.flatMap((part) => [part, " "]), total);
+}
+
 function showBlackjack(hideHoleCard) {
-  $("bj-player").textContent = `${bj.player.map(cardText).join(" ")} (${handValue(bj.player)})`;
-  $("bj-dealer").textContent = hideHoleCard
-    ? `${cardText(bj.dealer[0])} ??`
-    : `${bj.dealer.map(cardText).join(" ")} (${handValue(bj.dealer)})`;
+  showHand("bj-player", bj.player, false);
+  showHand("bj-dealer", bj.dealer, hideHoleCard);
 }
 
 function setBlackjackPlaying(playing) {
@@ -426,12 +460,16 @@ function playRace() {
 }
 
 function initRace() {
+  // ?horse=N comes from the odds board on Home. It's from the URL, so only accept a real horse.
+  const linked = Number(new URLSearchParams(location.search).get("horse"));
+  const picked = Number.isInteger(linked) && linked >= 0 && linked < HORSES.length ? linked : 0;
+
   // Build the horse choices and lanes from HORSES so names and odds live in one place.
   HORSES.forEach((horse, i) => {
     $("race-picks").insertAdjacentHTML(
       "beforeend",
-      `<label><input type="radio" name="horse" value="${i}"${i === 0 ? " checked" : ""} /> ` +
-        `${i + 1}. ${horse.name} (pays ${horse.pays}x)</label>`,
+      `<label><input type="radio" name="horse" value="${i}"${i === picked ? " checked" : ""} /> ` +
+        `${i + 1} &middot; ${horse.name} <span class="odds">${americanOdds(horse.pays)}</span></label>`,
     );
     $("race-track").insertAdjacentHTML(
       "beforeend",
@@ -484,6 +522,7 @@ if (typeof module !== "undefined") {
     dealerShouldHit,
     blackjackPayout,
     pickWinner,
+    americanOdds,
     HORSES,
   };
 }

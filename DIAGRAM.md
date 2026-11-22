@@ -1,4 +1,4 @@
-# 8-Bit Casino Website — Diagrams
+# Longshot Website — Diagrams
 See [OUTLINE.md](OUTLINE.md)
 
 ## Plan
@@ -34,7 +34,7 @@ flowchart TD
     nav["nav.site-nav: Home / About / Gallery"]
   end
   subgraph main["main"]
-    s1["section #hero ASCII circus (Home) / #the-casino (About) / #gallery (Gallery)"]
+    s1["section #hero odds board (Home) / #the-casino (About) / #gallery (Gallery)"]
     s2["section #game-select scroller / #the-games / dialog #lightbox"]
     s3["section #intro (Home only)"]
   end

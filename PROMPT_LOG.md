@@ -1,4 +1,4 @@
-# Prompt Log — 8-Bit Casino Website
+# Prompt Log — Longshot Website (originally "8-Bit Casino")
 
 LLM(s) used: Claude Code (Claude Opus 5.5), chat-based agent in the Claude desktop app. It wrote files and ran tests and a browser in my project folder, one assignment step per request. TODO: add any other LLM you used (e.g. for the warm-up).
 
@@ -107,6 +107,16 @@ TODO: ask your LLM "What semantic elements should a personal website homepage in
 | Your prompt | "move the games code into script.js" |
 | What it produced | Merged `js/games.js` into `js/script.js` as "Part 2" after the lightbox ("Part 1"), with one start-up that runs `initGallery()` and `initGames()` (each returns early on pages that don't need it) and one combined export list for `npm test`. Deleted `games.js`, removed its `<script>` tag from `play.html`, and pointed `tests/games.test.js` at `script.js`. Checked: 13/13 tests pass; no JS errors on any of the 4 pages; lightbox and all four games still work. (Entry 7 above describes the code when it was still in `games.js`.) |
 | Your decision | TODO: e.g. why one file (matches the spec) vs. two (smaller files) |
+
+## 9. Redesign: sleek sportsbook look ("Longshot")
+| Field | Entry |
+|---|---|
+| Feature | Drop the 8-bit theme for a sleek sportsbook look |
+| LLM used | Claude Code (Claude Opus 5.5, chat in the desktop app) |
+| Your prompt | "Drop the 8-bit theme and make the website have a sleek sports book look". It then asked four questions; my answers: name = "use your judgment", hero = featured odds board, accent = gold, buttons = flat sleek (no abyss fade). |
+| What it produced | Renamed the site "Longshot" and the 8-bit-joke horses (Gold Standard, Night Shift, Photo Finish, Long Shot). Rewrote `style.css`: near-black + one gold accent, Inter font, sticky top bar with pill tabs, rounded cards, `.btn` / `.btn-primary`, odds chips. Home hero: headline + "Featured race" odds board; each odds button opens `play.html?horse=N` with that horse picked (the URL value is checked, bad values fall back to horse 1). Play: American odds (+100…+700), blackjack cards drawn as white playing cards with a face-down hole card, results colored win/push/lose. Removed the ASCII art, pixel font, circus stripes and abyss fade. 2 new tests (odds format; Home board must match `HORSES`), 15/15 pass. Contrast re-checked: 23 pairs, lowest 5.39:1. |
+| Testing + fixes | Clicked +300 → Play opened with Photo Finish picked. 80 plays across the games, 0 payout mismatches; no JS errors on any page; no sideways scroll at 375px. Found: on phones the header wraps to two rows (107px), taller than the anchor offset (96px), so section links tucked headings under it → bigger offset on phones, smaller on wider screens; re-checked all game links at both widths. |
+| Your decision | TODO: e.g. keep "Longshot" or rename; the odds board; anything you'd change |
 
 ## Reflection
 <!-- Write this yourself: the rubric grades your own thinking on corrections and ownership.

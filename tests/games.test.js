@@ -16,8 +16,8 @@ test("betError rejects bad bets and accepts good ones", () => {
 test("slots: three 7s pay 20x, other triples 10x, a pair returns the stake, else lose", () => {
   assert.equal(g.slotsPayout(["7", "7", "7"], 5), 100);
   assert.equal(g.slotsPayout(["$", "$", "$"], 5), 50);
-  assert.equal(g.slotsPayout(["$", "@", "$"], 5), 5);
-  assert.equal(g.slotsPayout(["$", "@", "#"], 5), 0);
+  assert.equal(g.slotsPayout(["$", "★", "$"], 5), 5);
+  assert.equal(g.slotsPayout(["$", "★", "♦"], 5), 0);
 });
 
 test("roulette colors", () => {
@@ -76,4 +76,19 @@ test("horse chances add up to 1 and pickWinner follows them", () => {
   assert.equal(g.pickWinner(() => 0.8), 2);
   assert.equal(g.pickWinner(() => 0.95), 3);
   assert.equal(g.pickWinner(() => 0.9999), 3);
+});
+
+test("americanOdds: pays 2x is +100, pays 8x is +700", () => {
+  assert.equal(g.americanOdds(2), "+100");
+  assert.equal(g.americanOdds(3), "+200");
+  assert.equal(g.americanOdds(8), "+700");
+});
+
+test("Home odds board matches HORSES (names and odds are copied into index.html)", () => {
+  const html = require("node:fs").readFileSync(require("node:path").join(__dirname, "..", "index.html"), "utf8");
+  const rows = [...html.matchAll(/<span class="runner">([^<]+)<\/span>\s*<a class="odds-btn" href="play\.html\?horse=(\d)#horse-racing"[^>]*>([^<]+)<\/a>/g)];
+  assert.deepEqual(
+    rows.map(([, name, index, odds]) => [name, Number(index), odds]),
+    g.HORSES.map((horse, i) => [horse.name, i, g.americanOdds(horse.pays)]),
+  );
 });

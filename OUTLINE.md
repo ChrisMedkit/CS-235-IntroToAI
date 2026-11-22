@@ -3,7 +3,7 @@
 See [DIAGRAM.md](DIAGRAM.md) for diagrams. Original spec: [assignment/](assignment/).
 
 ## Summary
-Build a 3+ page website about a personal interest, using an LLM as the development partner from a blank folder to a finished site. Topic: **an 8-bit themed casino of mini games** (play money only). The grade is split evenly between content, design/CSS, the JavaScript feature, code quality, and the documented AI workflow (prompt log + reflection), plus a test report.
+Build a 3+ page website about a personal interest, using an LLM as the development partner from a blank folder to a finished site. Topic: **Longshot, a sleek play-money sportsbook and casino** (was an 8-bit casino until the 2026-11-22 redesign) (play money only). The grade is split evenly between content, design/CSS, the JavaScript feature, code quality, and the documented AI workflow (prompt log + reflection), plus a test report.
 
 ## Direction & class methods
 - **Vision:** rubric "Exceeds" on all five criteria; file names match the spec exactly.
@@ -29,17 +29,17 @@ Build a 3+ page website about a personal interest, using an LLM as the developme
 ## Pages & features
 | Page | Sections | Interactions |
 |---|---|---|
-| `index.html` Home | `#hero` (8-bit ASCII-art circus, first thing on screen), `#game-select` (horizontal scrolling gallery of game cards), `#intro` (your text) | nav; swipe/scroll the game cards (CSS scroll-snap, no JS needed) |
+| `index.html` Home | `#hero` (headline + "Featured race" odds board linking to `play.html?horse=N`), `#game-select` (horizontal scrolling gallery of game cards), `#intro` (your text) | nav; swipe/scroll the game cards (CSS scroll-snap, no JS needed) |
 | `about.html` About | `#the-casino`, `#the-games` (rules for Horse Racing, Slots, Blackjack, Roulette) | nav |
 | `gallery.html` Gallery | `#gallery` grid of 6 thumbnails, `#lightbox` dialog | click thumbnail → lightbox; prev/next, arrow keys, Esc / X / backdrop to close |
 | `play.html` Play | chip balance + Reset, `#horse-racing`, `#slots`, `#blackjack`, `#roulette` | bet and play each game; the chip balance is shared and saved in `localStorage` |
 
 ## Design
 - Header bar on top, content in the middle, footer at the bottom; nav as a horizontal bar (stacked on phones).
-- Colors (tokens in `:root`): black "abyss" background with circus red and blue accents; red/blue striped header and footer edges. Buttons and menus (nav, "Pick a game", game cards, lightbox buttons) fade from black up into red or blue, and the color rises on hover/focus (`.abyss` class). (Redesign 2026-11-22; Step 6 originally used navy/gold/pink.)
-- Fonts: a pixel font for headings only, system sans-serif for body text (pixel fonts are hard to read in paragraphs).
-- `image-rendering: pixelated` keeps pixel art sharp; square corners.
-- Home hero: ASCII art in a `<pre>` with `role="img"` + `aria-label` (screen readers would otherwise read every character). Monospace font; shrink the font size on phones (e.g. `clamp()`) so it fits at 375px without page scroll.
+- Colors (tokens in `:root`): near-black `#0b0d10` background, dark cards, one gold accent `#f5c542` for odds, primary buttons and the active tab; green for wins, red for losses. (Earlier themes: navy/gold pixel art, then black with circus red/blue.)
+- Font: Inter (Google Fonts), weights 400/600/800; even-width numbers for odds, chips and totals.
+- Sleek sportsbook UI: sticky top bar with pill tabs, rounded cards, pill buttons, odds chips; blackjack cards drawn as white playing cards.
+- Home hero: headline and two buttons, beside a "Featured race" odds board (stacked on phones). The board's names and odds are copied from `HORSES` in `js/script.js`; a unit test fails if they drift apart.
 - Game select: a row of cards that scrolls sideways (`overflow-x: auto` + `scroll-snap-type: x mandatory`); each card links to the game's rules on About (`about.html#horse-racing` etc.).
 - Breakpoint: 600px (from the spec's example prompt).
 
@@ -61,13 +61,13 @@ Build a 3+ page website about a personal interest, using an LLM as the developme
 
 ### Draft site plan (Step 3 — edit, then paste into prompts)
 ```
-Topic: 8-Bit Casino, a retro pixel-art casino of mini games (play money only).
+Topic: Longshot, a sleek sportsbook and casino of mini games (play money only).
 Games: Horse Racing, Slots, Blackjack, Roulette.
-Home: first screen is an 8-bit ASCII-art circus; scroll down to a sideways-scrolling
+Home: headline + featured-race odds board; scroll down to a sideways-scrolling
   gallery of game cards to pick a game mode (each links to its rules); short intro.
 About: what the casino is; rules of each of the 4 games.
-Gallery: 6 pixel-art screenshots in a grid, click to open a lightbox with prev/next.
-Design: black background, circus red and blue accents, buttons fading up from black; pixel font for headings, sans-serif body.
+Gallery: 6 screenshots in a grid, click to open a lightbox with prev/next.
+Design: near-black background, gold accent, rounded cards and pill buttons; Inter font.
 Layout: header + horizontal nav on top, content in the middle, footer at the bottom; stacks under 600px.
 Files: index.html, about.html, gallery.html, css/style.css, js/script.js, images/.
 ```
@@ -98,7 +98,7 @@ Files: index.html, about.html, gallery.html, css/style.css, js/script.js, images
 ## Testing
 - Nav: every link on every page, including the logo.
 - Game cards: each Home card jumps to the right game on About; the row scrolls sideways by swipe, trackpad and Tab key, with no page-wide horizontal scroll.
-- ASCII hero: fits at 375px; a screen reader announces the label only.
+- Odds board: each odds button opens Play with that horse picked; a bad `?horse=` value falls back to the first horse.
 - Images: all load (Network tab, no 404), all have alt text.
 - Lightbox: open each thumbnail; next on the last → first; prev on the first → last; arrow keys; Esc, X button, backdrop click close it; keyboard-only (Tab + Enter) works.
 - Responsive: desktop width, 375px phone, a tablet width.
@@ -108,5 +108,4 @@ Files: index.html, about.html, gallery.html, css/style.css, js/script.js, images
 ## Questions / ambiguities
 - Due date isn't in the screenshots.
 - Rubric mentions a "reflection" but the submission checklist doesn't list it separately — put it in the prompt log (done here), or ask if it should be its own document.
-- ASCII art counts as page content, not as an `<img>`, so the "two images" requirement still needs two real image files (planned: drawn/exported later).
-- Images: you need at least two you own (your own pixel art or screenshots of mini games you made). Screenshots of commercial casino/arcade games likely don't count as "rights to use".
+- Images: you need at least two you own (your own photos or screenshots of the games you built). Screenshots of commercial casino/arcade games likely don't count as "rights to use".

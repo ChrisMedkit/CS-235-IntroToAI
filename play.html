@@ -3,26 +3,26 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Play the 8-Bit Casino mini games with play-money chips." />
-    <title>Play | 8-Bit Casino</title>
-    <!-- Inline red-and-blue favicon: no extra file, and no favicon.ico 404 -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23d6202b'/%3E%3Crect x='4' y='4' width='8' height='8' fill='%231f4fd8'/%3E%3C/svg%3E" />
-    <!-- Pixel font for headings (Google Fonts); falls back to monospace offline -->
+    <meta name="description" content="Play the Longshot games with play-money chips." />
+    <title>Play | Longshot</title>
+    <!-- Inline gold-chip favicon: no extra file, and no favicon.ico 404 -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%230b0d10'/%3E%3Ccircle cx='8' cy='8' r='5' fill='%23f5c542'/%3E%3C/svg%3E" />
+    <!-- Inter (Google Fonts); falls back to the system font offline -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <!-- Shared header + nav: identical to index.html except aria-current. -->
     <header class="site-header">
-      <a class="site-logo" href="index.html">8-Bit Casino</a>
+      <a class="site-logo" href="index.html">Long<span>shot</span></a>
       <nav class="site-nav" aria-label="Main">
         <ul>
-          <li><a class="abyss" href="index.html">Home</a></li>
-          <li><a class="abyss" href="play.html" aria-current="page">Play</a></li>
-          <li><a class="abyss" href="about.html">About</a></li>
-          <li><a class="abyss" href="gallery.html">Gallery</a></li>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="play.html" aria-current="page">Play</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
         </ul>
       </nav>
     </header>
@@ -33,7 +33,7 @@
         <p>Every game uses the same play-money chips. Your balance is saved in this browser.</p>
         <p class="chip-bank">
           Chips: <strong id="chip-count" aria-live="polite">100</strong>
-          <button id="chip-reset" class="abyss" type="button">Reset chips</button>
+          <button id="chip-reset" class="btn" type="button">Reset chips</button>
         </p>
       </section>
 
@@ -44,11 +44,11 @@
           <legend>Pick your horse</legend>
           <div id="race-picks" class="race-picks"></div>
           <span class="field"><label for="race-bet">Bet</label> <input id="race-bet" type="number" min="1" step="1" value="10" inputmode="numeric" /></span>
-          <button id="race-start" class="abyss" type="button">Start race</button>
+          <button id="race-start" class="btn btn-primary" type="button">Start race</button>
         </fieldset>
         <ol id="race-track" class="race-track" aria-hidden="true"></ol>
         <p id="race-result" class="game-result" aria-live="polite"></p>
-        <p class="game-rules-link"><a href="about.html#horse-racing">Rules</a></p>
+        <p class="game-rules-link"><a href="about.html#horse-racing">Rules</a> &middot; Odds of +100 win your bet once more; +700 win seven times your bet.</p>
       </section>
 
       <section id="slots" class="game">
@@ -58,7 +58,7 @@
         </div>
         <div class="game-controls">
           <span class="field"><label for="slots-bet">Bet</label> <input id="slots-bet" type="number" min="1" step="1" value="10" inputmode="numeric" /></span>
-          <button id="slots-spin" class="abyss" type="button">Pull the lever</button>
+          <button id="slots-spin" class="btn btn-primary" type="button">Pull the lever</button>
         </div>
         <p id="slots-result" class="game-result" aria-live="polite"></p>
         <p class="game-rules-link"><a href="about.html#slots">Rules</a> &middot; Three 7s pay 20x, any other three of a kind 10x, a pair gives your bet back.</p>
@@ -74,9 +74,9 @@
         </dl>
         <div class="game-controls">
           <span class="field"><label for="blackjack-bet">Bet</label> <input id="blackjack-bet" type="number" min="1" step="1" value="10" inputmode="numeric" /></span>
-          <button id="bj-deal" class="abyss" type="button">Deal</button>
-          <button id="bj-hit" class="abyss" type="button" disabled>Hit</button>
-          <button id="bj-stand" class="abyss" type="button" disabled>Stand</button>
+          <button id="bj-deal" class="btn btn-primary" type="button">Deal</button>
+          <button id="bj-hit" class="btn" type="button" disabled>Hit</button>
+          <button id="bj-stand" class="btn" type="button" disabled>Stand</button>
         </div>
         <p id="blackjack-result" class="game-result" aria-live="polite"></p>
         <p class="game-rules-link"><a href="about.html#blackjack">Rules</a> &middot; Blackjack pays 3:2, the dealer stands on 17.</p>
@@ -99,7 +99,7 @@
             <input id="roulette-number" type="number" min="0" max="36" step="1" value="17" inputmode="numeric" />
           </span>
           <span class="field"><label for="roulette-bet">Bet</label> <input id="roulette-bet" type="number" min="1" step="1" value="10" inputmode="numeric" /></span>
-          <button id="roulette-spin" class="abyss" type="button">Spin</button>
+          <button id="roulette-spin" class="btn btn-primary" type="button">Spin</button>
         </div>
         <p id="roulette-result" class="game-result" aria-live="polite"></p>
         <p class="game-rules-link"><a href="about.html#roulette">Rules</a></p>
@@ -107,7 +107,7 @@
     </main>
 
     <footer class="site-footer">
-      <p>&copy; 2026 TODO: Your Name &middot; Play money only, for fun.</p>
+      <p>&copy; 2026 TODO: Your Name &middot; Longshot uses play money only, for fun.</p>
     </footer>
 
     <script src="js/script.js"></script>

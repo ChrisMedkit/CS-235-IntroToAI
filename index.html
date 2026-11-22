@@ -3,85 +3,106 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="8-Bit Casino: a retro pixel-art circus of play-money mini games." />
-    <title>Home | 8-Bit Casino</title>
-    <!-- Inline red-and-blue favicon: no extra file, and no favicon.ico 404 -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23d6202b'/%3E%3Crect x='4' y='4' width='8' height='8' fill='%231f4fd8'/%3E%3C/svg%3E" />
-    <!-- Pixel font for headings (Google Fonts); falls back to monospace offline -->
+    <meta name="description" content="Longshot: a sleek play-money sportsbook and casino with horse racing, slots, blackjack and roulette." />
+    <title>Home | Longshot</title>
+    <!-- Inline gold-chip favicon: no extra file, and no favicon.ico 404 -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%230b0d10'/%3E%3Ccircle cx='8' cy='8' r='5' fill='%23f5c542'/%3E%3C/svg%3E" />
+    <!-- Inter (Google Fonts); falls back to the system font offline -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <!-- Shared header + nav: keep identical on every page (Step 5). Only aria-current moves. -->
+    <!-- Shared header + nav: keep identical on every page. Only aria-current moves. -->
     <header class="site-header">
-      <a class="site-logo" href="index.html">8-Bit Casino</a>
+      <a class="site-logo" href="index.html">Long<span>shot</span></a>
       <nav class="site-nav" aria-label="Main">
         <ul>
-          <li><a class="abyss" href="index.html" aria-current="page">Home</a></li>
-          <li><a class="abyss" href="play.html">Play</a></li>
-          <li><a class="abyss" href="about.html">About</a></li>
-          <li><a class="abyss" href="gallery.html">Gallery</a></li>
+          <li><a href="index.html" aria-current="page">Home</a></li>
+          <li><a href="play.html">Play</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
         </ul>
       </nav>
     </header>
 
     <main>
-      <!-- Hero: the ASCII circus is the first thing visitors see.
-           role="img" + aria-label so screen readers read one description, not every symbol.
-           Art is 45 columns wide; CSS shrinks the font so it fits a phone screen. -->
+      <!-- Hero: headline on the left, featured odds board on the right (stacked on phones). -->
       <section id="hero" class="hero">
-        <pre class="ascii-art" role="img" aria-label="ASCII-art circus: a striped big top tent with a flag, two smaller tents on either side, and a STEP RIGHT UP banner">
-                      |&gt;&gt;&gt;
-            *         |         *
-   *                 /^\                 *
-         .          //|\\          .
-     |&gt;&gt;&gt;          ///|\\\             |&gt;&gt;&gt;
-     |            ////|\\\\            |
-    /^\          /////|\\\\\          /^\
-   //|\\        //////|\\\\\\        //|\\
-  ///|\\\      ///////|\\\\\\\      ///|\\\
- \/\/\/\/\    \/\/\/\/\/\/\/\/\    \/\/\/\/\
-  |  |  |      |  ||  |  ||  |      |  |  |
-  |  |  |      |  || /^\ ||  |      |  |  |
-  |  |  |      |  ||/   \||  |      |  |  |
-  | /^\ |      |  |||   |||  |      | /^\ |
-  | | | |      |  |||   |||  |      | | | |
-_____________________________________________
-        o  o  o  STEP RIGHT UP!  o  o  o</pre>
-        <h1>Welcome to the <span class="nowrap">8-Bit Casino</span></h1>
-        <p class="hero-tagline">A retro circus of mini games. Play-money chips only, no real gambling.</p>
-        <a class="hero-cta abyss" href="#game-select">Pick a game</a>
+        <div class="hero-copy">
+          <p class="eyebrow">Sportsbook &amp; Casino</p>
+          <h1>Pick your winner.</h1>
+          <p class="hero-tagline">Horse racing, slots, blackjack and roulette. Play-money chips only, no real gambling.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#game-select">Browse games</a>
+            <a class="btn" href="about.html">How to play</a>
+          </div>
+        </div>
+
+        <aside class="featured" aria-labelledby="featured-title">
+          <div class="featured-head">
+            <h2 id="featured-title">Featured race</h2>
+            <span class="badge">Horse Racing</span>
+          </div>
+          <!-- Odds must match HORSES in js/script.js. American odds: +100 pays 2x your bet back. -->
+          <ol class="odds-board">
+            <li>
+              <span class="saddle">1</span><span class="runner">Gold Standard</span>
+              <a class="odds-btn" href="play.html?horse=0#horse-racing" aria-label="Gold Standard, odds +100">+100</a>
+            </li>
+            <li>
+              <span class="saddle">2</span><span class="runner">Night Shift</span>
+              <a class="odds-btn" href="play.html?horse=1#horse-racing" aria-label="Night Shift, odds +200">+200</a>
+            </li>
+            <li>
+              <span class="saddle">3</span><span class="runner">Photo Finish</span>
+              <a class="odds-btn" href="play.html?horse=2#horse-racing" aria-label="Photo Finish, odds +300">+300</a>
+            </li>
+            <li>
+              <span class="saddle">4</span><span class="runner">Long Shot</span>
+              <a class="odds-btn" href="play.html?horse=3#horse-racing" aria-label="Long Shot, odds +700">+700</a>
+            </li>
+          </ol>
+          <p class="featured-foot">Tap the odds to back that horse on the Play page.</p>
+        </aside>
       </section>
 
       <!-- Game select: sideways-scrolling row of cards (scroll-snap in CSS, no JS).
            Each card opens that game on the Play page. -->
       <section id="game-select" class="game-select" aria-labelledby="game-select-title">
-        <h2 id="game-select-title">Choose Your Game</h2>
+        <h2 id="game-select-title">Casino Games</h2>
         <ul class="game-scroller">
           <li class="game-card">
-            <a class="abyss" href="play.html#horse-racing">
+            <a href="play.html#horse-racing">
+              <span class="badge">Racing</span>
               <h3>Horse Racing</h3>
-              <p>Pick a pixel pony and cheer it to the finish line.</p>
+              <p>Pick a horse and cheer it to the finish line.</p>
+              <span class="card-cta">Play now &rarr;</span>
             </a>
           </li>
           <li class="game-card">
-            <a class="abyss" href="play.html#slots">
+            <a href="play.html#slots">
+              <span class="badge">Slots</span>
               <h3>Slots</h3>
               <p>Pull the lever and line up three matching symbols.</p>
+              <span class="card-cta">Play now &rarr;</span>
             </a>
           </li>
           <li class="game-card">
-            <a class="abyss" href="play.html#blackjack">
+            <a href="play.html#blackjack">
+              <span class="badge">Table</span>
               <h3>Blackjack</h3>
               <p>Beat the dealer to 21 without going bust.</p>
+              <span class="card-cta">Play now &rarr;</span>
             </a>
           </li>
           <li class="game-card">
-            <a class="abyss" href="play.html#roulette">
+            <a href="play.html#roulette">
+              <span class="badge">Table</span>
               <h3>Roulette</h3>
               <p>Bet on red, black or a lucky number, then spin.</p>
+              <span class="card-cta">Play now &rarr;</span>
             </a>
           </li>
         </ul>
@@ -89,12 +110,12 @@ _____________________________________________
 
       <!-- Intro: placeholder for your own text (Step 4 asks for one you can fill). -->
       <section id="intro" class="intro">
-        <h2>Why I Built the 8-Bit Casino</h2>
-        <p>TODO: a few sentences in your own words: what got you into retro games, and why a casino circus.</p>
-        <!-- TODO: add images/home.png (your own art) and update the alt text to match it. -->
+        <h2>Why I Built Longshot</h2>
+        <p>TODO: a few sentences in your own words: what got you into sportsbooks and casino games.</p>
+        <!-- TODO: add images/home.png (your own image) and update the alt text to match it. -->
         <img
           src="images/home.png"
-          alt="Pixel-art casino floor with slot machines and a roulette table"
+          alt="Casino floor with slot machines and a roulette table"
           width="640"
           height="360"
         />
@@ -102,7 +123,7 @@ _____________________________________________
     </main>
 
     <footer class="site-footer">
-      <p>&copy; 2026 TODO: Your Name &middot; Play money only, for fun.</p>
+      <p>&copy; 2026 TODO: Your Name &middot; Longshot uses play money only, for fun.</p>
     </footer>
 
     <script src="js/script.js"></script>
