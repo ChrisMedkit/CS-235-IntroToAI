@@ -22,19 +22,25 @@
 
     <main>
       <section id="hero" class="hero">
-        <!-- TODO (Step 4): headline + one-line pitch for the casino, and a hero image -->
+        <!-- TODO (Step 4): 8-bit ASCII-art circus, the first thing visitors see.
+             role="img" + aria-label so screen readers say the label, not every character. -->
+        <pre class="ascii-art" role="img" aria-label="TODO: describe the ASCII circus">
+TODO: ASCII art
+        </pre>
         <h1>TODO: Welcome to the 8-Bit Casino</h1>
         <p>TODO: one-sentence pitch (play-money chips only, no real gambling).</p>
-        <img src="images/hero.png" alt="TODO: describe the hero image, e.g. pixel-art slot machine" />
       </section>
 
-      <section id="featured-games" class="featured-games">
-        <!-- TODO (Step 4): 3 cards, one per mini game (name, short description, link to gallery/about) -->
-        <h2>Featured Games</h2>
-        <article class="game-card">
-          <h3>TODO: game name</h3>
-          <p>TODO: short description</p>
-        </article>
+      <section id="game-select" class="game-select">
+        <!-- TODO (Step 4): sideways-scrolling row of game cards (scroll-snap in CSS).
+             Each card links to that game's rules on the About page. -->
+        <h2>Choose Your Game</h2>
+        <ul class="game-scroller">
+          <li class="game-card"><a href="about.html#horse-racing"><h3>Horse Racing</h3><p>TODO: short description</p></a></li>
+          <li class="game-card"><a href="about.html#slots"><h3>Slots</h3><p>TODO: short description</p></a></li>
+          <li class="game-card"><a href="about.html#blackjack"><h3>Blackjack</h3><p>TODO: short description</p></a></li>
+          <li class="game-card"><a href="about.html#roulette"><h3>Roulette</h3><p>TODO: short description</p></a></li>
+        </ul>
       </section>
 
       <section id="intro" class="intro">

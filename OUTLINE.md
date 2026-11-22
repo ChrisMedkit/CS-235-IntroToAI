@@ -29,8 +29,8 @@ Build a 3+ page website about a personal interest, using an LLM as the developme
 ## Pages & features
 | Page | Sections | Interactions |
 |---|---|---|
-| `index.html` Home | `#hero` (pitch + hero image), `#featured-games` (game cards), `#intro` (your text) | nav |
-| `about.html` About | `#the-casino`, `#the-games` (rules per mini game) | nav |
+| `index.html` Home | `#hero` (8-bit ASCII-art circus, first thing on screen), `#game-select` (horizontal scrolling gallery of game cards), `#intro` (your text) | nav; swipe/scroll the game cards (CSS scroll-snap, no JS needed) |
+| `about.html` About | `#the-casino`, `#the-games` (rules for Horse Racing, Slots, Blackjack, Roulette) | nav |
 | `gallery.html` Gallery | `#gallery` grid of 6 thumbnails, `#lightbox` dialog | click thumbnail → lightbox; prev/next, arrow keys, Esc / X / backdrop to close |
 
 ## Design
@@ -38,6 +38,8 @@ Build a 3+ page website about a personal interest, using an LLM as the developme
 - Colors (tokens in `:root`): dark arcade navy background, chip gold accent, neon pink hover. Check contrast.
 - Fonts: a pixel font for headings only, system sans-serif for body text (pixel fonts are hard to read in paragraphs).
 - `image-rendering: pixelated` keeps pixel art sharp; square corners.
+- Home hero: ASCII art in a `<pre>` with `role="img"` + `aria-label` (screen readers would otherwise read every character). Monospace font; shrink the font size on phones (e.g. `clamp()`) so it fits at 375px without page scroll.
+- Game select: a row of cards that scrolls sideways (`overflow-x: auto` + `scroll-snap-type: x mandatory`); each card links to the game's rules on About (`about.html#horse-racing` etc.).
 - Breakpoint: 600px (from the spec's example prompt).
 
 ## Accessibility & responsiveness checklist
@@ -59,8 +61,11 @@ Build a 3+ page website about a personal interest, using an LLM as the developme
 ### Draft site plan (Step 3 — edit, then paste into prompts)
 ```
 Topic: 8-Bit Casino, a retro pixel-art casino of mini games (play money only).
-Pages: Home (hero, 3 featured game cards, intro), About (what it is; rules of each game),
-Gallery (6 pixel-art screenshots in a grid, click to open a lightbox with prev/next).
+Games: Horse Racing, Slots, Blackjack, Roulette.
+Home: first screen is an 8-bit ASCII-art circus; scroll down to a sideways-scrolling
+  gallery of game cards to pick a game mode (each links to its rules); short intro.
+About: what the casino is; rules of each of the 4 games.
+Gallery: 6 pixel-art screenshots in a grid, click to open a lightbox with prev/next.
 Design: dark navy background, gold accent, pink hover; pixel font for headings, sans-serif body.
 Layout: header + horizontal nav on top, content in the middle, footer at the bottom; stacks under 600px.
 Files: index.html, about.html, gallery.html, css/style.css, js/script.js, images/.
@@ -90,6 +95,8 @@ Files: index.html, about.html, gallery.html, css/style.css, js/script.js, images
 
 ## Testing
 - Nav: every link on every page, including the logo.
+- Game cards: each Home card jumps to the right game on About; the row scrolls sideways by swipe, trackpad and Tab key, with no page-wide horizontal scroll.
+- ASCII hero: fits at 375px; a screen reader announces the label only.
 - Images: all load (Network tab, no 404), all have alt text.
 - Lightbox: open each thumbnail; next on the last → first; prev on the first → last; arrow keys; Esc, X button, backdrop click close it; keyboard-only (Tab + Enter) works.
 - Responsive: desktop width, 375px phone, a tablet width.
@@ -99,4 +106,5 @@ Files: index.html, about.html, gallery.html, css/style.css, js/script.js, images
 ## Questions / ambiguities
 - Due date isn't in the screenshots.
 - Rubric mentions a "reflection" but the submission checklist doesn't list it separately — put it in the prompt log (done here), or ask if it should be its own document.
+- ASCII art counts as page content, not as an `<img>`, so the "two images" requirement still needs two real image files (planned: drawn/exported later).
 - Images: you need at least two you own (your own pixel art or screenshots of mini games you made). Screenshots of commercial casino/arcade games likely don't count as "rights to use".

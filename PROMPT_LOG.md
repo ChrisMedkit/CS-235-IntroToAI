@@ -13,6 +13,18 @@ Record at least three significant features (page structure, navigation, CSS, res
 | What it produced | `index.html`, `about.html`, `gallery.html` skeletons with a shared nav, empty `css/style.css` and `js/script.js` stubs, `OUTLINE.md`, `DIAGRAM.md` |
 | Your decision | TODO: what you kept or changed, and why |
 
+## 0b. Site plan (Step 3)
+| Field | Entry |
+|---|---|
+| Feature | Site plan: games list and Home page layout |
+| LLM used | Claude Code (Claude Opus 5.5, chat in the desktop app) |
+| Your prompt | Answered its planning questions: games = Horse Racing, Slots, Blackjack, Roulette. "Home page should have an 8 bit ascii circus as the first thing a user sees when loading the site. Scroll down and there should be a scrolling gallery to select game mode." |
+| What it produced | Updated the site plan in `OUTLINE.md`; changed the Home skeleton to a `<pre>` ASCII hero and a sideways-scrolling `#game-select` row of 4 cards linking to each game's rules on About (`about.html#slots` etc.); suggested CSS scroll-snap instead of JavaScript for the scroller, and `role="img"` + `aria-label` on the ASCII art |
+| Your decision | TODO: what you kept or changed, and why |
+
+## Warm-up (Step 2.4)
+TODO: ask your LLM "What semantic elements should a personal website homepage include?" and note one thing you learned from the answer.
+
 ## 1. TODO: feature (e.g. Home page structure)
 | Field | Entry |
 |---|---|

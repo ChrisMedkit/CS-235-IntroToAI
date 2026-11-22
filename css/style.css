@@ -37,7 +37,10 @@ img {
 
 /* TODO: .site-nav: links in a row, hover + :focus-visible styles, aria-current="page" highlight */
 
-/* TODO: .hero, .featured-games, .game-card (Home) */
+/* TODO: .hero, .ascii-art (monospace, font-size via clamp() so it fits a 375px phone) */
+
+/* TODO: .game-select, .game-scroller (overflow-x: auto + scroll-snap-type: x mandatory),
+   .game-card (scroll-snap-align: start, fixed width) */
 
 /* TODO: .about-section (About) */
 
@@ -50,5 +53,5 @@ img {
 /* Mobile first: rules above are for phones; widen here.
    Spec example uses 600px: under it, everything stacks vertically. */
 @media (min-width: 600px) {
-  /* TODO: nav in a row, gallery-grid to 2-3 columns, game cards side by side */
+  /* TODO: nav in a row, gallery-grid to 2-3 columns, larger ASCII art */
 }

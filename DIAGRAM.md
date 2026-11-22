@@ -20,6 +20,7 @@ flowchart TD
   A <--> G["Gallery<br>gallery.html"]
   G <--> H
   G --> L["Lightbox dialog<br>#lightbox"]
+  H -- "game cards" --> R["About #horse-racing / #slots / #blackjack / #roulette"]
 ```
 All three pages share the same nav, so each links to the other two.
 
@@ -31,8 +32,8 @@ flowchart TD
     nav["nav.site-nav: Home / About / Gallery"]
   end
   subgraph main["main"]
-    s1["section #hero (Home) / #the-casino (About) / #gallery (Gallery)"]
-    s2["section #featured-games / #the-games / dialog #lightbox"]
+    s1["section #hero ASCII circus (Home) / #the-casino (About) / #gallery (Gallery)"]
+    s2["section #game-select scroller / #the-games / dialog #lightbox"]
     s3["section #intro (Home only)"]
   end
   subgraph footer["footer.site-footer"]
