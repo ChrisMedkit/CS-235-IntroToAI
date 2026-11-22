@@ -3,10 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Pixel-art screenshots from the 8-Bit Casino mini games." />
     <title>Gallery | 8-Bit Casino</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+    <!-- Shared header + nav: identical to index.html except aria-current. -->
     <header class="site-header">
       <a class="site-logo" href="index.html">8-Bit Casino</a>
       <nav class="site-nav" aria-label="Main">
@@ -21,21 +23,49 @@
     <main>
       <section id="gallery" class="gallery">
         <h1>Gallery</h1>
-        <!-- TODO (Step 5): six thumbnails. Each is a <button> so it is keyboard-usable;
-             script.js reads the <img> inside for the lightbox. Replace src/alt with your images. -->
+        <p>Pixel art from around the casino. Select a picture to see it full size.</p>
+
+        <!-- Six thumbnails. Each is a <button> so Tab + Enter opens it; script.js (Step 7)
+             reads the <img> inside for the lightbox and uses its alt text as the caption.
+             TODO: add these files to images/ and update each alt to match your art. -->
         <ul class="gallery-grid">
-          <li><button class="gallery-item" type="button"><img src="images/game-1.png" alt="TODO: describe image 1" /></button></li>
-          <li><button class="gallery-item" type="button"><img src="images/game-2.png" alt="TODO: describe image 2" /></button></li>
-          <li><button class="gallery-item" type="button"><img src="images/game-3.png" alt="TODO: describe image 3" /></button></li>
-          <li><button class="gallery-item" type="button"><img src="images/game-4.png" alt="TODO: describe image 4" /></button></li>
-          <li><button class="gallery-item" type="button"><img src="images/game-5.png" alt="TODO: describe image 5" /></button></li>
-          <li><button class="gallery-item" type="button"><img src="images/game-6.png" alt="TODO: describe image 6" /></button></li>
+          <li>
+            <button class="gallery-item" type="button">
+              <img src="images/game-1.png" alt="Title screen with the 8-Bit Casino circus tent" width="320" height="240" />
+            </button>
+          </li>
+          <li>
+            <button class="gallery-item" type="button">
+              <img src="images/game-2.png" alt="Pixel horses racing down a dirt track" width="320" height="240" />
+            </button>
+          </li>
+          <li>
+            <button class="gallery-item" type="button">
+              <img src="images/game-3.png" alt="Slot machine showing three matching cherries" width="320" height="240" />
+            </button>
+          </li>
+          <li>
+            <button class="gallery-item" type="button">
+              <img src="images/game-4.png" alt="Blackjack table with a player hand totaling 21" width="320" height="240" />
+            </button>
+          </li>
+          <li>
+            <button class="gallery-item" type="button">
+              <img src="images/game-5.png" alt="Roulette wheel with the ball landing on red" width="320" height="240" />
+            </button>
+          </li>
+          <li>
+            <button class="gallery-item" type="button">
+              <img src="images/game-6.png" alt="Prize booth with a tall stack of play-money chips" width="320" height="240" />
+            </button>
+          </li>
         </ul>
       </section>
 
       <!-- Lightbox (Step 7). <dialog> gives Esc-to-close and focus trapping for free. -->
       <dialog id="lightbox" class="lightbox" aria-label="Image viewer">
-        <img id="lightbox-image" src="" alt="" />
+        <!-- No src until script.js sets one (an empty src is invalid HTML). -->
+        <img id="lightbox-image" alt="" />
         <p id="lightbox-caption" class="lightbox-caption"></p>
         <button id="lightbox-prev" type="button" aria-label="Previous image">&lt;</button>
         <button id="lightbox-next" type="button" aria-label="Next image">&gt;</button>
@@ -44,7 +74,7 @@
     </main>
 
     <footer class="site-footer">
-      <p>TODO: &copy; 2026 Your Name</p>
+      <p>&copy; 2026 TODO: Your Name &middot; Play money only, for fun.</p>
     </footer>
 
     <script src="js/script.js"></script>

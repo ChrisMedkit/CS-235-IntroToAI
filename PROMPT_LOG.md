@@ -34,6 +34,15 @@ TODO: ask your LLM "What semantic elements should a personal website homepage in
 | What it produced | Full Home page: `header` + `nav` (with `aria-current`), `main` with three `section`s: `#hero` (original ASCII big-top tent in a `<pre role="img">` with an `aria-label`, `h1`, tagline, "Pick a game" link to `#game-select`), `#game-select` (`ul.game-scroller` of 4 linked game cards, one-line blurbs it drafted), `#intro` (placeholder for my text + one `<img>` with alt text and width/height to avoid layout shift), and `footer`. Checked in the browser: renders, no console errors. |
 | Your decision | TODO: e.g. kept the structure; rewrite the four card blurbs in my own words; replace the alt text once `images/home.png` exists; changes to the ASCII art? |
 
+## 1b. Navigation and remaining pages (Step 5)
+| Field | Entry |
+|---|---|
+| Feature | `about.html` and `gallery.html` with the same header, nav and footer as Home |
+| LLM used | Claude Code (Claude Opus 5.5, chat in the desktop app) |
+| Your prompt | "Yes, start Step 5" (context: the spec's Step 5 prompt: same header and nav on every page, About with two text sections, Gallery with a grid of six image placeholders) |
+| What it produced | About: section 1 `#the-casino` (placeholders for my text + a play-money note), section 2 `#the-games` with one image and an `<article>` of short rules per game, with ids matching the Home card links. Gallery: intro line, six `<button>`-wrapped `<img>`s with descriptive alt text and width/height, and the lightbox `<dialog>`. It then ran a script to check that the header and footer are identical across pages (apart from `aria-current`) and that every link and `#anchor` exists, found the Home footer differed by a leftover comment and removed it, and removed an empty `src=""` on the lightbox image (invalid HTML). No console errors on any page. |
+| Your decision | TODO: e.g. rewrite the rules and About text in my own words; match the gallery alt text to my real images |
+
 ## 2. TODO: feature (e.g. CSS design + responsive layout)
 | Field | Entry |
 |---|---|
