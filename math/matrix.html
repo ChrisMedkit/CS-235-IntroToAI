@@ -26,8 +26,6 @@
           <li><a href="../hub.html">Hub</a></li>
         </ul>
       </nav>
-      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
-      <button class="sound-toggle" type="button" aria-pressed="false">Sound off</button>
     </header>
 
     <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
@@ -94,6 +92,17 @@
       </ul>
       <p>&copy; 2026 Christopia. TODO: GitHub link.</p>
     </footer>
+
+    <!-- Quick menu: display and sound settings, pinned to the bottom of the screen. -->
+    <div class="quick-menu">
+      <div id="quick-menu-panel" class="quick-menu-panel" hidden>
+        <button class="theme-toggle switch" type="button" aria-pressed="false">Dark mode</button>
+        <button class="sound-toggle switch" type="button" aria-pressed="false">Sound</button>
+      </div>
+      <button class="quick-menu-toggle" type="button" aria-expanded="false" aria-controls="quick-menu-panel">
+        <span aria-hidden="true">&#9881;</span> Options
+      </button>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/13.2.0/math.min.js"></script>
     <script type="module" src="../js/script.js"></script>

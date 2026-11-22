@@ -52,7 +52,7 @@ Build a multi-page website on a topic you care about, using an LLM as a developm
 | `social/events.html` | `#event-create` (form), `#event-list-section` (your name, upcoming, past) | create events, RSVP Going/Maybe/Can't (capacity), download .ics |
 | `social/journal.html` | `#journal-lock` (setup / unlock), `#journal-app` (sidebar: search, favorites, page tree, trash; editor: breadcrumb, icon, title, blocks, slash menu) | encrypted vault; nested pages; `/` block menu; Markdown shortcuts; to-dos, toggles, callouts, code, KaTeX math; autosave; auto-lock |
 | `hub.html` | `#hub-intro`, `#hub-filters`, `#hub-tools` | filter All/Live/Planned |
-| all pages | shared header/nav/ticker/sub-nav/footer | mobile menu toggle, dark/light (saved), sound, splash, sparkles, hit counter |
+| all pages | shared header/nav/ticker/sub-nav/footer, bottom-right Options menu | mobile Menu (stacked nav), Options menu with Dark mode + Sound switches (saved), splash, sparkles, hit counter; Esc or a click elsewhere closes menus |
 
 ## Design
 - **Mood:** 2000s/2010s Nintendo era + early internet, modernized: glossy console-menu UI (white rounded tiles, aqua glow, pill buttons with a top shine), rounded body font (M PLUS Rounded 1c, Google Fonts). Original artwork only in the UI: no Nintendo logos, characters or sounds.
@@ -69,8 +69,8 @@ Milestones follow the spec's steps; commit after each.
 2. **Step 2.4 warm-up:** ask your LLM the warm-up question; note it in `PROMPT_LOG.md`.
 3. **Step 4 (Home structure):** fill `#hero` / `#about` text, replace placeholder alt text. Commit.
 4. **Step 4b (gallery):** `renderToolGallery()` in `script.js` builds cards from `TOOLS`. Commit.
-5. **Step 5 (nav + pages):** `toggleNav()` (mobile Menu); click every link, top nav and sub-nav, on every page. Commit.
-6. **Step 6–7 (CSS + theme):** design tokens from your theme, nav bar, buttons, hero, gallery cards, tool layouts; `applyTheme` / `toggleTheme` / `initTheme`. Check 375 px. Commit.
+5. **Step 5 (nav + pages):** ✅ mobile Menu done (`setExpanded` / `initMenus`); click every link, top nav and sub-nav, on every page. Commit.
+6. **Step 6–7 (CSS + theme):** design tokens from your theme, nav bar, buttons, hero, gallery cards, tool layouts; ✅ `applyTheme` / `toggleTheme` / `initTheme` done (saved choice, else the OS setting). Check 375 px. Commit.
 7. **Plotter:** (a) `sample2D`, (b) `sampleSurface` (tests pass), (c) add/remove rows, (d) `readWindow`, `compileExpression`, (e) `redraw` 2D then 3D, (f) debounce. Commit.
 8. **Matrix Lab:** (a) `parseMatrix`, (b) `rref` with steps, (c) `formatNumber` (tests pass), (d) `matrixTable`, (e) `compute` for each op. Commit.
 9. **Scanner:** (a) `cleanOcrText` (test), (b) preview, (c) `scan` + progress, (d) copy/download. Commit.

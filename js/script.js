@@ -1,33 +1,76 @@
-// Shared script for every page: theme toggle, mobile nav, current-page link, home gallery.
+// Shared script for every page: theme, mobile nav, quick menu, galleries, early-internet extras.
 // Tool pages add their own module (plotter.js, ...) for page-specific behavior.
 import { TOOLS } from "./tools.js";
 import { THEME_STORAGE_KEY } from "./utils.js";
 
 /**
- * Set the theme on <html data-theme> and update the toggle's label + aria-pressed.
+ * Set the theme on <html data-theme> and sync the Dark mode switch.
+ * The label stays "Dark mode"; aria-pressed carries on/off (changing both confuses screen readers).
  * @param {"light"|"dark"} theme
  */
 function applyTheme(theme) {
-  // TODO (Plan step 6, the spec's Step 7 feature):
-  // 1. document.documentElement.dataset.theme = theme
-  // 2. every .theme-toggle: aria-pressed = theme === "dark"; text "Light mode"/"Dark mode"
-  void theme;
+  document.documentElement.dataset.theme = theme;
+  for (const button of document.querySelectorAll(".theme-toggle")) {
+    button.setAttribute("aria-pressed", String(theme === "dark"));
+  }
 }
 
-/** Toggle light/dark and remember it in localStorage (wrap storage in try/catch). */
+/** Toggle light/dark and remember the choice (storage can be blocked: then it lasts this page only). */
 function toggleTheme() {
-  // TODO: read current, flip, applyTheme, save under THEME_STORAGE_KEY.
-  void THEME_STORAGE_KEY;
+  const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  applyTheme(next);
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, next);
+  } catch {
+    /* private mode */
+  }
 }
 
-/** Initial theme: saved choice, else the OS preference (prefers-color-scheme). */
+/** Initial theme: saved choice, else the OS preference. */
 function initTheme() {
-  // TODO: try localStorage, fall back to matchMedia("(prefers-color-scheme: dark)").
+  let saved = null;
+  try {
+    saved = localStorage.getItem(THEME_STORAGE_KEY);
+  } catch {
+    /* storage blocked */
+  }
+  const osDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  applyTheme(saved === "dark" || saved === "light" ? saved : osDark ? "dark" : "light");
 }
 
-/** Mobile nav: open/close #site-nav and keep aria-expanded in sync. */
-function toggleNav() {
-  // TODO (Plan step 5): toggle .open on #site-nav; set aria-expanded on .nav-toggle.
+/**
+ * Open/close a disclosure: the button's aria-expanded drives it, aria-controls names the target.
+ * Mobile nav uses the .open class (CSS shows it on wide screens anyway); the quick menu uses `hidden`.
+ * @param {HTMLButtonElement} button
+ * @param {boolean} [open]  omit to toggle
+ */
+function setExpanded(button, open = button.getAttribute("aria-expanded") !== "true") {
+  const target = document.getElementById(button.getAttribute("aria-controls"));
+  if (!target) return;
+  button.setAttribute("aria-expanded", String(open));
+  if (target.id === "site-nav") target.classList.toggle("open", open);
+  else target.hidden = !open;
+}
+
+/** Mobile Menu button and bottom Options menu: click toggles; Esc or a click elsewhere closes. */
+function initMenus() {
+  const toggles = [...document.querySelectorAll(".nav-toggle, .quick-menu-toggle")];
+  for (const button of toggles) button.addEventListener("click", () => setExpanded(button));
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    for (const button of toggles) {
+      if (button.getAttribute("aria-expanded") === "true") {
+        setExpanded(button, false);
+        button.focus();
+      }
+    }
+  });
+  document.addEventListener("click", (e) => {
+    for (const button of toggles) {
+      const target = document.getElementById(button.getAttribute("aria-controls"));
+      if (!button.contains(e.target) && !target?.contains(e.target)) setExpanded(button, false);
+    }
+  });
 }
 
 /**
@@ -106,12 +149,9 @@ function blip(freq, seconds, volume) {
   osc.stop(audio.currentTime + seconds);
 }
 
-/** Sync the Sound button with soundOn. */
+/** Sync the Sound switch with soundOn (label stays "Sound"; aria-pressed is the state). */
 function renderSoundToggle() {
-  const button = document.querySelector(".sound-toggle");
-  if (!button) return;
-  button.setAttribute("aria-pressed", String(soundOn));
-  button.textContent = soundOn ? "Sound on" : "Sound off";
+  document.querySelector(".sound-toggle")?.setAttribute("aria-pressed", String(soundOn));
 }
 
 /** Menu sounds: muted by default; clicks and hovers on buttons, links and tiles blip when on. */
@@ -161,6 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initSparkles();
   initSounds();
   initHitCounter();
+  initMenus();
   document.querySelector(".theme-toggle")?.addEventListener("click", toggleTheme);
-  document.querySelector(".nav-toggle")?.addEventListener("click", toggleNav);
 });

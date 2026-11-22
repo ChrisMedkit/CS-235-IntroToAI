@@ -27,6 +27,7 @@
 }
 
 :root {
+  color-scheme: light;
   --bg: #e9f2f8;
   --surface: #ffffff;
   --glass: rgb(255 255 255 / 0.62);
@@ -68,6 +69,7 @@
 }
 
 [data-theme="dark"] {
+  color-scheme: dark;
   --bg: #0c1622;
   --surface: #16222f;
   --glass: rgb(16 28 42 / 0.66);
@@ -257,10 +259,15 @@ img {
 #site-nav ul {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0.25rem 0 0.5rem;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.5rem;
+}
+/* li a: beats the shared pill rule's inline-block so links span the stacked menu. */
+#site-nav li a {
+  display: block;
+  text-align: center;
 }
 
 /* Mobile: nav collapses behind the Menu button (toggleNav sets .open). */
@@ -541,6 +548,68 @@ label {
   box-shadow: 0 0 10px var(--accent-glow);
 }
 
+/* ---------- Quick menu (bottom of the screen): Dark mode + Sound ---------- */
+.quick-menu {
+  position: fixed;
+  right: var(--space);
+  bottom: calc(var(--space) + env(safe-area-inset-bottom));
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+.quick-menu-toggle {
+  padding: 0.55rem 1.2rem;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    var(--shadow);
+}
+.quick-menu-toggle[aria-expanded="true"] {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+.quick-menu-panel {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 210px;
+  padding: 0.75rem;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+/* On/off switch: the label never changes, aria-pressed moves the knob. */
+.switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+.switch::after {
+  content: "";
+  flex: none;
+  width: 2.6rem;
+  height: 1.4rem;
+  border-radius: var(--pill);
+  background:
+    radial-gradient(circle at 0.7rem 50%, #ffffff 0.5rem, transparent 0.55rem),
+    var(--border);
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.25);
+}
+.switch[aria-pressed="true"]::after {
+  background:
+    radial-gradient(circle at calc(100% - 0.7rem) 50%, #ffffff 0.5rem, transparent 0.55rem),
+    var(--accent);
+}
+/* Keep the footer badges clear of the floating Options button. */
+.site-footer {
+  padding-bottom: 4.5rem;
+}
+
 /* ---------- Sparkle cursor trail (spawned by initSparkles) ---------- */
 .sparkle {
   position: fixed;
@@ -807,6 +876,9 @@ form textarea {
 }
 .cell.wall {
   background: #34495e;
+}
+[data-theme="dark"] .cell.wall {
+  background: #9aabbf;
 }
 .cell.weight {
   background: #f5b041;
@@ -1169,6 +1241,10 @@ kbd {
     display: block;
     width: auto;
     order: 0;
+  }
+  #site-nav ul {
+    flex-direction: row;
+    padding: 0;
   }
   #hero {
     grid-template-columns: 1fr 1fr;

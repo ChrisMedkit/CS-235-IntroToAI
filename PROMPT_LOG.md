@@ -31,6 +31,15 @@ Record at least three significant features (page structure, navigation, CSS, res
 | What it produced | Checked font licenses, downloaded Rocket Pop, Digit Lo-Fi and Minecraft into `fonts/` with `@font-face`; moved the math pages into `math/` and built `cs/` and `social/` (17 pages, top nav + sub-nav, `aria-current` in the HTML); page layouts and CSS for every new tool; `js/cs-lib.js`, `js/social-lib.js`, `js/storage.js` stubs with 44 tests; one stub script per page; updated outline, diagrams, README. Checked all pages: no broken links, labels on every input, no console errors, no sideways scroll at 375 px. Switched the stat numbers off Digit Lo-Fi after seeing it unreadable at small size. |
 | Your decision | TODO: what you kept or changed, and why |
 
+## 1. Dark/light toggle and mobile menu (Steps 5 and 7)
+| Field | Entry |
+|---|---|
+| Feature | Dark/light mode toggle (the spec's JS feature), mobile Menu, and a bottom-of-screen Options menu holding Dark mode + Sound |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "Implement the dark mode toggle and mobile menu. Have dark mode and the sound toggle be part of a different menu towards the bottom of the screen." |
+| What it produced | `applyTheme`, `toggleTheme`, `initTheme` (saved choice in localStorage, else the OS `prefers-color-scheme`; storage errors caught); one `setExpanded`/`initMenus` pair drives both the Menu button and the new Options button through `aria-expanded`/`aria-controls`, with Esc and click-outside to close. Moved the two toggles out of the header on all 17 pages into a fixed bottom-right Options panel styled as on/off switches (label stays the same, `aria-pressed` carries the state). CSS: stacked full-width mobile nav, `color-scheme` per theme, lighter graph walls in dark mode. Tested in the browser: toggle on/off, saved across pages, Esc returns focus, phone width, no console errors. Debug: the stacked links stayed narrow because the shared pill rule came later with equal specificity; fixed with `#site-nav li a`. |
+| Your decision | TODO: what you kept or changed, and why |
+
 ## Warm-up (Step 2.4)
 TODO: ask "What semantic elements should a personal website homepage include?" and note one thing you learned.
 
