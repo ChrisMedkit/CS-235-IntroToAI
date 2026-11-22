@@ -1,6 +1,6 @@
 # Prompt Log — 8-Bit Casino Website
 
-LLM(s) used: TODO (e.g. Claude, ChatGPT, GitHub Copilot)
+LLM(s) used: Claude Code (Claude Opus 5.5), chat-based agent in the Claude desktop app. It wrote files and ran tests and a browser in my project folder, one assignment step per request. TODO: add any other LLM you used (e.g. for the warm-up).
 
 Record at least three significant features (page structure, navigation, CSS, responsive layout, JS feature; debugging exchanges count).
 
@@ -72,4 +72,19 @@ TODO: ask your LLM "What semantic elements should a personal website homepage in
 | Your decision | TODO: lesson, e.g. "hard-reload (⇧⌘R) after editing JS before assuming the code is broken" |
 
 ## Reflection
-TODO: what the LLM got wrong and how you caught it, which corrections you made yourself, what you would prompt differently, and how you made sure you understand and own the final code.
+<!-- Write this yourself: the rubric grades your own thinking on corrections and ownership.
+     Delete these notes when done. -->
+
+Corrections on record, to draw on (from the entries above and `TEST_REPORT.md`):
+- I changed the plan's Home page from a pitch + hero image to an ASCII circus hero and a sideways game-select gallery (Step 3).
+- The LLM drafted the card blurbs and game rules; I need to decide what to rewrite in my own words (Steps 4–5).
+- Title broke as "8-" / "Bit" on phones → `.nowrap` span; `favicon.ico` 404 → inline favicon (Step 6).
+- The lightbox "didn't work" because the browser cached the old script, not because of a code bug (Step 7).
+- Its first backdrop-close check would have closed the dialog on clicks inside its padding (Step 7).
+- Images are still missing: the tests caught this, the LLM couldn't fix it because the art has to be mine (Step 8).
+
+TODO, in your own words (a paragraph or two each):
+1. What did the LLM get wrong or miss, and how did you catch it?
+2. What did you change or reject, and why?
+3. What would you prompt differently next time?
+4. How do you know you understand the final code? Pick one piece (e.g. `wrapIndex` and why it adds `length` before the second `%`, or why the lightbox uses `<dialog>`) and explain it.

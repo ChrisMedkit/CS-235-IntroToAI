@@ -12,18 +12,18 @@ Build a 3+ page website about a personal interest, using an LLM as the developme
 - **Constraints:** any LLM; images you own or have rights to; no copied text from other sites; shared external CSS and JS (no inline styles/scripts).
 
 ## Requirements
-- [ ] At least three pages: `index.html` (Home), `about.html` (About), `gallery.html` (Gallery)
-- [ ] Identical navigation menu on every page linking all pages
+- [x] At least three pages: `index.html` (Home), `about.html` (About), `gallery.html` (Gallery)
+- [x] Identical navigation menu on every page linking all pages
 - [ ] At least two images (yours / licensed), every `<img>` has alt text
-- [ ] Consistent design: shared colors, fonts, layout (one `css/style.css`)
-- [ ] One interactive JS feature: **gallery lightbox / slideshow** in `js/script.js`
-- [ ] Responsive: desktop and phone width (stacks under 600px, no horizontal scroll at 375px)
-- [ ] Semantic HTML: `header`, `nav`, `main`, `section`, `footer`
+- [x] Consistent design: shared colors, fonts, layout (one `css/style.css`)
+- [x] One interactive JS feature: **gallery lightbox / slideshow** in `js/script.js`
+- [x] Responsive: desktop and phone width (stacks under 600px, no horizontal scroll at 375px)
+- [x] Semantic HTML: `header`, `nav`, `main`, `section`, `footer`
 - [ ] Meaningful class names, helpful comments, consistent formatting (Prettier on save)
-- [ ] Readable color contrast
+- [x] Readable color contrast
 - [ ] Prompt log for ≥ 3 significant features (feature, LLM used, prompt, what it produced, your decision) — `PROMPT_LOG.md`
 - [ ] Reflection on corrections and ownership — end of `PROMPT_LOG.md`
-- [ ] Test report covering the 6 testing items — `TEST_REPORT.md`
+- [x] Test report covering the 6 testing items — `TEST_REPORT.md`
 - [ ] GitHub repo with a commit at the end of every step; submit repo link (+ optional GitHub Pages link), prompt log, test report
 
 ## Pages & features
@@ -44,10 +44,10 @@ Build a 3+ page website about a personal interest, using an LLM as the developme
 
 ## Accessibility & responsiveness checklist
 - [ ] Every `<img>` has a real description in `alt`
-- [ ] Nav shows current page (`aria-current="page"`) and visible `:focus-visible` styles
-- [ ] Thumbnails are `<button>`s, so Tab + Enter opens the lightbox; Esc closes it
-- [ ] Text/background contrast ≥ 4.5:1
-- [ ] No horizontal scroll at 375px; gallery is 1–2 columns on phones
+- [x] Nav shows current page (`aria-current="page"`) and visible `:focus-visible` styles
+- [x] Thumbnails are `<button>`s, so Tab + Enter opens the lightbox; Esc closes it
+- [x] Text/background contrast ≥ 4.5:1
+- [x] No horizontal scroll at 375px; gallery is 1–2 columns on phones
 
 ## Plan
 1. **Step 1–3:** gather text + at least 2 images (into `images/`), write the site plan below, warm-up prompt. Commit.
