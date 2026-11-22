@@ -43,14 +43,15 @@ TODO: ask your LLM "What semantic elements should a personal website homepage in
 | What it produced | About: section 1 `#the-casino` (placeholders for my text + a play-money note), section 2 `#the-games` with one image and an `<article>` of short rules per game, with ids matching the Home card links. Gallery: intro line, six `<button>`-wrapped `<img>`s with descriptive alt text and width/height, and the lightbox `<dialog>`. It then ran a script to check that the header and footer are identical across pages (apart from `aria-current`) and that every link and `#anchor` exists, found the Home footer differed by a leftover comment and removed it, and removed an empty `src=""` on the lightbox image (invalid HTML). No console errors on any page. |
 | Your decision | TODO: e.g. rewrite the rules and About text in my own words; match the gallery alt text to my real images |
 
-## 2. TODO: feature (e.g. CSS design + responsive layout)
+## 2. CSS design + responsive layout (Step 6)
 | Field | Entry |
 |---|---|
-| Feature | |
-| LLM used | |
-| Your prompt | |
-| What it produced | |
-| Your decision | |
+| Feature | `css/style.css` for all three pages, mobile first |
+| LLM used | Claude Code (Claude Opus 5.5, chat in the desktop app) |
+| Your prompt | "Yes, start Step 6" (context: the design plan in `OUTLINE.md`: dark navy background, gold accent, pink hover, pixel font for headings only, header + horizontal nav, stack under 600px) |
+| What it produced | Design tokens in `:root`; "Press Start 2P" (Google Fonts) for headings, nav and buttons, system font for body text; header/nav bar that stacks on phones with the current page highlighted in gold; ASCII art sized with `clamp()`; game cards in a sideways `scroll-snap` row where the next card peeks in; 1/2/3-column gallery grid (phone/600px/900px); lightbox, footer, `:focus-visible` outlines; smooth scrolling that turns off for `prefers-reduced-motion`. |
+| Testing + fixes | It ran a local server and checked each page at 1280px and 375px: no horizontal page scroll anywhere. Found two problems and fixed them: (1) on phones the title broke at the hyphen as "8-" / "Bit" → wrapped "8-Bit Casino" in a `.nowrap` span; (2) the server log showed a `favicon.ico` 404 on every page → added an inline SVG favicon. Computed contrast for every color pair: all pass WCAG AA (lowest 5.15:1, pink on card background). The remaining 404s are the image files I haven't added yet. |
+| Your decision | TODO: e.g. kept the palette; changed X because Y; one focused follow-up prompt you tried (the spec asks you to iterate one change at a time) |
 
 ## 3. TODO: feature (e.g. Gallery lightbox JavaScript)
 | Field | Entry |
