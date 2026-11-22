@@ -217,62 +217,149 @@ export function applyStep(a, step) {
  * Duplicates are ignored.
  * @param {BstNode|null} root
  * @param {number} value
- * @returns {{root: BstNode, path: number[]}}  path = values visited, for the animation
+ * @returns {{root: BstNode, path: number[], inserted: boolean}}  path = values visited, ending
+ *   with the new node (or the existing duplicate)
  */
 export function bstInsert(root, value) {
-  // TODO (Plan CS step 2)
-  void root, value;
-  throw new Error("Not implemented");
+  const path = [];
+  let inserted = false;
+  const insert = (node) => {
+    if (!node) {
+      inserted = true;
+      path.push(value);
+      return { value, left: null, right: null };
+    }
+    path.push(node.value);
+    // Copy a node only if its subtree changed, so a duplicate returns the very same tree.
+    if (value < node.value) {
+      const left = insert(node.left);
+      return left === node.left ? node : { ...node, left };
+    }
+    if (value > node.value) {
+      const right = insert(node.right);
+      return right === node.right ? node : { ...node, right };
+    }
+    return node; // duplicate: unchanged
+  };
+  return { root: insert(root), path, inserted };
 }
 
 /**
- * Delete from a BST (no mutation). Two children: replace with the in-order successor.
- * @returns {{root: BstNode|null, path: number[], found: boolean}}
+ * Delete from a BST (no mutation). Two children: replace with the in-order successor
+ * (smallest value in the right subtree).
+ * @returns {{root: BstNode|null, path: number[], found: boolean, children: number}}
+ *   children = how many children the deleted node had (0, 1 or 2), for the explanation
  */
 export function bstDelete(root, value) {
-  // TODO (Plan CS step 2)
-  void root, value;
-  throw new Error("Not implemented");
+  const path = [];
+  let found = false;
+  let children = 0;
+  const removeMin = (node) => (node.left ? { ...node, left: removeMin(node.left) } : node.right);
+  const remove = (node) => {
+    if (!node) return null;
+    path.push(node.value);
+    if (value < node.value) {
+      const left = remove(node.left);
+      return left === node.left ? node : { ...node, left };
+    }
+    if (value > node.value) {
+      const right = remove(node.right);
+      return right === node.right ? node : { ...node, right };
+    }
+    found = true;
+    children = (node.left ? 1 : 0) + (node.right ? 1 : 0);
+    if (!node.left) return node.right;
+    if (!node.right) return node.left;
+    let successor = node.right;
+    while (successor.left) successor = successor.left;
+    return { value: successor.value, left: node.left, right: removeMin(node.right) };
+  };
+  return { root: remove(root), path, found, children };
 }
 
 /** @returns {{found: boolean, path: number[]}} */
 export function bstSearch(root, value) {
-  // TODO (Plan CS step 2)
-  void root, value;
-  throw new Error("Not implemented");
+  const path = [];
+  for (let node = root; node; node = value < node.value ? node.left : node.right) {
+    path.push(node.value);
+    if (node.value === value) return { found: true, path };
+  }
+  return { found: false, path };
 }
 
 /**
  * Positions for drawing a tree: x = in-order rank, y = depth.
  * @param {BstNode|null} root
- * @returns {{value: number, x: number, y: number, parent: number|null}[]}  parent = index in this array
+ * @returns {{value: number, x: number, y: number, parent: number|null}[]}  parent = index in this
+ *   array (pre-order, so a parent always comes before its children)
  */
 export function treeLayout(root) {
-  // TODO (Plan CS step 2): in-order traversal with a counter for x and depth for y.
-  void root;
-  throw new Error("Not implemented");
+  const rank = new Map();
+  let x = 0;
+  const inorder = (node) => {
+    if (!node) return;
+    inorder(node.left);
+    rank.set(node, x++);
+    inorder(node.right);
+  };
+  inorder(root);
+  const out = [];
+  const preorder = (node, y, parent) => {
+    if (!node) return;
+    const index = out.push({ value: node.value, x: rank.get(node), y, parent }) - 1;
+    preorder(node.left, y + 1, index);
+    preorder(node.right, y + 1, index);
+  };
+  preorder(root, 0, null);
+  return out;
 }
 
 /**
  * Push onto a binary min-heap stored as an array (no mutation), recording sift-up swaps.
  * @param {number[]} heap
  * @param {number} value
- * @returns {{heap: number[], swaps: [number, number][]}}
+ * @returns {{heap: number[], swaps: [number, number][]}}  each swap is [child, parent]
  */
 export function heapPush(heap, value) {
-  // TODO (Plan CS step 2): parent(i) = floor((i - 1) / 2).
-  void heap, value;
-  throw new Error("Not implemented");
+  const h = [...heap, value];
+  const swaps = [];
+  let i = h.length - 1;
+  while (i > 0) {
+    const parent = Math.floor((i - 1) / 2);
+    if (h[parent] <= h[i]) break;
+    [h[i], h[parent]] = [h[parent], h[i]];
+    swaps.push([i, parent]);
+    i = parent;
+  }
+  return { heap: h, swaps };
 }
 
 /**
  * Pop the minimum (no mutation), recording sift-down swaps.
- * @returns {{heap: number[], min: number|undefined, swaps: [number, number][]}}
+ * @returns {{heap: number[], min: number|undefined, swaps: [number, number][]}}  swaps are [parent, child]
  */
 export function heapPop(heap) {
-  // TODO (Plan CS step 2): move last to root, sift down toward the smaller child.
-  void heap;
-  throw new Error("Not implemented");
+  if (heap.length === 0) return { heap: [], min: undefined, swaps: [] };
+  const h = [...heap];
+  const min = h[0];
+  const last = h.pop();
+  const swaps = [];
+  if (h.length > 0) {
+    h[0] = last;
+    let i = 0;
+    for (;;) {
+      const l = 2 * i + 1;
+      const r = l + 1;
+      let smallest = i;
+      if (l < h.length && h[l] < h[smallest]) smallest = l;
+      if (r < h.length && h[r] < h[smallest]) smallest = r;
+      if (smallest === i) break;
+      [h[i], h[smallest]] = [h[smallest], h[i]];
+      swaps.push([i, smallest]);
+      i = smallest;
+    }
+  }
+  return { heap: h, min, swaps };
 }
 
 /**
@@ -282,9 +369,9 @@ export function heapPop(heap) {
  * @returns {number}  0 <= index < size
  */
 export function hashIndex(key, size) {
-  // TODO (Plan CS step 2)
-  void key, size;
-  throw new Error("Not implemented");
+  let h = 5381;
+  for (let k = 0; k < key.length; k++) h = (Math.imul(h, 33) + key.charCodeAt(k)) | 0;
+  return ((h % size) + size) % size; // h can be negative after 32-bit overflow
 }
 
 /* ---------------- Graphs ---------------- */

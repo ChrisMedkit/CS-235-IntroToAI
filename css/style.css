@@ -915,12 +915,79 @@ form textarea {
 }
 
 /* ---------- Data structures ---------- */
-.ds-canvas {
-  width: 100%;
-  height: auto;
+.ds-scroll {
+  overflow-x: auto;
   background: var(--surface);
   border: 2px solid var(--border);
   border-radius: 16px;
+  padding: 0.5rem 0;
+}
+.ds-canvas {
+  display: block;
+  margin: 0 auto; /* centered when small; auto margins drop to 0 when it overflows */
+}
+/* SVG nodes drawn by structures.js. .hit = on the search path, .focus = the target. */
+.ds-node rect,
+.ds-node circle {
+  fill: var(--surface);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+.ds-node text,
+.ds-label {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 15px;
+  dominant-baseline: central;
+}
+.ds-node text {
+  fill: var(--text);
+  text-anchor: middle;
+}
+.ds-node.hit rect,
+.ds-node.hit circle {
+  fill: #ffe94a;
+  stroke: #c9a800;
+}
+.ds-node.hit text {
+  fill: #1b2733;
+}
+.ds-node.focus rect,
+.ds-node.focus circle {
+  fill: var(--accent);
+  stroke: var(--accent-strong);
+}
+.ds-node.focus text {
+  fill: #ffffff;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ds-node.hit,
+  .ds-node.focus {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ds-pop 0.45s ease-out both;
+    animation-delay: var(--d, 0ms);
+  }
+}
+@keyframes ds-pop {
+  from {
+    transform: scale(1.25);
+  }
+}
+.ds-edge {
+  stroke: var(--muted);
+  stroke-width: 2;
+}
+.ds-arrowhead {
+  fill: var(--muted);
+}
+.ds-pointer {
+  fill: var(--bg);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+.ds-label {
+  fill: var(--muted);
 }
 .log {
   max-height: 14rem;

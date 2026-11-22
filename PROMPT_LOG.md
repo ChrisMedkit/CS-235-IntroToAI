@@ -68,6 +68,16 @@ Record at least three significant features (page structure, navigation, CSS, res
 | Your decision | TODO: what you kept or changed, and why |
 | Debugging | (1) At full speed bubble sort on 40 bars took 9 s, because browser timers can't fire much faster than ~60/s; fixed by running several steps per frame (speed now ~1 to ~2200 steps/s; 120 bars sort in 0.6–4.9 s). (2) "O(n log n)" wrapped in its stat box; `white-space: nowrap`. (3) 120 bars overflowed a 375 px phone (2 px minimum width + 2 px gaps); bars may now shrink and gaps are 1 px. |
 
+## 5. Data structures visualizer (Plan CS step 2)
+| Field | Entry |
+|---|---|
+| Feature | Stack, queue, linked list, BST, min-heap and hash table (chaining), drawn in SVG |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "implement the data structures visualizer" |
+| What it produced | `js/cs-lib.js`: immutable BST insert/delete/search (delete reports the 0/1/2-children case, two children use the in-order successor), `treeLayout` (x = in-order rank, y = depth), min-heap push/pop recording swaps, djb2 `hashIndex`. Tests added for duplicates, each delete case, deleting the root, a missing value, and 40 random heap pushes/pops against a sort. `js/structures.js`: buttons relabel per structure (Push/Pop/Peek, Enqueue/Dequeue/Front, ...), input validation (numbers for BST/heap, size limits), a plain-English log of every operation, Big-O of the last operation, size and height (load factor for the hash table); search paths pulse yellow in order and the target turns blue; the heap is drawn as a tree and as its array. |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | (1) A new test failed: inserting a duplicate still copied every node on the path, so the "unchanged" tree was a new object; now a node is copied only if its subtree changed (same fix for deleting a missing value). (2) The drawings used an 800-wide viewBox scaled into a ~330 px panel, so text shrank to ~6 px; they now draw at real size inside a box that scrolls sideways only when the structure is wide, and BST spacing was tightened so a 10-node tree fits. |
+
 ## Warm-up (Step 2.4)
 TODO: ask "What semantic elements should a personal website homepage include?" and note one thing you learned.
 

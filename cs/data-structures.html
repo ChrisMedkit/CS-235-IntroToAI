@@ -81,7 +81,10 @@
 
       <section id="ds-stage" aria-labelledby="ds-stage-heading">
         <h2 id="ds-stage-heading">Structure</h2>
-        <svg id="ds-canvas" class="ds-canvas" viewBox="0 0 800 480" role="img" aria-label="Current structure"></svg>
+        <!-- Drawn at 1:1 size so text stays readable; big structures scroll sideways here. -->
+        <div class="ds-scroll">
+          <svg id="ds-canvas" class="ds-canvas" role="img" aria-label="Current structure"></svg>
+        </div>
         <dl class="stats">
           <div><dt>Size</dt><dd id="ds-size">0</dd></div>
           <div><dt>Height</dt><dd id="ds-height">0</dd></div>

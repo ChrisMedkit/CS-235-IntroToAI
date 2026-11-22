@@ -76,6 +76,26 @@ test("BST insert/search/delete", () => {
   assert.equal(bstSearch(root, 3).found, true, "original tree unchanged");
 });
 
+test("BST: duplicates, leaf / one-child / root deletes, missing value", () => {
+  const build = (values) => values.reduce((root, v) => bstInsert(root, v).root, null);
+  const inorder = (node) => (node ? [...inorder(node.left), node.value, ...inorder(node.right)] : []);
+  const root = build([8, 3, 10, 1, 6, 14, 13]);
+  const dup = bstInsert(root, 6);
+  assert.equal(dup.inserted, false);
+  assert.equal(dup.root, root, "duplicate leaves the tree as is");
+  assert.deepEqual(bstInsert(root, 7).path, [8, 3, 6, 7]);
+  for (const [value, children] of [[1, 0], [14, 1], [8, 2]]) {
+    const r = bstDelete(root, value);
+    assert.equal(r.found, true);
+    assert.equal(r.children, children, `children of ${value}`);
+    assert.deepEqual(inorder(r.root), [1, 3, 6, 8, 10, 13, 14].filter((v) => v !== value));
+  }
+  const missing = bstDelete(root, 99);
+  assert.equal(missing.found, false);
+  assert.equal(missing.root, root, "deleting a missing value leaves the tree as is");
+  assert.equal(bstDelete(build([5]), 5).root, null);
+});
+
 test("treeLayout: x is in-order rank, y is depth", () => {
   let root = null;
   for (const v of [2, 1, 3]) root = bstInsert(root, v).root;
@@ -96,6 +116,22 @@ test("min-heap push/pop returns values in order", () => {
     heap = r.heap;
   }
   assert.deepEqual(out, [1, 2, 3, 5, 8, 9]);
+});
+
+test("min-heap: random pushes and pops match a sort; swaps are recorded; empty pop", () => {
+  let seed = 7;
+  const random = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const values = Array.from({ length: 40 }, () => Math.floor(random() * 20));
+  let heap = values.reduce((h, v) => heapPush(h, v).heap, []);
+  const popped = [];
+  while (heap.length) {
+    const r = heapPop(heap);
+    popped.push(r.min);
+    heap = r.heap;
+  }
+  assert.deepEqual(popped, [...values].sort((a, b) => a - b));
+  assert.deepEqual(heapPush([1, 5, 8], 0).swaps, [[3, 1], [1, 0]]);
+  assert.deepEqual(heapPop([]), { heap: [], min: undefined, swaps: [] });
 });
 
 test("hashIndex: deterministic and in range", () => {

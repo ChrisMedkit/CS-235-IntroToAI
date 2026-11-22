@@ -78,7 +78,7 @@ Milestones follow the spec's steps; commit after each.
 11. **Hub:** ✅ (a) `filterTools` (test passes), (b) `renderHub` (cards with status + section badges, title link covers the card, live count), (c) filter buttons with `aria-pressed`. Commit.
 12. **CS** (`js/cs-lib.js` + tests, then page scripts):
     1. ✅ Sorting: `sortSteps` + `applyStep` + `PSEUDOCODE` (9 tests pass), then bars, pseudocode, step/play/pause/reset, counters in `sorting.js`.
-    2. Data structures: `bstInsert/Delete/Search`, `treeLayout`, `heapPush/Pop`, `hashIndex` (tests), then `renderOps`, `run`, `draw` in `structures.js`.
+    2. ✅ Data structures: `bstInsert/Delete/Search`, `treeLayout`, `heapPush/Pop`, `hashIndex` (6 tests pass), then `renderOps`, `run`, `draw` in `structures.js`.
     3. Graphs: `gridSearch`, `generateMaze` (tests), then `buildGrid`, `paint`, `run`, `clearPath` in `graphs.js`.
     4. Big-O: `fitComplexity` (test), then `drawCurves`, `benchmark`, `showResults` in `bigo.js`.
     5. Regex: `explainRegex`, `findMatches`, `escapeRegex` (tests), then `insertToken`, `update`, `renderHighlight`, `copyAsJs` in `regex.js`.
