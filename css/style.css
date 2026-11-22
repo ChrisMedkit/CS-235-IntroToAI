@@ -1,0 +1,185 @@
+/* Christopia shared stylesheet (used by every page).
+   Theme is not chosen yet: change the tokens in :root and [data-theme="dark"] first,
+   everything else reads from them. */
+
+:root {
+  --bg: #ffffff;
+  --surface: #f6f8fa;
+  --text: #1f2328;
+  --muted: #59636e;
+  --accent: #0969da;
+  --accent-text: #ffffff;
+  --error: #cf222e;
+  --border: #d0d7de;
+  --radius: 8px;
+  --space: 1rem;
+  --font: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --header-h: 3.5rem;
+}
+
+/* Dark mode: js/script.js sets data-theme on <html> (applyTheme). */
+[data-theme="dark"] {
+  /* TODO (Step 7): dark tokens; check contrast (4.5:1 for text). */
+  --bg: #0d1117;
+  --surface: #161b22;
+  --text: #e6edf3;
+  --muted: #9198a1;
+  --accent: #4493f8;
+  --border: #30363d;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: var(--space);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.error {
+  color: var(--error);
+}
+
+/* ---------- Header + nav ---------- */
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space);
+  padding: 0 var(--space);
+  min-height: var(--header-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text);
+  text-decoration: none;
+  margin-right: auto;
+}
+
+/* TODO (Step 6): nav as a horizontal bar with hover/focus styles;
+   style a[aria-current="page"] (set by markActiveNav) as the current page. */
+#site-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Mobile: nav collapses behind the Menu button (toggleNav sets .open). */
+#site-nav {
+  display: none;
+  width: 100%;
+}
+#site-nav.open {
+  display: block;
+}
+
+/* ---------- Buttons ---------- */
+/* TODO (Step 6): one button style shared by .button links and <button>. */
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ---------- Home: hero ---------- */
+/* TODO (Step 6): hero layout (text + image side by side on desktop, stacked on mobile). */
+
+/* ---------- Home: scrolling tool gallery ---------- */
+.tool-gallery {
+  list-style: none;
+  padding: 0 0 var(--space);
+  display: flex;
+  gap: var(--space);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+.tool-card {
+  flex: 0 0 min(80%, 320px);
+  scroll-snap-align: start;
+  /* TODO (Step 6): card look (surface, border, radius, hover lift). */
+}
+
+/* ---------- Tool pages: controls + output ---------- */
+.tool-layout {
+  display: grid;
+  gap: var(--space);
+}
+#plot {
+  width: 100%;
+  min-height: 420px;
+}
+textarea {
+  width: 100%;
+  font-family: var(--mono);
+}
+/* TODO (Step 6): form controls, fieldsets, expression rows, matrix result table. */
+
+/* ---------- Hub ---------- */
+.hub-grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--space);
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+/* TODO (Step 6): status badges (.status-live / .status-planned). */
+
+/* ---------- Footer ---------- */
+.site-footer {
+  padding: var(--space);
+  text-align: center;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+/* ---------- Wider screens ---------- */
+@media (min-width: 768px) {
+  .nav-toggle {
+    display: none;
+  }
+  #site-nav {
+    display: block;
+    width: auto;
+  }
+  #site-nav ul {
+    display: flex;
+    gap: var(--space);
+  }
+  .tool-layout {
+    grid-template-columns: minmax(280px, 1fr) 2fr;
+  }
+}

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Matrix Lab</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html">Christopia</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="plotter.html">Plotter</a></li>
+          <li><a href="scanner.html">Scanner</a></li>
+          <li><a href="matrix.html">Matrix Lab</a></li>
+          <li><a href="latex.html">LaTeX</a></li>
+          <li><a href="hub.html">Hub</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+    </header>
+
+    <main class="tool-layout">
+      <section id="matrix-input" aria-labelledby="matrix-heading">
+        <h1 id="matrix-heading">Matrix Lab</h1>
+
+        <form id="matrix-form">
+          <!-- One row per line, entries separated by spaces or commas. Fractions like 1/2 allowed. -->
+          <label for="matrix-text">Matrix A</label>
+          <textarea id="matrix-text" rows="6" spellcheck="false">
+1 2 3
+4 5 6
+7 8 10</textarea
+          >
+
+          <fieldset>
+            <legend>Operation</legend>
+            <label><input type="radio" name="op" value="rref" checked /> RREF (with steps)</label>
+            <label><input type="radio" name="op" value="det" /> Determinant</label>
+            <label><input type="radio" name="op" value="inv" /> Inverse</label>
+            <label><input type="radio" name="op" value="eigs" /> Eigenvalues</label>
+            <label><input type="radio" name="op" value="transpose" /> Transpose</label>
+          </fieldset>
+
+          <button type="submit">Compute</button>
+        </form>
+        <p id="matrix-error" class="error" role="alert"></p>
+      </section>
+
+      <section id="matrix-output" aria-labelledby="result-heading">
+        <h2 id="result-heading">Result</h2>
+        <div id="matrix-result"></div>
+        <h3>Steps</h3>
+        <!-- Row operations from rref(); each step is an <li> with the operation and matrix. -->
+        <ol id="matrix-steps"></ol>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Christopia. TODO: footer text / GitHub link.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/13.2.0/math.min.js"></script>
+    <script type="module" src="js/script.js"></script>
+    <script type="module" src="js/matrix.js"></script>
+  </body>
+</html>

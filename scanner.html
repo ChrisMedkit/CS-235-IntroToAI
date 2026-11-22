@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Notes Scanner</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html">Christopia</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="plotter.html">Plotter</a></li>
+          <li><a href="scanner.html">Scanner</a></li>
+          <li><a href="matrix.html">Matrix Lab</a></li>
+          <li><a href="latex.html">LaTeX</a></li>
+          <li><a href="hub.html">Hub</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+    </header>
+
+    <main class="tool-layout">
+      <section id="scan-input" aria-labelledby="scan-heading">
+        <h1 id="scan-heading">Notes Scanner</h1>
+        <p>
+          TODO: one sentence on what it does. Runs in your browser with Tesseract.js; images never
+          leave your device. Works best on clear, printed or neat handwriting.
+        </p>
+
+        <form id="scan-form">
+          <!-- capture="environment" opens the rear camera on phones. -->
+          <label for="scan-file">Photo or image of your notes</label>
+          <input id="scan-file" type="file" accept="image/*" capture="environment" required />
+
+          <label for="scan-lang">Language</label>
+          <select id="scan-lang">
+            <option value="eng" selected>English</option>
+          </select>
+
+          <button type="submit">Scan</button>
+        </form>
+
+        <figure id="scan-preview" hidden>
+          <img id="scan-image" alt="Preview of the uploaded notes" />
+          <figcaption>Your upload</figcaption>
+        </figure>
+      </section>
+
+      <section id="scan-output" aria-labelledby="output-heading">
+        <h2 id="output-heading">Typed version</h2>
+        <progress id="scan-progress" max="1" value="0" hidden></progress>
+        <p id="scan-status" role="status"></p>
+
+        <label for="scan-text" class="visually-hidden">Recognized text</label>
+        <textarea id="scan-text" rows="16" placeholder="Recognized text appears here"></textarea>
+
+        <div class="button-row">
+          <button type="button" id="copy-text">Copy</button>
+          <button type="button" id="download-text">Download .txt</button>
+          <button type="button" id="send-to-latex">Open in LaTeX editor</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Christopia. TODO: footer text / GitHub link.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
+    <script type="module" src="js/script.js"></script>
+    <script type="module" src="js/scanner.js"></script>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Hub</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html">Christopia</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="plotter.html">Plotter</a></li>
+          <li><a href="scanner.html">Scanner</a></li>
+          <li><a href="matrix.html">Matrix Lab</a></li>
+          <li><a href="latex.html">LaTeX</a></li>
+          <li><a href="hub.html">Hub</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+    </header>
+
+    <main>
+      <section id="hub-intro">
+        <h1>Hub</h1>
+        <!-- TODO: what the hub is for and the roadmap (home server, smart home, ...). -->
+        <p>TODO</p>
+      </section>
+
+      <section id="hub-filters" aria-label="Filter tools">
+        <!-- filterTools() in js/utils.js; buttons wired in js/hub.js. -->
+        <div class="button-row" role="group" aria-label="Status">
+          <button type="button" data-status="all" aria-pressed="true">All</button>
+          <button type="button" data-status="live" aria-pressed="false">Live</button>
+          <button type="button" data-status="planned" aria-pressed="false">Planned</button>
+        </div>
+      </section>
+
+      <section id="hub-tools" aria-labelledby="hub-tools-heading">
+        <h2 id="hub-tools-heading">Tools &amp; services</h2>
+        <!-- Rendered from TOOLS in js/tools.js by renderHub() in js/hub.js. -->
+        <ul class="hub-grid" id="hub-grid"></ul>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Christopia. TODO: footer text / GitHub link.</p>
+    </footer>
+
+    <script type="module" src="js/script.js"></script>
+    <script type="module" src="js/hub.js"></script>
+  </body>
+</html>

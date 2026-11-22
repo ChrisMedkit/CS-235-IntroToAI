@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Home</title>
+    <meta name="description" content="Christopia: a hub of math and computer science tools." />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- Shared header: keep identical on every page (Step 5). -->
+    <header class="site-header">
+      <a class="brand" href="index.html">Christopia</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="plotter.html">Plotter</a></li>
+          <li><a href="scanner.html">Scanner</a></li>
+          <li><a href="matrix.html">Matrix Lab</a></li>
+          <li><a href="latex.html">LaTeX</a></li>
+          <li><a href="hub.html">Hub</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+    </header>
+
+    <main>
+      <section id="hero">
+        <!-- TODO (Step 4): headline + one-paragraph pitch for Christopia, in your words.
+             Theme comes later; keep this text-first so it survives a redesign. -->
+        <h1>Christopia</h1>
+        <p class="tagline">TODO: one-line tagline</p>
+        <img
+          src="images/hero.svg"
+          alt="TODO: describe the hero image"
+          width="640"
+          height="360"
+        />
+        <a class="button" href="#tools">Browse the tools</a>
+      </section>
+
+      <section id="tools" aria-labelledby="tools-heading">
+        <h2 id="tools-heading">Tools</h2>
+        <!-- Scrolling gallery: sideways scroll-snap row (CSS), cards rendered from js/tools.js
+             by renderToolGallery() in js/script.js. The static cards below are the no-JS fallback.
+             TODO (Step 7): decide whether to keep both or render only from tools.js. -->
+        <ul class="tool-gallery" id="tool-gallery">
+          <li class="tool-card">
+            <a href="plotter.html">
+              <img src="images/plotter.svg" alt="TODO: plotter preview" width="640" height="360" />
+              <h3>Function Plotter</h3>
+              <p>TODO: 2D and 3D graphs of functions you type.</p>
+            </a>
+          </li>
+          <!-- TODO: one <li class="tool-card"> per tool (scanner, matrix, latex, hub) -->
+        </ul>
+      </section>
+
+      <section id="about">
+        <h2>About</h2>
+        <!-- TODO (Step 4): who you are (applied math + CS), why this hub exists,
+             and what is planned next (home server, smart home, ...). -->
+        <p>TODO</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Christopia. TODO: footer text / GitHub link.</p>
+    </footer>
+
+    <script type="module" src="js/script.js"></script>
+  </body>
+</html>
