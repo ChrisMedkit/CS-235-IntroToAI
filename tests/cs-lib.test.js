@@ -3,6 +3,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   sortSteps,
+  PSEUDOCODE,
   applyStep,
   bstInsert,
   bstDelete,
@@ -37,6 +38,31 @@ for (const algorithm of ALGORITHMS) {
 
 test("sortSteps: already sorted bubble sort makes no swaps", () => {
   assert.ok(!sortSteps("bubble", [1, 2, 3, 4]).some((s) => s.type === "swap"));
+});
+
+test("sortSteps: random arrays with duplicates, plus empty and one-element arrays", () => {
+  let seed = 42;
+  const random = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const arrays = [[], [7]];
+  for (let k = 0; k < 20; k++) {
+    arrays.push(Array.from({ length: 1 + Math.floor(random() * 40) }, () => Math.floor(random() * 10)));
+  }
+  for (const algorithm of ALGORITHMS) {
+    for (const values of arrays) {
+      const steps = sortSteps(algorithm, values);
+      const a = [...values];
+      for (const step of steps) applyStep(a, step);
+      assert.deepEqual(a, [...values].sort((x, y) => x - y), `${algorithm} ${values}`);
+      // Every index is marked sorted exactly once, and every step points at a real pseudocode line.
+      const marked = steps.filter((s) => s.type === "sorted").map((s) => s.i).sort((x, y) => x - y);
+      assert.deepEqual(marked, values.map((_, i) => i), `${algorithm} sorted marks`);
+      assert.ok(steps.every((s) => Number.isInteger(s.line) && PSEUDOCODE[algorithm][s.line] !== undefined));
+    }
+  }
+});
+
+test("sortSteps: unknown algorithm throws", () => {
+  assert.throws(() => sortSteps("bogo", [2, 1]), RangeError);
 });
 
 test("BST insert/search/delete", () => {

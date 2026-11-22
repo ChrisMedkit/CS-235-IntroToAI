@@ -807,7 +807,7 @@ form textarea {
 }
 .stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 0.5rem;
   margin: var(--space) 0 0;
 }
@@ -825,7 +825,8 @@ form textarea {
   margin: 0;
   font-family: var(--mono);
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: 1.05rem;
+  white-space: nowrap; /* keep O(n log n) on one line */
   color: var(--accent-strong);
 }
 /* Radio groups shown as pill toggles. */
@@ -877,7 +878,7 @@ form textarea {
 .bars {
   display: flex;
   align-items: flex-end;
-  gap: 2px;
+  gap: 1px; /* 120 bars must fit a 375 px phone */
   height: 320px;
   padding: 0.5rem;
   background: var(--surface);
@@ -886,7 +887,7 @@ form textarea {
 }
 .bar {
   flex: 1;
-  min-width: 2px;
+  min-width: 0;
   border-radius: 4px 4px 0 0;
   background: var(--gloss-accent);
 }

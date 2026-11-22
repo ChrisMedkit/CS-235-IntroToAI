@@ -58,6 +58,16 @@ Record at least three significant features (page structure, navigation, CSS, res
 | What it produced | `filterTools` in `js/utils.js` (one line; its unit test now passes); `renderHub` in `js/hub.js` builds cards with `textContent` (name, summary, Live/Planned and section badges), links only tools that have a page (the link's `::after` makes the whole card clickable), shows an empty state, and updates a `role="status"` line ("Showing 12 of 14 tools") so screen readers hear the result; `onFilter` keeps exactly one button `aria-pressed`. CSS: glossy hub cards, dashed planned cards, badge colors for light and dark. Checked in the browser: All 14, Live 12, Planned 2, all links 200, no console errors. Changed after seeing it: the pressed filter was only a thin border, so pressed group buttons now use the solid aqua style. |
 | Your decision | TODO: what you kept or changed, and why |
 
+## 4. Sorting visualizer (Plan CS step 1)
+| Field | Entry |
+|---|---|
+| Feature | Sorting visualizer: bubble, insertion, selection, merge, quick (Lomuto), heap |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "implement the sorting visualizer" |
+| What it produced | `sortSteps` in `js/cs-lib.js` runs each algorithm on a copy and records compare / swap / write / sorted steps, each pointing at a line of `PSEUDOCODE`; `applyStep` replays one. Tests: every algorithm on 22 arrays (random with duplicates, empty, one element) replays to sorted, each index is marked sorted exactly once, every step's line exists, unknown names throw. `js/sorting.js`: bars (yellow = compared, red = swapped, green = in place), highlighted pseudocode line, comparison and swap counters, Big-O label, Step describes each move in words, Play/Pause, Reset replays the same array, New array / size reshuffle. |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | (1) At full speed bubble sort on 40 bars took 9 s, because browser timers can't fire much faster than ~60/s; fixed by running several steps per frame (speed now ~1 to ~2200 steps/s; 120 bars sort in 0.6–4.9 s). (2) "O(n log n)" wrapped in its stat box; `white-space: nowrap`. (3) 120 bars overflowed a 375 px phone (2 px minimum width + 2 px gaps); bars may now shrink and gaps are 1 px. |
+
 ## Warm-up (Step 2.4)
 TODO: ask "What semantic elements should a personal website homepage include?" and note one thing you learned.
 

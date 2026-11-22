@@ -20,22 +20,181 @@ export const PSEUDOCODE = {
     "    if a[j] > a[j + 1]",
     "      swap a[j], a[j + 1]",
   ],
-  // TODO (Plan CS step 1): insertion, selection, merge, quick (Lomuto partition), heap.
+  insertion: [
+    "for i from 1 to n - 1",
+    "  j = i",
+    "  while j > 0 and a[j - 1] > a[j]",
+    "    swap a[j - 1], a[j]",
+    "    j = j - 1",
+  ],
+  selection: [
+    "for i from 0 to n - 2",
+    "  min = i",
+    "  for j from i + 1 to n - 1",
+    "    if a[j] < a[min]",
+    "      min = j",
+    "  swap a[i], a[min]",
+  ],
+  merge: [
+    "mergeSort(lo, hi):",
+    "  if lo >= hi: return",
+    "  mid = floor((lo + hi) / 2)",
+    "  mergeSort(lo, mid); mergeSort(mid + 1, hi)",
+    "  while both halves have items:",
+    "    if left[i] <= right[j]: take left[i]",
+    "    else: take right[j]",
+    "  copy whatever is left",
+  ],
+  quick: [
+    "quickSort(lo, hi):",
+    "  if lo >= hi: return",
+    "  pivot = a[hi]; i = lo",
+    "  for j from lo to hi - 1",
+    "    if a[j] < pivot",
+    "      swap a[i], a[j]; i = i + 1",
+    "  swap a[i], a[hi]   // pivot lands in place",
+    "  quickSort(lo, i - 1); quickSort(i + 1, hi)",
+  ],
+  heap: [
+    "build max-heap: siftDown(i, n) for i = n/2 - 1 down to 0",
+    "for end from n - 1 down to 1",
+    "  swap a[0], a[end]   // largest goes to the back",
+    "  siftDown(0, end)",
+    "siftDown(i, size): compare a[i] with its children",
+    "  if a child is larger: swap, continue from that child",
+  ],
 };
 
 /**
  * Run a sorting algorithm on a copy of `values` and record every step, so the page can
- * replay (and step backwards through) it. Does not modify `values`.
+ * replay it. Does not modify `values`.
  * @param {"bubble"|"insertion"|"selection"|"merge"|"quick"|"heap"} algorithm
  * @param {number[]} values
- * @returns {SortStep[]}  ends with one "sorted" step per index
+ * @returns {SortStep[]}  every index gets exactly one "sorted" step (the last ones at the end)
  */
 export function sortSteps(algorithm, values) {
-  // TODO (Plan CS step 1): one inner function per algorithm, all pushing to the same `steps`.
-  // Record a "compare" before every comparison and a "swap"/"write" for every change, so that
-  // replaying the steps with applyStep on a copy of `values` ends sorted (tests check this).
-  void algorithm, values;
-  throw new Error("Not implemented");
+  const a = [...values];
+  const n = a.length;
+  const steps = [];
+  const done = new Set();
+  const compare = (i, j, line) => steps.push({ type: "compare", i, j, line });
+  const swap = (i, j, line) => {
+    [a[i], a[j]] = [a[j], a[i]];
+    steps.push({ type: "swap", i, j, line });
+  };
+  const write = (i, value, line) => {
+    a[i] = value;
+    steps.push({ type: "write", i, value, line });
+  };
+  const sorted = (i, line) => {
+    if (done.has(i)) return;
+    done.add(i);
+    steps.push({ type: "sorted", i, line });
+  };
+
+  const algorithms = {
+    bubble() {
+      for (let i = 0; i < n - 1; i++) {
+        for (let j = 0; j < n - i - 1; j++) {
+          compare(j, j + 1, 2);
+          if (a[j] > a[j + 1]) swap(j, j + 1, 3);
+        }
+        sorted(n - 1 - i, 0); // the largest remaining value has bubbled to the end
+      }
+    },
+    insertion() {
+      for (let i = 1; i < n; i++) {
+        for (let j = i; j > 0; j--) {
+          compare(j - 1, j, 2);
+          if (a[j - 1] <= a[j]) break;
+          swap(j - 1, j, 3);
+        }
+      }
+    },
+    selection() {
+      for (let i = 0; i < n - 1; i++) {
+        let min = i;
+        for (let j = i + 1; j < n; j++) {
+          compare(j, min, 3);
+          if (a[j] < a[min]) min = j;
+        }
+        if (min !== i) swap(i, min, 5);
+        sorted(i, 0);
+      }
+    },
+    merge() {
+      const mergeSort = (lo, hi) => {
+        if (lo >= hi) return;
+        const mid = Math.floor((lo + hi) / 2);
+        mergeSort(lo, mid);
+        mergeSort(mid + 1, hi);
+        const left = a.slice(lo, mid + 1);
+        const right = a.slice(mid + 1, hi + 1);
+        let i = 0;
+        let j = 0;
+        let k = lo;
+        while (i < left.length && j < right.length) {
+          // Indices are where those items started; good enough to show which halves are compared.
+          compare(lo + i, mid + 1 + j, 5);
+          if (left[i] <= right[j]) write(k++, left[i++], 5); // <= keeps merge sort stable
+          else write(k++, right[j++], 6);
+        }
+        while (i < left.length) write(k++, left[i++], 7);
+        while (j < right.length) write(k++, right[j++], 7);
+      };
+      mergeSort(0, n - 1);
+    },
+    quick() {
+      const quickSort = (lo, hi) => {
+        if (lo > hi) return;
+        if (lo === hi) return sorted(lo, 1);
+        let i = lo;
+        for (let j = lo; j < hi; j++) {
+          compare(j, hi, 4);
+          if (a[j] < a[hi]) {
+            if (i !== j) swap(i, j, 5);
+            i++;
+          }
+        }
+        if (i !== hi) swap(i, hi, 6);
+        sorted(i, 6);
+        quickSort(lo, i - 1);
+        quickSort(i + 1, hi);
+      };
+      quickSort(0, n - 1);
+    },
+    heap() {
+      const siftDown = (i, size) => {
+        for (;;) {
+          const l = 2 * i + 1;
+          const r = l + 1;
+          let largest = i;
+          if (l < size) {
+            compare(l, largest, 4);
+            if (a[l] > a[largest]) largest = l;
+          }
+          if (r < size) {
+            compare(r, largest, 4);
+            if (a[r] > a[largest]) largest = r;
+          }
+          if (largest === i) return;
+          swap(i, largest, 5);
+          i = largest;
+        }
+      };
+      for (let i = Math.floor(n / 2) - 1; i >= 0; i--) siftDown(i, n);
+      for (let end = n - 1; end > 0; end--) {
+        swap(0, end, 2);
+        sorted(end, 2);
+        siftDown(0, end);
+      }
+    },
+  };
+
+  if (!algorithms[algorithm]) throw new RangeError(`Unknown algorithm: ${algorithm}`);
+  algorithms[algorithm]();
+  for (let i = 0; i < n; i++) sorted(i, 0); // final sweep marks whatever is left
+  return steps;
 }
 
 /**
@@ -45,9 +204,8 @@ export function sortSteps(algorithm, values) {
  * @param {SortStep} step
  */
 export function applyStep(a, step) {
-  // TODO (Plan CS step 1)
-  void a, step;
-  throw new Error("Not implemented");
+  if (step.type === "swap") [a[step.i], a[step.j]] = [a[step.j], a[step.i]];
+  else if (step.type === "write") a[step.i] = step.value;
 }
 
 /* ---------------- Data structures ---------------- */

@@ -77,7 +77,7 @@ Milestones follow the spec's steps; commit after each.
 10. **LaTeX:** (a) `toLatexDocument` (test), (b) live preview, (c) scanner → LaTeX handoff, (d) download .tex. Commit.
 11. **Hub:** ✅ (a) `filterTools` (test passes), (b) `renderHub` (cards with status + section badges, title link covers the card, live count), (c) filter buttons with `aria-pressed`. Commit.
 12. **CS** (`js/cs-lib.js` + tests, then page scripts):
-    1. Sorting: `sortSteps` + `applyStep` + `PSEUDOCODE` (tests), then bars, pseudocode, step/play in `sorting.js`.
+    1. ✅ Sorting: `sortSteps` + `applyStep` + `PSEUDOCODE` (9 tests pass), then bars, pseudocode, step/play/pause/reset, counters in `sorting.js`.
     2. Data structures: `bstInsert/Delete/Search`, `treeLayout`, `heapPush/Pop`, `hashIndex` (tests), then `renderOps`, `run`, `draw` in `structures.js`.
     3. Graphs: `gridSearch`, `generateMaze` (tests), then `buildGrid`, `paint`, `run`, `clearPath` in `graphs.js`.
     4. Big-O: `fitComplexity` (test), then `drawCurves`, `benchmark`, `showResults` in `bigo.js`.
