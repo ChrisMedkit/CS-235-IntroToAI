@@ -17,18 +17,20 @@ const $ = (id) => document.getElementById(id);
 
 /* ---------------- Growth curves ---------------- */
 
-/** Plotly colors that follow the site theme (read from the CSS tokens). */
+/** Plotly colors from the site's CSS tokens, so charts match the page. */
 function theme() {
   const css = getComputedStyle(document.documentElement);
   const token = (name) => css.getPropertyValue(name).trim();
   return {
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "rgba(0,0,0,0)",
+    // White plot area inside the sunken .plot frame, like a 98 chart control.
+    paper_bgcolor: "#ffffff",
+    plot_bgcolor: "#ffffff",
     font: { family: "M PLUS Rounded 1c, system-ui, sans-serif", color: token("--text") },
-    colorway: ["#1e9bd7", "#2ecc71", "#f5b041", "#e74c3c", "#9b59b6", "#16a085", "#d35400", "#7f8c8d"],
+    // The classic 16-color VGA palette (the dark half reads best on white).
+    colorway: ["#000080", "#008000", "#800000", "#008080", "#800080", "#808000", "#ff0000", "#0000ff"],
     margin: { l: 60, r: 20, t: 20, b: 50 },
     legend: { orientation: "h", y: -0.2 },
-    gridcolor: token("--border"),
+    gridcolor: "#dfdfdf",
   };
 }
 
@@ -214,7 +216,7 @@ function parseSizes(text, maxN) {
 
 const formatMs = (t) => (t < 0.01 ? t.toExponential(2) : t < 100 ? t.toFixed(3) : t.toFixed(0));
 
-let lastBench = null; // kept so the chart can be redrawn when the theme changes
+let lastBench = null; // last results, drawn by drawBench()
 
 /** Table of times and growth ratios, the best-fit class, and the measured-vs-fit chart. */
 function showResults(name, sizes, times) {
@@ -302,12 +304,6 @@ document.addEventListener("DOMContentLoaded", () => {
       button.disabled = false;
     }
   });
-
-  // Plotly bakes colors in, so redraw when Dark mode is toggled.
-  new MutationObserver(() => {
-    drawCurves();
-    drawBench();
-  }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
   drawCurves();
 });

@@ -1,75 +1,166 @@
 # Christopia — Diagrams
-See [OUTLINE.md](OUTLINE.md)
+See [OUTLINE.md](OUTLINE.md) and [REDESIGN_PLAN.md](REDESIGN_PLAN.md)
 
 ## Plan
 ```mermaid
 flowchart TD
-  subgraph M1["Milestone 1: content and structure"]
-    S1["Step 1: text, images, tools.js"] --> S2["Step 2: LLM warm-up"]
-    S2 --> S3["Step 3: Home hero + about"]
-    S3 --> S4["Step 4: tool galleries (script.js)"]
-    S4 --> S5["Step 5: nav + mobile menu"]
-    S5 --> S6["Step 6: CSS + dark/light"]
+  subgraph DONE["Done"]
+    D1["Site shell: nav, galleries, Lab filters"]
+    D2["CS tools: sorting, data structures, graphs, Big-O, regex"]
+    D3["Indie-web redesign 1-8: 98.css, taskbar, Tools desktop, splash + Home, stickers, Me, Friends, tool polish"]
+    D1 --> D2 --> D3
   end
-  subgraph M2["Milestone 2: math tools"]
-    S7["Step 7: Plotter"] --> S8["Step 8: Matrix Lab"]
-    S8 --> S9["Step 9: Scanner"]
-    S9 --> S10["Step 10: LaTeX"]
-    S10 --> S11["Step 11: Hub"]
+  subgraph NEXT["Still to do"]
+    N1["Your content: text, photos, collage, friends"]
+    N2["Math tools: plotter, matrix, scanner, LaTeX"]
+    N3["Social tools: forum, events, journal"]
+    N4["Redesign step 10: test report"]
+    N5["Submit: prompt log, reflection, links"]
+    N1 --> N2 --> N3 --> N4 --> N5
   end
-  subgraph M3["Milestone 3: CS and Social"]
-    S12["Step 12: CS visualizers (cs-lib.js)"] --> S13["Step 13: Social (social-lib.js, storage.js)"]
-  end
-  subgraph M4["Milestone 4: finish"]
-    S14["Step 14: test + debug"] --> S15["Step 15: deploy, log, reflection, submit"]
-  end
-  S6 --> S7
-  S11 --> S12
-  S13 --> S14
+  D3 --> N1
 ```
-The plan steps in order, grouped into four milestones; commit after each step.
+Where the project stands. Each box is one or more commits; `OUTLINE.md` has the details.
 
 ## Sitemap
 ```mermaid
 flowchart TD
-  NAV["Top nav (every page)"]
-  NAV --> H["index.html: Home"]
-  NAV --> M["math/index.html"]
-  NAV --> C["cs/index.html"]
-  NAV --> S["social/index.html"]
-  NAV --> HB["hub.html: Hub"]
-  M --> M1["plotter"] & M2["matrix"] & M3["latex"] & M4["scanner"]
-  C --> C1["sorting"] & C2["data-structures"] & C3["graphs"] & C4["big-o"] & C5["regex"]
-  S --> S1["forum"] & S2["events"] & S3["journal"]
+  SP["index.html: Splash"] -- "Enter door" --> H["home.html: Home"]
+  NAV["Top nav + Start menu (every page)"]
+  NAV --> H
+  NAV --> T["tools.html: Tools desktop"]
+  NAV --> S["social/index.html: Social"]
+  NAV --> ME["me.html: Me"]
+  NAV --> LAB["lab.html: Lab"]
+  T --> MF["Math folder"] & CF["CS folder"]
+  MF --> M1["math/plotter"] & M2["math/matrix"] & M3["math/latex"] & M4["math/scanner"]
+  CF --> C1["cs/sorting"] & C2["cs/data-structures"] & C3["cs/graphs"] & C4["cs/big-o"] & C5["cs/regex"]
+  S --> S1["social/forum"] & S2["social/events"] & S3["social/journal"] & S4["social/friends"]
+  ME -- "desk objects" --> T & S & S3 & LAB
   M4 -- "Open in LaTeX editor" --> M3
 ```
-Five top-level destinations; each section's overview and sub-nav link its tool pages. The Scanner hands text to the LaTeX page.
+Nineteen pages. The splash leads to Home; the nav and the Start menu reach every page. Tools is a desktop of folders; tool pages link back through their address bar (Math, CS) or sub-nav (Social).
 
-## Home page wireframe
+## Splash and Home wireframes
 ```mermaid
 flowchart TD
-  subgraph PAGE["index.html"]
+  subgraph SPL["index.html (splash)"]
     direction TB
-    subgraph HEADER["header.site-header"]
+    T1["h1.chrome-title + splash text"] --> SUB["subtitle"] --> DOOR["a.enter-door: door + Enter"] --> NOTE["best viewed in any browser"]
+  end
+  subgraph HOME["home.html"]
+    direction TB
+    HD["header: logo, nav (Home, Tools, Social, Me, Lab)"] --> TK["ticker"] --> T2["h1.chrome-title-small + tagline"]
+    T2 --> PORTAL
+    subgraph PORTAL["div.portal (3 columns at 1000 px+)"]
       direction LR
-      B["Logo + splash"] --- NV["nav: Home, Math, CS, Social, Hub"] --- TT["Dark mode, Sound"]
+      L["Launch pad / Buttons"] --- C["welcome.txt / All tools gallery"] --- R["Now / Updates"]
     end
-    TK["div.ticker"]
-    subgraph MAIN["main"]
-      direction TB
-      HERO["section#hero"]
-      SEC["section#sections: 4 tiles"]
-      GAL["section#tools: sideways gallery"]
-      AB["section#about"]
-      HERO --> SEC --> GAL --> AB
-    end
-    FOOT["footer: hit counter + badges"]
-    HEADER --> TK --> MAIN --> FOOT
+    PORTAL --> FT["footer: hit counter + badges"]
+  end
+  TB["taskbar: Start menu, task button, clock (every page)"]
+  SPL -.-> TB
+  HOME -.-> TB
+```
+The splash is just the title and a door; Home is the three-column portal.
+
+## Tool page layout
+```mermaid
+flowchart TD
+  HD["header + ticker"] --> NAV2["address bar (Math, CS) or sub-nav (Social)"]
+  NAV2 --> MAIN
+  subgraph MAIN["main.tool-layout (2 columns at 768 px+)"]
+    direction LR
+    W1["window: icon + Tool name - tool.exe (h1), controls"] --- W2["window: the work area (sunken white panel)"]
+  end
+  MAIN --> FT["footer"]
+  FT --> TB["taskbar"]
+```
+Every tool page: two 98 windows, controls on the left and the stage on the right (stacked on phones).
+
+## Sticker layers
+```mermaid
+flowchart BT
+  BG["page background (teal desktop or collage; math paper)"] --> L0["sticker layer: behind (z 0)"]
+  L0 --> C["page content: main, ticker, address bar, footer (z 1)"]
+  C --> L5["sticker layer: front (z 5)"]
+  L5 --> H["sticky header (z 10)"]
+  H --> TB["taskbar + Start menu (z 40, 41)"]
+```
+Bottom to top: what paints over what. Both sticker layers cover the whole page, scroll with it, and let clicks through except on link stickers.
+
+## Code structure
+```mermaid
+flowchart LR
+  subgraph shared["shared (every page)"]
+    SC["script.js: taskbar, menus, galleries, stickers, extras"]
+    TL["tools.js: tool registry"]
+    STK["stickers.js: sticker list"]
+  end
+  subgraph libs["pure logic (tested in Node)"]
+    U["utils.js (math)"]
+    CL["cs-lib.js"]
+    SL["social-lib.js"]
+    ST["storage.js"]
+  end
+  SC --> TL & STK
+  DK["desktop.js (Tools)"] --> TL
+  LB["lab.js (Lab)"] --> U & TL
+  MATH["plotter, matrix, latex, scanner .js"] --> U
+  CS["sorting, structures, graphs, bigo, regex .js"] --> CL
+  RW["regex-worker.js"] --> CL
+  CS -. "regex.js starts" .-> RW
+  SOC["forum, events, journal, friends-page .js"] --> SL & ST
+  SOC --> FR["friends.js: friends list"]
+  T["tests/*.test.js"] --> U & CL & SL & ST & TL & STK
+```
+Page scripts import the pure library for their section; the data files (`tools.js`, `stickers.js`, `friends.js`) are the places you edit to add things.
+
+## Visualizer pattern (Sorting, Graphs, Data Structures)
+```mermaid
+flowchart LR
+  IN["user input"] --> LIB["cs-lib: compute all steps"]
+  LIB --> ST["state.steps, pos = 0"]
+  ST --> P{"Play or Step"}
+  P --> AP["apply step pos, redraw, pos++"]
+  AP --> D{"pos = steps.length?"}
+  D -- no --> P
+  D -- yes --> DONE["done: final state + stats"]
+```
+Compute first, animate after: the library is tested in Node, the page only replays.
+
+## Regex matching with a time limit
+```mermaid
+sequenceDiagram
+  participant P as regex.js (page)
+  participant W as regex-worker.js
+  P->>P: compile pattern (syntax errors shown at once)
+  P->>W: pattern, flags, text, replacement
+  alt finishes in under 1 s
+    W-->>P: matches + replaced text
+    P->>P: highlight, table, replace preview
+  else still running after 1 s
+    P->>W: terminate (start a fresh worker)
+    P->>P: "Stopped after 1 s: this pattern backtracks too much"
   end
 ```
-Home page from top to bottom. Section pages add a `nav.sub-nav` bar under the ticker.
+A runaway pattern can only be stopped by killing the thread it runs on, so matching lives in a worker.
 
-## Journal layout
+## Plotter flow (to build)
+```mermaid
+flowchart TD
+  A["input event (debounced)"] --> B["readWindow"]
+  B --> C{"min < max?"}
+  C -- no --> E1["#plot-error"]
+  C -- yes --> D{"mode"}
+  D -- 2D --> F["compileExpression per row, sample2D"]
+  D -- 3D --> G["compileExpression per row, sampleSurface"]
+  F --> H["Plotly.react #plot"]
+  G --> H
+```
+How an edit will become a redrawn graph.
+
+## Journal (to build)
 ```mermaid
 flowchart LR
   subgraph LOCK["section#journal-lock"]
@@ -91,56 +182,6 @@ flowchart LR
 ```
 The lock screen and the two-pane Notion-style app it opens.
 
-## Code structure
-```mermaid
-flowchart LR
-  subgraph shared["shared"]
-    SC["script.js"]
-    TL["tools.js"]
-    ST["storage.js"]
-  end
-  subgraph libs["pure logic (tested)"]
-    U["utils.js (math)"]
-    CL["cs-lib.js"]
-    SL["social-lib.js"]
-  end
-  MATH["plotter, matrix, latex, scanner .js"] --> U
-  CS["sorting, structures, graphs, bigo, regex .js"] --> CL
-  SOC["forum, events, journal .js"] --> SL & ST
-  HJ["hub.js"] --> U & TL
-  SC --> TL
-  T["tests/*.test.js"] --> U & CL & SL
-```
-Page scripts import the pure library for their section; Social pages also go through `storage.js`.
-
-## Plotter flow
-```mermaid
-flowchart TD
-  A["input event (debounced)"] --> B["readWindow"]
-  B --> C{"min < max?"}
-  C -- no --> E1["#plot-error"]
-  C -- yes --> D{"mode"}
-  D -- 2D --> F["compileExpression per row, sample2D"]
-  D -- 3D --> G["compileExpression per row, sampleSurface"]
-  F --> H["Plotly.react #plot"]
-  G --> H
-```
-How an edit becomes a redrawn graph.
-
-## Visualizer pattern (Sorting, Graphs, Data Structures)
-```mermaid
-flowchart LR
-  IN["user input"] --> LIB["cs-lib: compute all steps"]
-  LIB --> ST["state.steps, pos = 0"]
-  ST --> P{"Play or Step"}
-  P --> AP["apply step pos, redraw, pos++"]
-  AP --> D{"pos = steps.length?"}
-  D -- no --> P
-  D -- yes --> DONE["done: final state + stats"]
-```
-Compute first, animate after: the library is tested in Node, the page only replays.
-
-## Journal unlock
 ```mermaid
 sequenceDiagram
   participant U as You
@@ -166,18 +207,19 @@ The password never leaves memory and is never saved; a wrong key makes AES-GCM f
 ## Requirements → code
 ```mermaid
 flowchart LR
-  R1["3+ pages"] --> C1["17 html pages"]
-  R2["Consistent nav"] --> C2["same header + sub-nav, aria-current"]
-  R3["2+ images with alt"] --> C3["images/, hero + cards"]
-  R4["Consistent design"] --> C4["style.css tokens + fonts"]
+  R1["3+ pages"] --> C1["19 html pages"]
+  R2["Consistent nav"] --> C2["same header on every page, aria-current, Start menu sitemap"]
+  R3["2+ images with alt"] --> C3["images/ (icons, desk, stickers, badges)"]
+  R4["Consistent design"] --> C4["98.css + style.css tokens + fonts"]
   R5["JS feature"] --> C5["script.js + tool scripts"]
-  R6["Responsive"] --> C6["media queries, toggleNav"]
-  R7["Tool logic correct"] --> C7["utils, cs-lib, social-lib"]
-  C7 --> T1["tests/*.test.js"]
+  R6["Responsive"] --> C6["media queries, Menu button, phone grids"]
+  R7["Semantic HTML, no inline styles"] --> C7["header/nav/main/section/footer; positions in CSS classes"]
+  R8["Tool logic correct"] --> C8["utils, cs-lib, social-lib, storage"]
+  C8 --> T1["tests/*.test.js"]
   C5 --> T2["TEST_REPORT item 3"]
   C1 & C2 --> T3["TEST_REPORT items 1, 6"]
   C6 --> T4["TEST_REPORT item 4"]
   C3 --> T5["TEST_REPORT item 2"]
-  R8["Prompt log + reflection"] --> C8["PROMPT_LOG.md"]
+  R9["Prompt log + reflection"] --> C9["PROMPT_LOG.md"]
 ```
 Each spec requirement, the code that satisfies it, and the test or report item that checks it.

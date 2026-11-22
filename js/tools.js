@@ -1,6 +1,6 @@
 // Tool registry: the one list the home gallery, section pages and the Hub read from.
-// To add a tool: add an entry here (it appears in the galleries automatically), add its page in
-// its section folder, and add it to that section's sub-nav (every page in the section).
+// To add a tool: add an entry here (it appears on the Tools desktop, Home gallery, Start menu and
+// Lab automatically), its images (see README "Add a tool"), and its page in its section folder.
 
 /**
  * @typedef {Object} Tool
@@ -107,6 +107,14 @@ export const TOOLS = [
     name: "Private Journal",
     href: "social/journal.html",
     summary: "Password-locked, encrypted notes with a Notion-style editor.",
+    status: "live",
+    category: "social",
+  },
+  {
+    id: "friends",
+    name: "Friends",
+    href: "social/friends.html",
+    summary: "Friends' buttons, neighbor sites and a guestbook.",
     status: "live",
     category: "social",
   },

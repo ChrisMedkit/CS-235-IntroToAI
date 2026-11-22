@@ -108,6 +108,96 @@ Record at least three significant features (page structure, navigation, CSS, res
 | Your decision | TODO: what you kept or changed, and why |
 | Debugging | (1) An operator-precedence bug (`!last.quantifiable === false`) would have explained `ab+` as plain text; caught on review, rewritten as `last.quantifiable !== false`. (2) Typing `(a+)+$` with a string of a's would freeze the tab (catastrophic backtracking); matching moved into a Web Worker that is terminated after 1 s, and the page recovers on the next pattern. (3) A long match like an email pushed the match table 3 px past a phone screen; table cells may now wrap anywhere. |
 
+## 9. Indie-web redesign plan, then step 1: 98.css windows
+| Field | Entry |
+|---|---|
+| Feature | Redesign plan (REDESIGN_PLAN.md) from four Neocities / web-desktop reference sites, then step 1: 98.css windows on every page and dark mode removed |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "Work out a plan to carry out the following thematic changes … indie web / Neocities … Using 98.css reshape the current website … combining [math and cs] into one tools page. Add a new section, me/about … simpler is better" (with four reference sites and three questions), then my seven choices (Lab, no dark mode, splash page, draggable Tools windows, local guestbook, CSS chrome title, keep Social), then "Yes, start step 1". |
+| What it produced | Studied the four sites (splash door, portal columns, web desktop, scene navigation), wrote the plan with answers to my three questions; then a one-off script wrapped every page section in `.window` / `.title-bar` / `.window-body` markup, converted 26 radios/checkboxes to 98.css's `input + label for` pattern, added the pinned 98.css link, and removed the Dark mode switch; deleted the theme functions, storage key and Plotly re-theme observer; rebuilt `style.css` on 98.css (teal desktop, hard shadows, 2× pixel page titles, menu-bar header, 98 tabs sub-nav, tooltip-yellow notices). |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | (1) 98.css hides radios/checkboxes unless the label follows the input, so every wrapped `<label><input>` would have vanished; converted (one checkbox with `id` before `type` was missed by the script and fixed by hand after an audit). (2) 98.css makes every button at least 75×23 px, which would have broken the graph grid's 861 cells; small buttons opt out. (3) 98.css puts the whole window in its 11 px pixel font; window bodies get the readable font back. (4) The old hero rules grabbed the new title bar into a 2-column grid; they now target the window body. Audited all 17 pages at 1100 px and 375 px (no sideways scroll, every radio drawn, square grid cells, no tiny text) and ran every tool. |
+
+## 10. Redesign step 2: taskbar, Start menu, Lab
+| Field | Entry |
+|---|---|
+| Feature | Windows-98 taskbar with a Start menu; new top nav (Home, Tools, Social, Me, Lab); Hub renamed Lab |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "Yes, start step 2" (step 2 of REDESIGN_PLAN.md) |
+| What it produced | `hub.html` → `lab.html` and `js/hub.js` → `js/lab.js` (git mv, history kept); new nav on all pages with the right `aria-current` (math and CS pages count as Tools); the old Options menu removed; small "under construction" `tools.html` and `me.html` so no nav link is broken before steps 3 and 6. `initTaskbar` in `js/script.js` builds the taskbar on every page: Start button + menu (vertical "Christopia98" stripe, a 98 tree-view sitemap generated from `SITE` + `TOOLS`, Random page, Sound as a checkable item), a task button with the page title, and a clock. It reuses the existing `setExpanded`/`initMenus` for open/close, Esc and click-outside. |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | My first Random-page filter compared path endings and treated every `index.html` alike; replaced it with a comparison of resolved URLs. Checked: Sound toggles and saves, Esc returns focus to Start, 12 random jumps never land on the current page, all 19 pages have one current nav item, no broken links, no sideways scroll at 375 px, no console errors. |
+
+## 11. Redesign step 3: Tools desktop
+| Field | Entry |
+|---|---|
+| Feature | `tools.html` as a web desktop: draggable Math and CS folder windows of tool icons; Math/CS overview pages replaced; address-bar breadcrumbs |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "Yes, start step 3" (step 3 of REDESIGN_PLAN.md) |
+| What it produced | Nine 98-style 48×48 program icons + a folder icon (`images/icons/`); `tools.html` with two folder windows (icon grid in a white sunken view, 98 status bar with an object count); `js/desktop.js` renders icons from `TOOLS`, drags windows by the title bar on wide mouse screens (clamped inside the desktop, positions saved per browser), brings the clicked/focused window to front with 98 inactive title bars, and opens `tools.html#cs` with CS in front; phones and keyboards get stacked windows. Deleted `math/index.html` and `cs/index.html`; Math/CS pages got a 98 "Address C:\Tools\Math\Matrix Lab" bar; Home tiles point at `tools.html#math` / `#cs`. New test: every live tool's page, card image and desktop icon exist. |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | (1) My script took the current page name from the first `aria-current` link, which was the top nav's "Tools", so every address bar said Tools; fixed from the names in `tools.js`. (2) `git rm` refused to delete the old overview pages because of uncommitted edits; forced, since they were being removed. (3) A synthetic drag test showed `setPointerCapture` throws when there's no live pointer; guarded so an unusual pointer can't break dragging. Verified a real mouse drag, saved positions after reload, clamping at the edges, `#cs`, icon links, address bars, 17 pages at 1100 and 375 px with no broken links. |
+
+## 12. Redesign step 4: splash page and Home portal
+| Field | Entry |
+|---|---|
+| Feature | `index.html` becomes a splash page (CSS chrome title + enter door); Home moves to `home.html` as a 3-column portal |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "Yes, start step 4" (step 4 of REDESIGN_PLAN.md; my earlier choices: splash page yes, CSS-only chrome title) |
+| What it produced | Splash: Rocket Pop title with a chrome gradient clipped to the text, a sweeping shine layer, a navy 3D edge made of stacked `drop-shadow` filters (they follow the clipped letters, unlike `text-shadow`), a slow float; motion only with `prefers-reduced-motion: no-preference`; Minecraft splash text on the title's corner; a pixel door (`images/door.svg`) that swings open on hover/focus and links to Home. Home: smaller chrome title + tagline, portal with Launch pad, Buttons wall, welcome.txt, the All tools gallery, a Now box and an Updates log (three real entries). Every Home link and the logo now go to `home.html`; the Start menu's Home too; ticker text refreshed; old hero and section-tile CSS deleted. |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | (1) The gallery's indentation changed when step 1 wrapped it in a window, so my extraction pattern missed it; nothing was written, fixed and re-ran. (2) I first closed the 768 px media block too early when adding the 1000 px portal rule, which would have moved the journal's two-column layout to 1000 px; caught on review and moved. Checked 18 pages at 1280 and 375 px: no sideways scroll, one current nav item, Start-menu Home → home.html, no broken links. |
+
+## 13. Redesign step 5: sticker layer
+| Field | Entry |
+|---|---|
+| Feature | A system for scattering stickers, GIFs and photos over any page, plus folders for buttons, blinkies and stamps |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "Yes, start step 5" (step 5 of REDESIGN_PLAN.md, answering my question about putting PNGs and GIFs anywhere to fill whitespace) |
+| What it produced | `js/stickers.js`: one line per sticker (`src`, `page`, `x`/`right`, `y`, `w`, `r`, `front`, `phone`, `still`, `pixel`, `href`, `alt`); `initStickers` in `js/script.js` works out the page key from the URL and places matching stickers in a layer behind the windows or one in front; animated stickers get a `<picture>` that swaps to the still copy under `prefers-reduced-motion`; lazy loading. CSS stacking order (behind 0 → content 1 → front 5 → header 10 → taskbar 40), `pointer-events: none` except link stickers, `overflow: hidden` so stickers can't cause sideways scroll, phones show only `phone: true`. Five original starter stickers (sparkle, floppy, CD, NEW! burst, blinking under-construction sign + still copy) placed on the splash, Home, Tools and Lab; empty `gifs/ buttons/ blinkies/ stamps/` folders; README how-to; test that every sticker file exists and entries are complete. |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | A first screenshot showed only two of four splash stickers; checking the DOM showed all four placed and loaded at the right spots, so it was a screenshot taken mid-load (a retake showed all four). Verified: clicks pass through stickers to the window under them, phones show only `phone: true` stickers, no page scrolls sideways at 1280 or 375 px. Not verified: the reduced-motion swap itself (the test browser can't emulate that setting); the `<picture>` markup is in place. |
+
+## 14. Redesign step 6: Me page
+| Field | Entry |
+|---|---|
+| Feature | `me.html`: a desk scene whose objects are links (inspired by caramelfevers' table), plus about.txt and favorites.txt windows |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "Yes, start step 6" (step 6 of REDESIGN_PLAN.md) |
+| What it produced | Original drawings of a graphing calculator, spiral notebook, phone, headphones and a polaroid (`images/me/`), plus the floppy sticker, laid on a CSS-drawn wood desk. Each is a link with a sticky-note label ("Tools", "Journal", "Social", "Now playing", "Lab", "About me") that shows on hover/focus and always on touch screens; screen readers hear "Calculator: Tools" etc. Objects lift on hover (no motion with reduced motion). On phones the desk becomes a labeled 3-column grid. about.txt (photo placeholder, facts, why Christopia) and favorites.txt; personal details left as TODOs except my major. |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | (1) I first positioned the objects with `style="--x…"` attributes, which breaks the spec's "external CSS rather than inline styles"; moved them to `.desk-*` classes in `style.css` (no page has an inline style now). (2) Labels on phones were underlined like plain links; removed. Checked: hover and keyboard focus show labels, every object link works, phone grid, 18 pages clean at 1280 and 375 px. |
+
+## 15. Redesign step 7: Friends page and guestbook
+| Field | Entry |
+|---|---|
+| Feature | `social/friends.html`: friends' 88×31 buttons and links, neighbor sites, Christopia's own button with copy-paste HTML, and a guestbook |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "Yes, start step 7" (step 7 of REDESIGN_PLAN.md; my earlier choice: guestbook local for now) |
+| What it produced | Implemented the stubs the guestbook needs: `load`/`save` in `js/storage.js` (fallback on missing/corrupt data, throws when storage is full so the page says "Not saved"; new `tests/storage.test.js`), `validatePost` and `relativeTime` in `js/social-lib.js` (their tests now pass). `js/friends.js` holds the friends list (empty, with an example) and the four reference sites as neighbors; `js/friends-page.js` draws the wall, builds the button code from the site's real address, copies it, and runs the guestbook (validation, optional website, newest first, 200 max, text only). Friends added to the Social sub-nav on every Social page and to `tools.js` (so it's in the galleries, Start menu and Lab). |
+| Your decision | TODO: what you kept or changed, and why; whether to keep the neighbor links |
+| Debugging | Caught before running: reading `form.name` returns the form's own name attribute, not the "name" input, so every signature would have been rejected as nameless; the fields are now read by id. Tested with real typing: empty form errors, signing, reload keeps entries, `<b>` stays text, a `javascript:` website is refused, real websites link with `rel="noopener ugc"`; 19 pages clean at 1280 and 375 px. |
+
+## 16. Redesign step 8: tool pages polish
+| Field | Entry |
+|---|---|
+| Feature | Make every tool page match the 98 look and re-check every tool |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "Yes, start step 8" (step 8 of REDESIGN_PLAN.md) |
+| What it produced | Title bars on all 13 tool pages got the tool's icon (Math/CS) and a program name (`Sorting - sorting.exe`) in an `aria-hidden` span, so the heading still reads "Sorting". Leftover glossy styling converted: thick rounded grey borders on the sorting bars, structure canvas, graph grid, regex highlight and forum/event cards became 98 sunken panels; gallery and Lab cards became raised 98 panels; the frosted-glass footer and journal app became plain 98 panels; the hit counter sits sunken in the footer; the current pseudocode line is a navy selection. Big-O charts: white plot area, light grid, 16-color VGA palette. Removed six theme tokens nothing used any more. |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | Re-ran sorting, data structures, graphs (maze + BFS), Big-O and regex in the browser after the changes; checked all 19 pages (including the stub tools) at 1280 and 375 px: no sideways scroll, no broken links or images, no runtime errors. |
+
+## 17. Redesign step 9: docs and diagrams
+| Field | Entry |
+|---|---|
+| Feature | Bring the project docs up to date with the redesigned site |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "Yes, start step 9" (step 9 of REDESIGN_PLAN.md) |
+| What it produced | `DIAGRAM.md` rewritten: a done / still-to-do plan, a 19-page sitemap, splash + Home wireframes, a new tool-page layout, sticker layers, code structure with the data files and the regex worker, a new regex time-limit sequence, plotter and journal diagrams marked "to build", requirements → code. `OUTLINE.md` rewritten: indie-web summary and direction, 19 pages with a status column (✅ / stub), the 98.css design, the done list and an 11-step to-do plan, files, key concepts, testing. README: new intro, live link, collage pages, 98.css and font credits. |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | Checked all 13 Mermaid blocks parse with Mermaid itself, and that every relative link and file path in the docs exists. |
+
 ## Warm-up (Step 2.4)
 TODO: ask "What semantic elements should a personal website homepage include?" and note one thing you learned.
 

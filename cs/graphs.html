@@ -7,23 +7,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
     <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body data-root="../">
     <!-- Shared header: identical on every page except aria-current. -->
     <header class="site-header">
-      <a class="brand" href="../index.html">Christopia</a>
+      <a class="brand" href="../home.html">Christopia</a>
       <p class="splash" aria-hidden="true">Now in 3D!</p>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         Menu
       </button>
       <nav id="site-nav" aria-label="Main">
         <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="../math/index.html">Math</a></li>
-          <li><a href="../cs/index.html" aria-current="page">CS</a></li>
+          <li><a href="../home.html">Home</a></li>
+          <li><a href="../tools.html" aria-current="page">Tools</a></li>
           <li><a href="../social/index.html">Social</a></li>
-          <li><a href="../hub.html">Hub</a></li>
+          <li><a href="../me.html">Me</a></li>
+          <li><a href="../lab.html">Lab</a></li>
         </ul>
       </nav>
     </header>
@@ -31,74 +32,80 @@
     <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
     <div class="ticker" role="marquee" aria-label="Site news">
       <p class="ticker-track">
-        Welcome to Christopia &#9733; New: Math, CS and Social sections &#9733; Sorting, graphs, regex
-        and Big-O visualizers &#9733; Coming soon: home server + smart home hub &#9733; TODO: your news here
+        Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
+        Sorting, graphs, regex and Big-O tools are live &#9733; Coming soon: the Me page, stickers and a friends wall &#9733; TODO: your news here
       </p>
     </div>
 
-    <nav class="sub-nav" aria-label="Computer science tools">
-      <ul>
-        <li><a href="index.html">Overview</a></li>
-        <li><a href="sorting.html">Sorting</a></li>
-        <li><a href="data-structures.html">Data Structures</a></li>
-        <li><a href="graphs.html" aria-current="page">Graphs</a></li>
-        <li><a href="big-o.html">Big-O</a></li>
-        <li><a href="regex.html">Regex</a></li>
-      </ul>
+    <nav class="address-bar" aria-label="Breadcrumb">
+      <span class="address-label" aria-hidden="true">Address</span>
+      <ol class="address">
+        <li><a href="../tools.html">Tools</a></li>
+        <li><a href="../tools.html#cs">CS</a></li>
+        <li aria-current="page">Graphs &amp; Pathfinding</li>
+      </ol>
     </nav>
 
     <main class="tool-layout">
-      <section id="graph-controls" aria-labelledby="graph-heading">
-        <h1 id="graph-heading">Graphs &amp; Pathfinding</h1>
-
-        <label for="graph-algorithm">Algorithm</label>
-        <select id="graph-algorithm">
-          <option value="bfs">Breadth-first search</option>
-          <option value="dfs">Depth-first search</option>
-          <option value="dijkstra">Dijkstra</option>
-          <option value="astar">A* (Manhattan)</option>
-        </select>
-
-        <fieldset class="segmented" id="graph-tool">
-          <legend>Draw</legend>
-          <label><input type="radio" name="tool" value="wall" checked /> Wall</label>
-          <label><input type="radio" name="tool" value="weight" /> Weight (5)</label>
-          <label><input type="radio" name="tool" value="start" /> Start</label>
-          <label><input type="radio" name="tool" value="end" /> End</label>
-          <label><input type="radio" name="tool" value="erase" /> Erase</label>
-        </fieldset>
-
-        <label for="graph-speed">Speed</label>
-        <input id="graph-speed" type="range" min="1" max="100" value="60" />
-
-        <div class="button-row">
-          <button type="button" id="graph-run" class="button primary">Run</button>
-          <button type="button" id="graph-step">Step</button>
-          <button type="button" id="graph-clear-path">Clear path</button>
-          <button type="button" id="graph-clear-all">Clear all</button>
-          <button type="button" id="graph-maze">Random maze</button>
+      <section class="window" id="graph-controls" aria-labelledby="graph-heading">
+        <div class="title-bar">
+          <h1 class="title-bar-text" id="graph-heading"><img src="../images/icons/graphs.svg" alt="" width="16" height="16" /> Graphs &amp; Pathfinding<span class="title-bar-program" aria-hidden="true"> - graphs.exe</span></h1>
         </div>
+        <div class="window-body">
 
-        <dl class="stats">
-          <div><dt>Visited</dt><dd id="graph-visited">0</dd></div>
-          <div><dt>Path length</dt><dd id="graph-length">0</dd></div>
-          <div><dt>Path cost</dt><dd id="graph-cost">0</dd></div>
-        </dl>
-        <p id="graph-status" role="status"></p>
+          <label for="graph-algorithm">Algorithm</label>
+          <select id="graph-algorithm">
+            <option value="bfs">Breadth-first search</option>
+            <option value="dfs">Depth-first search</option>
+            <option value="dijkstra">Dijkstra</option>
+            <option value="astar">A* (Manhattan)</option>
+          </select>
+
+          <fieldset class="segmented" id="graph-tool">
+            <legend>Draw</legend>
+            <div class="field-row"><input id="tool-wall" type="radio" name="tool" value="wall" checked /><label for="tool-wall">Wall</label></div>
+            <div class="field-row"><input id="tool-weight" type="radio" name="tool" value="weight" /><label for="tool-weight">Weight (5)</label></div>
+            <div class="field-row"><input id="tool-start" type="radio" name="tool" value="start" /><label for="tool-start">Start</label></div>
+            <div class="field-row"><input id="tool-end" type="radio" name="tool" value="end" /><label for="tool-end">End</label></div>
+            <div class="field-row"><input id="tool-erase" type="radio" name="tool" value="erase" /><label for="tool-erase">Erase</label></div>
+          </fieldset>
+
+          <label for="graph-speed">Speed</label>
+          <input id="graph-speed" type="range" min="1" max="100" value="60" />
+
+          <div class="button-row">
+            <button type="button" id="graph-run" class="button primary">Run</button>
+            <button type="button" id="graph-step">Step</button>
+            <button type="button" id="graph-clear-path">Clear path</button>
+            <button type="button" id="graph-clear-all">Clear all</button>
+            <button type="button" id="graph-maze">Random maze</button>
+          </div>
+
+          <dl class="stats">
+            <div><dt>Visited</dt><dd id="graph-visited">0</dd></div>
+            <div><dt>Path length</dt><dd id="graph-length">0</dd></div>
+            <div><dt>Path cost</dt><dd id="graph-cost">0</dd></div>
+          </dl>
+          <p id="graph-status" role="status"></p>
+        </div>
       </section>
 
-      <section id="graph-stage" aria-labelledby="graph-stage-heading">
-        <h2 id="graph-stage-heading">Grid</h2>
-        <!-- buildGrid() fills this with one <button class="cell"> per square (keyboard + mouse drawing). -->
-        <div id="graph-grid" class="grid-board"></div>
-        <ul class="legend" aria-label="Legend">
-          <li><span class="cell start"></span> Start</li>
-          <li><span class="cell end"></span> End</li>
-          <li><span class="cell wall"></span> Wall</li>
-          <li><span class="cell weight"></span> Weight</li>
-          <li><span class="cell visited"></span> Visited</li>
-          <li><span class="cell path"></span> Path</li>
-        </ul>
+      <section class="window" id="graph-stage" aria-labelledby="graph-stage-heading">
+        <div class="title-bar">
+          <h2 class="title-bar-text" id="graph-stage-heading">Grid</h2>
+        </div>
+        <div class="window-body">
+          <!-- buildGrid() fills this with one <button class="cell"> per square (keyboard + mouse drawing). -->
+          <div id="graph-grid" class="grid-board"></div>
+          <ul class="legend" aria-label="Legend">
+            <li><span class="cell start"></span> Start</li>
+            <li><span class="cell end"></span> End</li>
+            <li><span class="cell wall"></span> Wall</li>
+            <li><span class="cell weight"></span> Weight</li>
+            <li><span class="cell visited"></span> Visited</li>
+            <li><span class="cell path"></span> Path</li>
+          </ul>
+        </div>
       </section>
     </main>
 
@@ -113,16 +120,6 @@
       <p>&copy; 2026 Christopia. TODO: GitHub link.</p>
     </footer>
 
-    <!-- Quick menu: display and sound settings, pinned to the bottom of the screen. -->
-    <div class="quick-menu">
-      <div id="quick-menu-panel" class="quick-menu-panel" hidden>
-        <button class="theme-toggle switch" type="button" aria-pressed="false">Dark mode</button>
-        <button class="sound-toggle switch" type="button" aria-pressed="false">Sound</button>
-      </div>
-      <button class="quick-menu-toggle" type="button" aria-expanded="false" aria-controls="quick-menu-panel">
-        <span aria-hidden="true">&#9881;</span> Options
-      </button>
-    </div>
 
     <script type="module" src="../js/script.js"></script>
     <script type="module" src="../js/graphs.js"></script>

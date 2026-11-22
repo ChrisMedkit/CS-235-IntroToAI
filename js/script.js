@@ -1,46 +1,13 @@
-// Shared script for every page: theme, mobile nav, quick menu, galleries, early-internet extras.
+// Shared script for every page: mobile nav, taskbar + Start menu, galleries, early-internet extras.
 // Tool pages add their own module (plotter.js, ...) for page-specific behavior.
 import { TOOLS } from "./tools.js";
-import { THEME_STORAGE_KEY } from "./utils.js";
+import { STICKERS } from "./stickers.js";
 
-/**
- * Set the theme on <html data-theme> and sync the Dark mode switch.
- * The label stays "Dark mode"; aria-pressed carries on/off (changing both confuses screen readers).
- * @param {"light"|"dark"} theme
- */
-function applyTheme(theme) {
-  document.documentElement.dataset.theme = theme;
-  for (const button of document.querySelectorAll(".theme-toggle")) {
-    button.setAttribute("aria-pressed", String(theme === "dark"));
-  }
-}
-
-/** Toggle light/dark and remember the choice (storage can be blocked: then it lasts this page only). */
-function toggleTheme() {
-  const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-  applyTheme(next);
-  try {
-    localStorage.setItem(THEME_STORAGE_KEY, next);
-  } catch {
-    /* private mode */
-  }
-}
-
-/** Initial theme: saved choice, else the OS preference. */
-function initTheme() {
-  let saved = null;
-  try {
-    saved = localStorage.getItem(THEME_STORAGE_KEY);
-  } catch {
-    /* storage blocked */
-  }
-  const osDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  applyTheme(saved === "dark" || saved === "light" ? saved : osDark ? "dark" : "light");
-}
+const root = () => document.body.dataset.root ?? ""; // "" at the site root, "../" in section folders
 
 /**
  * Open/close a disclosure: the button's aria-expanded drives it, aria-controls names the target.
- * Mobile nav uses the .open class (CSS shows it on wide screens anyway); the quick menu uses `hidden`.
+ * Mobile nav uses the .open class (CSS shows it on wide screens anyway); the Start menu uses `hidden`.
  * @param {HTMLButtonElement} button
  * @param {boolean} [open]  omit to toggle
  */
@@ -52,9 +19,9 @@ function setExpanded(button, open = button.getAttribute("aria-expanded") !== "tr
   else target.hidden = !open;
 }
 
-/** Mobile Menu button and bottom Options menu: click toggles; Esc or a click elsewhere closes. */
+/** Mobile Menu button and the Start button: click toggles; Esc or a click elsewhere closes. */
 function initMenus() {
-  const toggles = [...document.querySelectorAll(".nav-toggle, .quick-menu-toggle")];
+  const toggles = [...document.querySelectorAll(".nav-toggle, .start-button")];
   for (const button of toggles) button.addEventListener("click", () => setExpanded(button));
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
@@ -80,13 +47,12 @@ function initMenus() {
 function renderToolGallery() {
   const gallery = document.getElementById("tool-gallery");
   if (!gallery) return; // not a gallery page
-  const root = document.body.dataset.root ?? ""; // "" at the site root, "../" in section folders
   const section = gallery.dataset.section;
   const cards = TOOLS.filter((t) => t.status === "live" && (!section || t.category === section)).map(
     (tool) => {
       const img = document.createElement("img");
       Object.assign(img, {
-        src: `${root}images/${tool.id}.svg`,
+        src: `${root()}images/${tool.id}.svg`,
         alt: `${tool.name} preview`,
         width: 640,
         height: 360,
@@ -97,7 +63,7 @@ function renderToolGallery() {
       const summary = document.createElement("p");
       summary.textContent = tool.summary;
       const link = document.createElement("a");
-      link.href = root + tool.href;
+      link.href = root() + tool.href;
       link.append(img, name, summary);
       const card = document.createElement("li");
       card.className = "tool-card";
@@ -106,6 +72,160 @@ function renderToolGallery() {
     },
   );
   gallery.replaceChildren(...cards);
+}
+
+/* ---------- Taskbar + Start menu (Windows-98 style, built here so every page gets the same one) ---------- */
+
+/**
+ * The site map, shown as a tree in the Start menu and used by "Random page".
+ * Folders list their pages from TOOLS, so a new tool shows up here by itself.
+ */
+const SITE = [
+  { name: "Home", href: "home.html" }, // index.html is the splash page
+  { name: "Tools", href: "tools.html", folders: [["Math", "math"], ["CS", "cs"]] },
+  { name: "Social", href: "social/index.html", folders: [["Pages", "social"]] },
+  { name: "Me", href: "me.html" },
+  { name: "Lab", href: "lab.html" },
+];
+
+/** Every page a visitor can open, as root-relative hrefs (for Random page). */
+const allPages = () => [...SITE.map((p) => p.href), ...TOOLS.filter((t) => t.status === "live").map((t) => t.href)];
+
+const el = (tag, props = {}, ...children) => {
+  const node = Object.assign(document.createElement(tag), props);
+  node.append(...children);
+  return node;
+};
+const link = (name, href) => el("a", { href: root() + href, textContent: name });
+
+/** <ul class="tree-view"> sitemap: top pages, with tool folders as collapsible <details>. */
+function siteTree() {
+  return el(
+    "ul",
+    { className: "tree-view" },
+    ...SITE.map((page) => {
+      const li = el("li", {}, link(page.name, page.href));
+      if (page.folders) {
+        li.append(
+          el(
+            "ul",
+            {},
+            ...page.folders.map(([label, category]) =>
+              el(
+                "li",
+                {},
+                el(
+                  "details",
+                  {},
+                  el("summary", { textContent: label }),
+                  el(
+                    "ul",
+                    {},
+                    ...TOOLS.filter((t) => t.status === "live" && t.category === category).map((t) =>
+                      el("li", {}, link(t.name, t.href)),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }
+      return li;
+    }),
+  );
+}
+
+function updateClock(clock) {
+  const now = new Date();
+  clock.dateTime = now.toISOString();
+  clock.textContent = now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+}
+
+/** Build the taskbar: Start button + menu (sitemap, Random page, Sound), current-page task, clock. */
+function initTaskbar() {
+  const menu = el(
+    "div",
+    { id: "start-menu", className: "start-menu window", hidden: true },
+    el("div", { className: "start-menu-banner", ariaHidden: "true" }, "Christopia", el("b", { textContent: "98" })),
+    el(
+      "div",
+      { className: "start-menu-items" },
+      el("nav", { ariaLabel: "All pages" }, siteTree()),
+      el("hr"),
+      el("button", { type: "button", className: "start-item random-page", textContent: "Random page" }),
+      el("button", { type: "button", className: "start-item sound-toggle", textContent: "Sound" }),
+    ),
+  );
+  const start = el(
+    "button",
+    { type: "button", className: "start-button" },
+    el("span", { className: "start-logo", ariaHidden: "true", textContent: "✦" }),
+    "Start",
+  );
+  start.setAttribute("aria-expanded", "false");
+  start.setAttribute("aria-controls", "start-menu");
+  // The open "program": this page's title, like a 98 task button (decorative; the h1 says it already).
+  const task = el("span", {
+    className: "task-button",
+    ariaHidden: "true",
+    textContent: document.title.replace(/^Christopia: /, ""),
+  });
+  const clock = el("time", { className: "clock" });
+  updateClock(clock);
+  setInterval(() => updateClock(clock), 15_000);
+  const bar = el("div", { className: "taskbar" }, start, task, el("div", { className: "tray" }, clock));
+  bar.setAttribute("role", "region");
+  bar.setAttribute("aria-label", "Taskbar");
+  document.body.append(menu, bar);
+
+  menu.querySelector(".random-page").addEventListener("click", () => {
+    const path = (url) => new URL(url, location.href).pathname.replace(/\/$/, "/index.html");
+    const choices = allPages().filter((href) => path(root() + href) !== path(location.href)); // never "here"
+    location.href = root() + choices[Math.floor(Math.random() * choices.length)];
+  });
+}
+
+/* ---------- Stickers (the list lives in js/stickers.js) ---------- */
+
+/** This page's sticker key: "index", "home", "tools", "math/plotter", ... (path from the site root). */
+function pageKey() {
+  const base = new URL(root() || "./", location.href).pathname;
+  return location.pathname.slice(base.length).replace(/\.html$/, "") || "index";
+}
+
+/** One layer behind the windows and one in front; both ignore the mouse except on link stickers. */
+function stickerLayer(name) {
+  const layer = el("div", { className: `sticker-layer ${name}` });
+  document.body.append(layer);
+  return layer;
+}
+
+function initStickers() {
+  const key = pageKey();
+  const mine = STICKERS.filter((s) => [].concat(s.page).some((p) => p === "*" || p === key));
+  if (!mine.length) return;
+  const layers = { behind: stickerLayer("behind"), front: stickerLayer("front") };
+  for (const s of mine) {
+    const img = el("img", { src: root() + s.src, alt: s.alt ?? "", loading: "lazy", decoding: "async" });
+    if (s.pixel) img.classList.add("pixel");
+    let node = img;
+    if (s.still) {
+      // Animated sticker: browsers show the still copy when the visitor asked for less motion.
+      const source = el("source", { srcset: root() + s.still });
+      source.media = "(prefers-reduced-motion: reduce)";
+      node = el("picture", {}, source, img);
+    }
+    if (s.href) node = el("a", { href: root() + s.href, className: "sticker-link" }, node);
+    const sticker = el("div", { className: s.phone ? "sticker phone" : "sticker" }, node);
+    const px = (v) => (typeof v === "number" ? `${v}px` : v);
+    if (s.right !== undefined) sticker.style.right = px(s.right);
+    else sticker.style.left = px(s.x ?? 0);
+    sticker.style.top = `${s.y}px`;
+    sticker.style.width = `${s.w}px`;
+    sticker.style.setProperty("--r", `${s.r ?? 0}deg`);
+    (s.front ? layers.front : layers.behind).append(sticker);
+  }
 }
 
 /* ---------- Early-internet extras ---------- */
@@ -216,12 +336,12 @@ function initHitCounter() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  initTheme();
+  initTaskbar(); // before initSounds and initMenus: they wire its buttons
+  initStickers();
   renderToolGallery();
   initSplash();
   initSparkles();
   initSounds();
   initHitCounter();
   initMenus();
-  document.querySelector(".theme-toggle")?.addEventListener("click", toggleTheme);
 });

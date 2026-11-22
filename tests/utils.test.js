@@ -13,6 +13,7 @@ import {
   filterTools,
 } from "../js/utils.js";
 import { TOOLS } from "../js/tools.js";
+import { STICKERS } from "../js/stickers.js";
 
 test("sample2D: evenly spaced, endpoints included", () => {
   const { x, y } = sample2D((t) => 2 * t, 0, 1, 3);
@@ -122,4 +123,30 @@ test("TOOLS registry: unique ids, live tools have a page", () => {
   const ids = TOOLS.map((t) => t.id);
   assert.equal(new Set(ids).size, ids.length);
   for (const t of TOOLS) if (t.status === "live") assert.match(t.href, /\.html$/);
+});
+
+test("TOOLS registry: every live tool's page, card image and (Math/CS) desktop icon exist", async () => {
+  const { existsSync } = await import("node:fs");
+  const site = new URL("../", import.meta.url);
+  for (const t of TOOLS.filter((tool) => tool.status === "live")) {
+    assert.ok(existsSync(new URL(t.href, site)), `${t.id}: page ${t.href}`);
+    assert.ok(existsSync(new URL(`images/${t.id}.svg`, site)), `${t.id}: card image`);
+    if (t.category === "math" || t.category === "cs") {
+      assert.ok(existsSync(new URL(`images/icons/${t.id}.svg`, site)), `${t.id}: desktop icon`);
+    }
+  }
+});
+
+test("STICKERS: files exist, each has a page, position and width; link stickers have alt text", async () => {
+  const { existsSync } = await import("node:fs");
+  const site = new URL("../", import.meta.url);
+  for (const [i, s] of STICKERS.entries()) {
+    const name = `sticker ${i} (${s.src})`;
+    assert.ok(existsSync(new URL(s.src, site)), `${name}: image file`);
+    if (s.still) assert.ok(existsSync(new URL(s.still, site)), `${name}: still file`);
+    assert.ok([].concat(s.page).length > 0, `${name}: page`);
+    assert.ok(Number.isFinite(s.y) && Number.isFinite(s.w) && s.w > 0, `${name}: y and w are numbers`);
+    assert.ok(s.x !== undefined || s.right !== undefined, `${name}: x or right`);
+    if (s.href) assert.ok(s.alt, `${name}: a link sticker needs alt text`);
+  }
 });

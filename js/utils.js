@@ -4,9 +4,6 @@
 /** localStorage key the scanner writes and the LaTeX page reads. */
 export const SCAN_STORAGE_KEY = "christopia:lastScan";
 
-/** localStorage key for the dark/light choice. */
-export const THEME_STORAGE_KEY = "christopia:theme";
-
 /**
  * Sample y = f(x) on [xMin, xMax] for a 2D line plot.
  * @param {(x: number) => number} f  compiled function (from math.js in the browser)

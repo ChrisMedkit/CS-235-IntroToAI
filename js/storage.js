@@ -11,9 +11,12 @@ const PREFIX = "christopia:";
  * @returns {Promise<any>}
  */
 export async function load(name, fallback) {
-  // TODO (Plan Social step 1): JSON.parse(localStorage.getItem(PREFIX + name)) in try/catch.
-  void PREFIX, name;
-  return fallback;
+  try {
+    const raw = localStorage.getItem(PREFIX + name);
+    return raw === null ? fallback : JSON.parse(raw);
+  } catch {
+    return fallback; // storage blocked (private mode) or corrupt JSON
+  }
 }
 
 /**
@@ -24,6 +27,5 @@ export async function load(name, fallback) {
  * @throws when storage is full or blocked, so the page can say "Not saved" instead of losing work
  */
 export async function save(name, value) {
-  // TODO (Plan Social step 1): localStorage.setItem(PREFIX + name, JSON.stringify(value)).
-  void name, value;
+  localStorage.setItem(PREFIX + name, JSON.stringify(value)); // throws if full or blocked: callers say "Not saved"
 }

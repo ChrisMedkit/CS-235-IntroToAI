@@ -3,179 +3,28 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Christopia: Home</title>
+    <title>Christopia</title>
     <meta name="description" content="Christopia: a hub of math, computer science and social tools." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body data-root="">
-    <!-- Shared header: identical on every page except aria-current. -->
-    <header class="site-header">
-      <a class="brand" href="index.html">Christopia</a>
-      <p class="splash" aria-hidden="true">Now in 3D!</p>
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-        Menu
-      </button>
-      <nav id="site-nav" aria-label="Main">
-        <ul>
-          <li><a href="index.html" aria-current="page">Home</a></li>
-          <li><a href="math/index.html">Math</a></li>
-          <li><a href="cs/index.html">CS</a></li>
-          <li><a href="social/index.html">Social</a></li>
-          <li><a href="hub.html">Hub</a></li>
-        </ul>
-      </nav>
-    </header>
-
-    <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
-    <div class="ticker" role="marquee" aria-label="Site news">
-      <p class="ticker-track">
-        Welcome to Christopia &#9733; New: Math, CS and Social sections &#9733; Sorting, graphs, regex
-        and Big-O visualizers &#9733; Coming soon: home server + smart home hub &#9733; TODO: your news here
-      </p>
-    </div>
-
-    <main>
-      <section id="hero">
-        <!-- TODO (Step 4): headline + one-paragraph pitch for Christopia, in your words. -->
-        <h1>Christopia</h1>
-        <p class="tagline">TODO: one-line tagline</p>
-        <img src="images/hero.svg" alt="TODO: describe the hero image" width="640" height="360" />
-        <a class="button primary" href="#tools">Browse the tools</a>
-      </section>
-
-      <section id="sections" aria-labelledby="sections-heading">
-        <h2 id="sections-heading">Sections</h2>
-        <ul class="section-tiles">
-          <li><a class="section-tile" href="math/index.html"><h3>Math</h3><p>Plotter, Matrix Lab, LaTeX, Scanner</p></a></li>
-          <li><a class="section-tile" href="cs/index.html"><h3>CS</h3><p>Sorting, data structures, graphs, Big-O, regex</p></a></li>
-          <li><a class="section-tile" href="social/index.html"><h3>Social</h3><p>Forum, events, private journal</p></a></li>
-          <li><a class="section-tile" href="hub.html"><h3>Hub</h3><p>Home server, smart home, everything else</p></a></li>
-        </ul>
-      </section>
-
-      <section id="tools" aria-labelledby="tools-heading">
-        <h2 id="tools-heading">All tools</h2>
-        <!-- Sideways scroll-snap gallery. Static cards are the no-JS fallback;
-             renderToolGallery() in js/script.js re-renders them from js/tools.js. -->
-        <ul class="tool-gallery" id="tool-gallery">
-          <li class="tool-card">
-            <a href="math/plotter.html">
-              <img src="images/plotter.svg" alt="Function Plotter preview" width="640" height="360" />
-              <h3>Function Plotter</h3>
-              <p>Graph y = f(x) in 2D and z = f(x, y) in 3D.</p>
-            </a>
-          </li>
-          <li class="tool-card">
-            <a href="math/matrix.html">
-              <img src="images/matrix.svg" alt="Matrix Lab preview" width="640" height="360" />
-              <h3>Matrix Lab</h3>
-              <p>RREF with row steps, determinant, inverse, eigenvalues.</p>
-            </a>
-          </li>
-          <li class="tool-card">
-            <a href="math/latex.html">
-              <img src="images/latex.svg" alt="LaTeX Scratchpad preview" width="640" height="360" />
-              <h3>LaTeX Scratchpad</h3>
-              <p>Write math, see it rendered, export .tex.</p>
-            </a>
-          </li>
-          <li class="tool-card">
-            <a href="math/scanner.html">
-              <img src="images/scanner.svg" alt="Notes Scanner preview" width="640" height="360" />
-              <h3>Notes Scanner</h3>
-              <p>Photo of your notes in, typed text out.</p>
-            </a>
-          </li>
-          <li class="tool-card">
-            <a href="cs/sorting.html">
-              <img src="images/sorting.svg" alt="Sorting Visualizer preview" width="640" height="360" />
-              <h3>Sorting Visualizer</h3>
-              <p>Watch six sorting algorithms compare and swap, step by step.</p>
-            </a>
-          </li>
-          <li class="tool-card">
-            <a href="cs/data-structures.html">
-              <img src="images/structures.svg" alt="Data Structures preview" width="640" height="360" />
-              <h3>Data Structures</h3>
-              <p>Stacks, queues, linked lists, BSTs, heaps and hash tables, animated.</p>
-            </a>
-          </li>
-          <li class="tool-card">
-            <a href="cs/graphs.html">
-              <img src="images/graphs.svg" alt="Graphs &amp; Pathfinding preview" width="640" height="360" />
-              <h3>Graphs &amp; Pathfinding</h3>
-              <p>BFS, DFS, Dijkstra and A* on a grid you draw.</p>
-            </a>
-          </li>
-          <li class="tool-card">
-            <a href="cs/big-o.html">
-              <img src="images/bigo.svg" alt="Big-O Playground preview" width="640" height="360" />
-              <h3>Big-O Playground</h3>
-              <p>Compare growth rates and benchmark real algorithms.</p>
-            </a>
-          </li>
-          <li class="tool-card">
-            <a href="cs/regex.html">
-              <img src="images/regex.svg" alt="Regex Builder preview" width="640" height="360" />
-              <h3>Regex Builder</h3>
-              <p>Build a regular expression from blocks, see it explained and matched.</p>
-            </a>
-          </li>
-          <li class="tool-card">
-            <a href="social/forum.html">
-              <img src="images/forum.svg" alt="Forum preview" width="640" height="360" />
-              <h3>Forum</h3>
-              <p>Threads and replies for classes, projects and anything else.</p>
-            </a>
-          </li>
-          <li class="tool-card">
-            <a href="social/events.html">
-              <img src="images/events.svg" alt="Events preview" width="640" height="360" />
-              <h3>Events</h3>
-              <p>Create events, RSVP, and add them to your calendar.</p>
-            </a>
-          </li>
-          <li class="tool-card">
-            <a href="social/journal.html">
-              <img src="images/journal.svg" alt="Private Journal preview" width="640" height="360" />
-              <h3>Private Journal</h3>
-              <p>Password-locked, encrypted notes with a Notion-style editor.</p>
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section id="about">
-        <h2>About</h2>
-        <!-- TODO (Step 4): who you are (applied math + CS), why this hub exists, what's next. -->
-        <p>TODO</p>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
-      <ul class="badges" aria-label="Site badges">
-        <li><img src="images/badges/christopia.svg" alt="Christopia" width="88" height="31" /></li>
-        <li><img src="images/badges/made-with-claude.svg" alt="Made with Claude" width="88" height="31" /></li>
-        <li><img src="images/badges/math-inside.svg" alt="Math inside" width="88" height="31" /></li>
-        <li><img src="images/badges/any-browser.svg" alt="Best viewed in any browser" width="88" height="31" /></li>
-      </ul>
-      <p>&copy; 2026 Christopia. TODO: GitHub link.</p>
-    </footer>
-
-    <!-- Quick menu: display and sound settings, pinned to the bottom of the screen. -->
-    <div class="quick-menu">
-      <div id="quick-menu-panel" class="quick-menu-panel" hidden>
-        <button class="theme-toggle switch" type="button" aria-pressed="false">Dark mode</button>
-        <button class="sound-toggle switch" type="button" aria-pressed="false">Sound</button>
+  <body class="splash-page" data-root="">
+    <main class="splash-main">
+      <div class="title-wrap">
+        <h1 class="chrome-title">Christopia</h1>
+        <p class="splash" aria-hidden="true">Now in 3D!</p>
       </div>
-      <button class="quick-menu-toggle" type="button" aria-expanded="false" aria-controls="quick-menu-panel">
-        <span aria-hidden="true">&#9881;</span> Options
-      </button>
-    </div>
+      <p class="splash-subtitle">a little corner of the internet for web wanderers and real-life friends</p>
+      <!-- The door: swap images/door.svg for your own picture any time (keep the text label). -->
+      <a class="enter-door" href="home.html">
+        <img src="images/door.svg" alt="" width="120" height="195" />
+        <span>Enter</span>
+      </a>
+      <p class="splash-note">best viewed in any browser &middot; est. 2026</p>
+    </main>
 
     <script type="module" src="js/script.js"></script>
   </body>

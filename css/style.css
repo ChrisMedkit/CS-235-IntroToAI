@@ -1,7 +1,7 @@
-/* Christopia shared stylesheet (used by every page).
-   Theme: glossy 2000s console menu (white tiles, aqua glow, pill buttons) + frosted-glass panels
-   over a maximalist collage. Math pages swap the collage for a faded Real Analysis mosaic.
-   Change the tokens in :root and [data-theme="dark"] first; everything else reads from them. */
+/* Christopia shared stylesheet (every page). Loads after 98.css, which draws the windows,
+   buttons, inputs, fieldsets and scrollbars. This file adds the page layout, the maximalist
+   extras (background, splash text, ticker, stickers later) and the tools' own visuals.
+   98.css hard-codes its colors, so there is one light theme. */
 
 /* Y2K display fonts (cufonfonts, free for personal use) and the Minecraft font
    (Craftron Gaming on dafont, 100% free). Paths are relative to this file. */
@@ -27,66 +27,37 @@
 }
 
 :root {
-  color-scheme: light;
-  --bg: #e9f2f8;
+  --bg: #008080; /* the classic teal desktop, shown until the collage image is added */
+  --paper: #ece8dc; /* math pages: light enough for the faded proofs to read */
   --surface: #ffffff;
-  --glass: rgb(255 255 255 / 0.62);
-  --glass-border: rgb(255 255 255 / 0.85);
-  --text: #1b2733;
-  --muted: #4d5b69;
-  --accent: #1e9bd7;
-  --accent-strong: #0b6fa4;
-  --accent-glow: rgb(41 182 246 / 0.55);
+  --text: #000000;
+  --muted: #444444;
+  --accent: #000080;
+  --accent-strong: #000080;
   --accent-text: #ffffff;
-  --error: #c62828;
-  --border: #c9d6e0;
-  --splash: #ffe94a;
-  --radius: 22px;
-  --pill: 999px;
+  --error: #a00000;
+  --border: #808080;
+  --splash: #ffff00;
+  --pill: 0;
   --space: 1rem;
-  --font: "M PLUS Rounded 1c", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font: "M PLUS Rounded 1c", system-ui, -apple-system, "Segoe UI", sans-serif; /* reading text */
+  --font-ui: "Pixelated MS Sans Serif", Arial, sans-serif; /* 98.css's pixel font for chrome */
   --mono: ui-monospace, "SF Mono", Menlo, monospace;
-  --font-display: "Rocket Pop", var(--font); /* logo, page titles */
-  --font-heading: "Rocket Pop Italic", var(--font); /* section headings */
-  --font-digital: "Digit LoFi", var(--mono); /* hit counter, ticker */
-  --font-pixel: "Minecraft", var(--mono); /* splash text */
-  --header-h: 4rem;
-  --shadow: 0 8px 24px rgb(16 42 67 / 0.16);
-  /* Gloss: bright top half, soft bottom half, like a console menu button. */
-  --gloss: linear-gradient(180deg, #ffffff 0%, #f1f8fc 48%, #dceef8 52%, #f4fafd 100%);
-  --gloss-accent: linear-gradient(180deg, #7fd3fa 0%, #39b4ef 48%, #1e9bd7 52%, #3fb8f0 100%);
+  --font-display: "Rocket Pop", var(--font);
+  --font-heading: "Rocket Pop Italic", var(--font);
+  --font-digital: "Digit LoFi", var(--mono);
+  --font-pixel: "Minecraft", var(--mono);
+  --header-h: 3rem;
+  /* 98.css's own bevels, reused for links styled as buttons, sunken fields and pressed toggles. */
+  --bevel-out: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+  --bevel-in: inset -1px -1px #ffffff, inset 1px 1px #808080, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a;
+  --shadow: 4px 4px 0 rgb(0 0 0 / 0.35); /* hard drop shadow: the indie-web touch */
+  /* Title-bar blue (98.css's own gradient), used for the ticker and sorting bars. */
+  --gloss-accent: linear-gradient(90deg, #000080, #1084d0);
 
   /* Home/tool background. Export your Photoshop collage to images/bg-collage.jpg
      (see README "Background"), then replace `none` with: url("../images/bg-collage.jpg") */
   --bg-collage: none;
-  --bg-fallback:
-    radial-gradient(circle at 15% 20%, rgb(255 255 255 / 0.9) 0 6%, transparent 7%),
-    radial-gradient(circle at 80% 30%, rgb(255 255 255 / 0.7) 0 4%, transparent 5%),
-    radial-gradient(circle at 60% 85%, rgb(255 255 255 / 0.6) 0 8%, transparent 9%),
-    linear-gradient(180deg, #8fd8fb 0%, #d9f1fc 45%, #f6fbfe 100%);
-  --ink-filter: none; /* math mosaic ink color; inverted in dark mode */
-  --emboss: #ffffff; /* 1px highlight under glossy headings */
-}
-
-[data-theme="dark"] {
-  color-scheme: dark;
-  --bg: #0c1622;
-  --surface: #16222f;
-  --glass: rgb(16 28 42 / 0.66);
-  --glass-border: rgb(120 190 230 / 0.25);
-  --text: #e8f1f8;
-  --muted: #a7b8c6;
-  --accent: #4cc3fb;
-  --accent-strong: #8ad8fd;
-  --accent-glow: rgb(76 195 251 / 0.45);
-  --border: #2c3f52;
-  --gloss: linear-gradient(180deg, #2b3d50 0%, #1f2f40 48%, #172533 52%, #1d2c3b 100%);
-  --bg-fallback:
-    radial-gradient(circle at 15% 20%, rgb(140 210 255 / 0.18) 0 6%, transparent 7%),
-    radial-gradient(circle at 80% 30%, rgb(140 210 255 / 0.12) 0 4%, transparent 5%),
-    linear-gradient(180deg, #06111c 0%, #0f2335 60%, #142c42 100%);
-  --ink-filter: invert(1);
-  --emboss: rgb(0 0 0 / 0.6);
 }
 
 *,
@@ -98,24 +69,18 @@
 body {
   margin: 0;
   font-family: var(--font);
-  color: var(--text);
-  background-color: var(--bg);
-  background-image: var(--bg-collage), var(--bg-fallback);
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  font-size: 15px;
   line-height: 1.6;
+  color: var(--text);
+  background: var(--bg) var(--bg-collage) center / cover fixed;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* Math pages: no collage; the Real Analysis portfolio, tiled, rotated, barely visible. */
+/* Math pages: plain paper and the Real Analysis portfolio, tiled, rotated, barely visible. */
 body.math-bg {
-  background-image: linear-gradient(180deg, #f4f9fc 0%, #e6f1f8 100%);
-}
-[data-theme="dark"] body.math-bg {
-  background-image: linear-gradient(180deg, #0c1622 0%, #13202e 100%);
+  background: var(--paper);
 }
 body.math-bg::before {
   content: "";
@@ -126,7 +91,6 @@ body.math-bg::before {
   background-size: 1100px auto;
   transform: rotate(-30deg);
   opacity: 0.09;
-  filter: var(--ink-filter);
   pointer-events: none;
 }
 
@@ -136,42 +100,20 @@ main {
   margin: 0 auto;
   padding: var(--space);
   display: grid;
-  gap: calc(var(--space) * 1.5);
+  gap: calc(var(--space) * 1.25);
   align-content: start;
 }
 
-/* Frosted-glass panels: every section on every page. */
-main > section {
-  background: var(--glass);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  backdrop-filter: blur(14px) saturate(1.4);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: calc(var(--space) * 1.25);
-  min-width: 0;
-}
-
-h1,
-h2,
-h3 {
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  line-height: 1.2;
-  color: var(--accent-strong);
-}
-
-h1 {
-  font-family: var(--font-display);
-  font-weight: 400;
-}
-h2 {
-  font-family: var(--font-heading);
-  font-weight: 400;
+::selection {
+  background: #000080;
+  color: #ffffff;
 }
 
 a {
-  color: var(--accent-strong);
+  color: #0000ee;
+}
+a:visited {
+  color: #551a8b;
 }
 
 img {
@@ -191,12 +133,81 @@ img {
   color: var(--error);
 }
 
-:focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 2px;
+[hidden] {
+  display: none !important; /* must win over display: grid/flex below */
 }
 
-/* ---------- Header + nav ---------- */
+/* ---------- Windows (98.css) ---------- */
+.window {
+  min-width: 0;
+  box-shadow: var(--bevel-out), var(--shadow);
+}
+/* 98.css sets the whole window in its 11 px pixel font; reading text uses the body font.
+   Buttons, inputs, labels and legends still get 98.css's font from their own rules. */
+.window-body {
+  font-family: var(--font);
+  font-size: 15px;
+  -webkit-font-smoothing: auto;
+}
+.title-bar-text {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #ffffff;
+  letter-spacing: 0;
+}
+/* A page's own title: twice the pixel size, so the pixels stay crisp. */
+h1.title-bar-text {
+  font-size: 22px;
+  padding: 2px 4px;
+}
+.window-body > h2,
+.window-body h2 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: 1.35rem;
+  color: var(--accent);
+  margin: 1rem 0 0.5rem;
+}
+.window-body h3 {
+  font-size: 1.05rem;
+  margin: 0.75rem 0 0.35rem;
+}
+
+/* Links that act like 98 buttons (hero button, forum "New thread"). */
+.button {
+  display: inline-block;
+  min-width: 75px;
+  min-height: 23px;
+  padding: 4px 12px;
+  background: #c0c0c0;
+  box-shadow: var(--bevel-out);
+  color: #000000;
+  font: 11px var(--font-ui);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+.button:visited {
+  color: #000000;
+}
+.button:active {
+  box-shadow: var(--bevel-in);
+}
+/* A toggle that is on looks pressed in (hub filters). */
+[role="group"] > button[aria-pressed="true"] {
+  box-shadow: var(--bevel-in);
+  background: #dfdfdf;
+}
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ---------- Header: a 98 menu bar ---------- */
 .site-header {
   position: sticky;
   top: 0;
@@ -204,26 +215,334 @@ img {
   display: flex;
   align-items: center;
   gap: 0.5rem var(--space);
-  padding: 0.5rem var(--space);
+  padding: 0.35rem var(--space);
   min-height: var(--header-h);
-  background: var(--gloss);
-  border-bottom: 2px solid var(--border);
-  box-shadow: 0 2px 12px rgb(16 42 67 / 0.12);
+  background: #c0c0c0;
+  box-shadow: var(--bevel-out);
   flex-wrap: wrap;
 }
-
 .brand {
   position: relative;
   font-family: var(--font-display);
-  font-weight: 400;
   font-size: 1.6rem;
   letter-spacing: 0.04em;
   color: var(--accent);
   text-decoration: none;
   margin-right: auto;
-  text-shadow:
-    0 1px 0 var(--emboss),
-    0 0 12px var(--accent-glow);
+  text-shadow: 2px 2px 0 #ffffff;
+}
+.brand:visited {
+  color: var(--accent);
+}
+
+#site-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+/* Nav links look like 98 buttons; the current page is pressed in. */
+#site-nav li a {
+  display: block;
+  min-width: 75px;
+  padding: 4px 12px;
+  text-align: center;
+  background: #c0c0c0;
+  box-shadow: var(--bevel-out);
+  color: #000000;
+  font: 11px var(--font-ui);
+  text-decoration: none;
+}
+#site-nav a[aria-current="page"] {
+  box-shadow: var(--bevel-in);
+  background: #dfdfdf;
+  font-weight: 700;
+}
+#site-nav {
+  display: none; /* mobile: behind the Menu button (toggleNav sets .open) */
+  width: 100%;
+  order: 10;
+}
+#site-nav.open {
+  display: block;
+}
+
+/* ---------- Section sub-nav (Math / CS / Social): a row of 98 tabs ---------- */
+.sub-nav {
+  padding: 0.35rem var(--space) 0;
+  background: #c0c0c0;
+  box-shadow: inset 0 -1px #808080;
+  overflow-x: auto;
+}
+.sub-nav ul {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  gap: 2px;
+  width: min(1200px, 100%);
+}
+.sub-nav a {
+  display: block;
+  white-space: nowrap;
+  padding: 3px 10px 4px;
+  background: #c0c0c0;
+  box-shadow: inset -1px 0 #0a0a0a, inset 1px 1px #ffffff, inset -2px 0 #808080, inset 2px 2px #dfdfdf;
+  color: #000000;
+  font: 11px var(--font-ui);
+  text-decoration: none;
+}
+.sub-nav a[aria-current="page"] {
+  font-weight: 700;
+  padding-bottom: 6px;
+  margin-bottom: -1px; /* the selected tab sits on top of the strip, like 98 tabs */
+}
+
+/* ---------- Tool pages: 98 Explorer address bar (C:\Tools\Math\Plotter) ---------- */
+.address-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px var(--space);
+  background: #c0c0c0;
+  box-shadow: inset 0 -1px #808080;
+  font: 11px var(--font-ui);
+}
+.address {
+  list-style: none;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  padding: 3px 6px;
+  min-height: 21px;
+  background: #ffffff;
+  box-shadow: var(--bevel-in);
+}
+.address::before {
+  content: "C:\\";
+  content: "C:\\" / ""; /* decoration: screen readers just hear the links */
+}
+.address li + li::before {
+  content: "\\";
+  content: "\\" / "";
+}
+.address a,
+.address a:visited {
+  color: #000080;
+}
+
+/* ---------- Tools desktop (desktop.js) ---------- */
+.desktop {
+  position: relative;
+  display: grid;
+  gap: calc(var(--space) * 1.25);
+}
+/* Wide screens with a mouse: windows float where you drag them. */
+.desktop.is-draggable {
+  display: block;
+}
+.desktop.is-draggable .desktop-window {
+  position: absolute;
+  width: min(460px, 47%);
+}
+.desktop.is-draggable .title-bar {
+  cursor: move;
+  touch-action: none;
+}
+.title-bar-text img {
+  vertical-align: -3px;
+  margin-right: 3px;
+  image-rendering: pixelated;
+}
+h1.title-bar-text img {
+  width: 24px;
+  height: 24px;
+  vertical-align: -4px;
+}
+.title-bar-program {
+  font-weight: 400;
+}
+/* The folder view: white sunken area with icons and labels, like 98 Explorer. */
+.icon-grid {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 14px 6px;
+  min-height: 140px;
+  background: #ffffff;
+  box-shadow: var(--bevel-in);
+}
+.icon-grid a,
+.icon-grid a:visited {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 2px;
+  color: #000000;
+  font: 11px var(--font-ui);
+  text-align: center;
+  text-decoration: none;
+}
+.icon-grid img {
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+}
+.icon-grid span {
+  padding: 1px 3px;
+}
+/* 98 selection: navy label; keyboard focus adds the dotted rectangle. */
+.icon-grid a:hover span,
+.icon-grid a:focus-visible span {
+  background: #000080;
+  color: #ffffff;
+}
+.icon-grid a:focus-visible {
+  outline: none;
+}
+.icon-grid a:focus-visible span {
+  outline: 1px dotted #ffffff;
+  outline-offset: -1px;
+}
+
+/* ---------- Shared bits for tool pages ---------- */
+.tool-layout {
+  grid-template-columns: 1fr;
+}
+#plot,
+.plot {
+  width: 100%;
+  min-height: 420px;
+  background: #ffffff;
+  box-shadow: var(--bevel-in);
+}
+/* 98.css sets textareas and tables in its 11 px pixel font; code and data read better in mono/body text. */
+textarea {
+  width: 100%;
+  font-family: var(--mono);
+  font-size: 13px;
+}
+/* Field labels sit above their input; radio/checkbox labels stay next to their box. */
+form label:not(.field-row label),
+.window-body > label {
+  display: flex;
+  margin-top: 0.6rem;
+}
+form input:not([type="radio"], [type="checkbox"]),
+form select,
+form textarea {
+  width: 100%;
+}
+.notice {
+  padding: 0.5rem 0.75rem;
+  background: #ffffe1; /* 98 tooltip yellow */
+  border: 1px solid #000000;
+  font-size: 0.9rem;
+}
+.empty-state,
+.meta {
+  color: var(--muted);
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 6px;
+  margin: var(--space) 0 0;
+}
+.stats div {
+  background: var(--surface);
+  box-shadow: var(--bevel-in);
+  padding: 0.35rem 0.6rem;
+}
+.stats dt {
+  font: 11px var(--font-ui);
+  color: var(--muted);
+}
+.stats dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 1.05rem;
+  white-space: nowrap; /* keep O(n log n) on one line */
+  color: var(--accent);
+}
+/* Radio groups: 98 radio buttons laid out in a wrapping row. */
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+}
+.field-row {
+  display: flex;
+  align-items: center;
+  min-height: 20px;
+}
+#bigo-classes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+}
+.data-table {
+  width: 100%;
+  margin-top: var(--space);
+  font: 0.9rem var(--font);
+  white-space: normal; /* 98.css tables are nowrap */
+  background: var(--surface);
+  box-shadow: var(--bevel-in);
+}
+.data-table caption {
+  font: 11px var(--font-ui);
+  text-align: left;
+  padding: 0.25rem 0;
+}
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 0.3rem 0.5rem;
+  border-bottom: 1px solid #dfdfdf;
+  overflow-wrap: anywhere; /* long matches (emails, URLs) must not push a phone screen sideways */
+}
+.data-table th {
+  background: #c0c0c0;
+  box-shadow: var(--bevel-out);
+  font: 700 11px var(--font-ui);
+}
+.output {
+  white-space: pre-wrap;
+  background: var(--surface);
+  box-shadow: var(--bevel-in);
+  padding: 0.6rem;
+  min-height: 2.5rem;
+}
+/* 98.css makes every <button> at least 75 x 23 px; these small ones opt out. */
+.cell,
+.token-palette button,
+.vote button,
+.remove-expr,
+.page-icon,
+.page-tree button,
+.sidebar-action {
+  min-width: 0;
+  min-height: 0;
+}
+.token-palette button {
+  padding: 2px 8px;
+}
+.token-palette code {
+  font-size: 13px;
+}
+.regex-input input {
+  height: 26px;
+  font-family: var(--mono);
+  font-size: 14px;
 }
 
 /* Splash text: yellow, tilted, pulsing, next to the logo (text set by initSplash). */
@@ -256,87 +575,6 @@ img {
   }
 }
 
-#site-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0.25rem 0 0.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-/* li a: beats the shared pill rule's inline-block so links span the stacked menu. */
-#site-nav li a {
-  display: block;
-  text-align: center;
-}
-
-/* Mobile: nav collapses behind the Menu button (toggleNav sets .open). */
-#site-nav {
-  display: none;
-  width: 100%;
-  order: 10;
-}
-#site-nav.open {
-  display: block;
-}
-
-/* ---------- Buttons: glossy pills (nav links, .button, <button>) ---------- */
-button,
-.button,
-#site-nav a {
-  display: inline-block;
-  font: inherit;
-  font-weight: 700;
-  color: var(--text);
-  text-decoration: none;
-  background: var(--gloss);
-  border: 2px solid var(--border);
-  border-radius: var(--pill);
-  padding: 0.35rem 0.95rem;
-  font-size: 0.95rem;
-  cursor: pointer;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.9),
-    0 2px 4px rgb(16 42 67 / 0.12);
-  transition:
-    border-color 0.15s,
-    box-shadow 0.15s,
-    transform 0.15s;
-}
-button:hover,
-.button:hover,
-#site-nav a:hover {
-  border-color: var(--accent);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.9),
-    0 0 0 4px var(--accent-glow);
-}
-button:active,
-.button:active {
-  transform: translateY(1px) scale(0.98);
-}
-#site-nav a[aria-current="page"],
-[role="group"] > button[aria-pressed="true"],
-.button.primary,
-button[type="submit"] {
-  background: var(--gloss-accent);
-  border-color: var(--accent-strong);
-  color: var(--accent-text);
-  text-shadow: 0 1px 1px rgb(0 0 0 / 0.3);
-}
-button[aria-pressed="true"] {
-  border-color: var(--accent);
-}
-button:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
 
 /* ---------- News ticker ---------- */
 .ticker {
@@ -371,27 +609,397 @@ button:disabled {
   }
 }
 
-/* ---------- Home: hero ---------- */
-#hero {
-  display: grid;
-  gap: var(--space);
-  align-items: center;
-}
-#hero h1 {
-  font-size: clamp(2.2rem, 7vw, 4rem);
+/* ---------- Chrome title (splash + Home): CSS-only, no image file ---------- */
+.chrome-title {
   margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(3rem, 13vw, 9rem);
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  /* Layer 1: a white shine that sweeps across; layer 2: the chrome (sky, horizon line, ground). */
+  background:
+    linear-gradient(100deg, transparent 42%, rgb(255 255 255 / 0.95) 50%, transparent 58%) -150% 0 / 60% 100% no-repeat,
+    linear-gradient(180deg, #ffffff 0%, #dce6ef 28%, #7e90a3 49%, #f6f9fb 51%, #b7c5d3 76%, #ffffff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* A navy 3D edge: drop-shadow follows the clipped letters (text-shadow would sit on top of them). */
+  filter: drop-shadow(1px 1px 0 #000080) drop-shadow(1px 1px 0 #000080) drop-shadow(2px 2px 0 #00004d)
+    drop-shadow(5px 6px 0 rgb(0 0 0 / 0.35));
+}
+.chrome-title-small {
+  font-size: clamp(2.2rem, 7vw, 4.75rem);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .chrome-title {
+    animation:
+      title-float 3.5s ease-in-out infinite alternate,
+      title-shine 6s linear infinite;
+  }
+}
+@keyframes title-float {
+  to {
+    transform: translateY(-8px);
+  }
+}
+@keyframes title-shine {
+  0%,
+  55% {
+    background-position: -150% 0, 0 0;
+  }
+  100% {
+    background-position: 250% 0, 0 0;
+  }
+}
+
+/* ---------- Splash page (index.html) ---------- */
+.splash-main {
+  min-height: calc(100vh - 34px); /* the taskbar */
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1.25rem;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+.title-wrap {
+  position: relative;
+}
+/* The Minecraft splash text sits on the title's bottom-right corner here. */
+.title-wrap .splash {
+  left: auto;
+  top: auto;
+  right: -0.5em;
+  bottom: -0.2em;
+  font-size: clamp(0.9rem, 2.6vw, 1.6rem);
+}
+.splash-subtitle,
+.splash-note {
+  margin: 0;
+  max-width: 34rem;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 #000000;
+}
+.splash-note {
+  font: 11px var(--font-ui);
+}
+.enter-door,
+.enter-door:visited {
+  display: grid;
+  justify-items: center;
+  gap: 0.4rem;
+  color: #ffffff;
+  text-decoration: none;
+}
+.enter-door img {
+  width: 120px;
+  height: auto;
+  image-rendering: pixelated;
+  filter: drop-shadow(4px 4px 0 rgb(0 0 0 / 0.35));
+  transform-origin: left center;
+}
+.enter-door span {
+  padding: 4px 18px;
+  background: #c0c0c0;
+  box-shadow: var(--bevel-out);
+  color: #000000;
+  font: 700 11px var(--font-ui);
+}
+.enter-door:hover span,
+.enter-door:focus-visible span {
+  background: #000080;
+  color: #ffffff;
+}
+.enter-door:focus-visible {
+  outline: 1px dotted #ffffff;
+  outline-offset: 4px;
+}
+/* The door swings open a little on hover or focus. */
+@media (prefers-reduced-motion: no-preference) {
+  .enter-door img {
+    transition: transform 0.25s ease-out;
+  }
+  .enter-door:hover img,
+  .enter-door:focus-visible img {
+    transform: perspective(400px) rotateY(-28deg);
+  }
+}
+
+/* ---------- Home page (home.html): title + portal columns ---------- */
+.home-title {
+  display: grid;
+  justify-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0;
+  text-align: center;
+}
+.home-tagline {
+  margin: 0;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 #000000;
+}
+.portal {
+  display: grid;
+  gap: calc(var(--space) * 1.25);
+  align-items: start;
+}
+.portal-col {
+  display: grid;
+  gap: calc(var(--space) * 1.25);
+  min-width: 0;
+}
+.launch-pad {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.launch-pad a,
+.launch-pad a:visited {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: #c0c0c0;
+  box-shadow: var(--bevel-out);
+  color: #000000;
+  font: 11px var(--font-ui);
+  text-decoration: none;
+}
+.launch-pad a:active {
+  box-shadow: var(--bevel-in);
+}
+.buttons-wall {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.buttons-wall img {
+  display: block;
+  width: 88px;
+  height: 31px;
+  image-rendering: pixelated;
+}
+.welcome-image {
+  display: block;
+  float: right;
+  width: min(45%, 260px);
+  margin: 0 0 0.5rem 0.75rem;
+  box-shadow: var(--bevel-in);
+}
+.now-box {
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+.now-box div {
+  padding: 4px 8px;
+  background: var(--surface);
+  box-shadow: var(--bevel-in);
+}
+.now-box dt {
+  font: 700 11px var(--font-ui);
+}
+.now-box dd {
+  margin: 0;
+}
+.updates {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.5rem;
+}
+.updates time {
+  display: block;
+  font: 700 11px var(--font-ui);
   color: var(--accent);
-  text-shadow:
-    0 2px 0 var(--emboss),
-    0 0 18px var(--accent-glow);
 }
-#hero .button {
-  justify-self: start;
+
+/* ---------- Me page (me.html): a desk whose objects are links ---------- */
+.scene-hint {
+  margin-top: 0;
 }
-#hero img {
-  border-radius: var(--radius);
-  border: 3px solid var(--surface);
-  box-shadow: var(--shadow);
+/* The desk: wood planks drawn with gradients (no image file). */
+.scene {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 calc(25% - 2px), rgb(60 35 15 / 0.55) calc(25% - 2px) 25%),
+    repeating-linear-gradient(0deg, rgb(255 255 255 / 0.05) 0 3px, transparent 3px 11px),
+    linear-gradient(180deg, #b9824b, #9c6a38);
+  box-shadow: var(--bevel-in);
+}
+.scene ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* Each object: --x/--y from the desk's top-left (%), --w its width (% of the desk), --r its tilt. */
+.scene-item {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  transform: rotate(var(--r, 0deg));
+}
+.desk-calculator {
+  --x: 7%;
+  --y: 12%;
+  --w: 10%;
+  --r: -8deg;
+}
+.desk-notebook {
+  --x: 24%;
+  --y: 22%;
+  --w: 17%;
+  --r: -5deg;
+}
+.desk-phone {
+  --x: 50%;
+  --y: 10%;
+  --w: 8%;
+  --r: 12deg;
+}
+.desk-headphones {
+  --x: 66%;
+  --y: 40%;
+  --w: 17%;
+  --r: -14deg;
+}
+.desk-floppy {
+  --x: 47%;
+  --y: 60%;
+  --w: 10%;
+  --r: 9deg;
+}
+.desk-polaroid {
+  --x: 84%;
+  --y: 8%;
+  --w: 11%;
+  --r: 7deg;
+}
+.scene-item a {
+  position: relative;
+  display: block;
+  text-decoration: none;
+}
+.scene-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(4px 6px 0 rgb(0 0 0 / 0.35));
+}
+/* Sticky-note label under the object; shown on hover/focus (always on touch screens). */
+.scene-label {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, 6px) rotate(calc(var(--r, 0deg) * -1));
+  padding: 2px 8px;
+  background: #ffef7a;
+  box-shadow: 2px 2px 0 rgb(0 0 0 / 0.3);
+  color: #000000;
+  font: 700 11px var(--font-ui);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+}
+.scene-item a:hover .scene-label,
+.scene-item a:focus-visible .scene-label {
+  opacity: 1;
+}
+.scene-item a:focus-visible {
+  outline: 2px dotted #ffffff;
+  outline-offset: 4px;
+}
+@media (hover: none) {
+  .scene-label {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .scene-item img {
+    transition:
+      transform 0.15s,
+      filter 0.15s;
+  }
+  .scene-item a:hover img,
+  .scene-item a:focus-visible img {
+    transform: translateY(-6px);
+    filter: drop-shadow(6px 12px 2px rgb(0 0 0 / 0.3));
+  }
+}
+/* Phones: the desk is too small to aim at, so the same objects line up in a grid with labels. */
+@media (max-width: 599px) {
+  .scene {
+    aspect-ratio: auto;
+    padding: 12px;
+  }
+  .scene ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px 10px;
+  }
+  .scene-item {
+    position: static;
+    width: auto;
+    transform: none;
+  }
+  .scene-item img {
+    width: 64px;
+    margin: 0 auto;
+  }
+  .scene-label {
+    position: static;
+    display: block;
+    width: max-content;
+    margin: 8px auto 0;
+    transform: none;
+    opacity: 1;
+  }
+}
+.me-columns {
+  display: grid;
+  gap: calc(var(--space) * 1.25);
+  align-items: start;
+}
+.me-photo {
+  float: left;
+  margin: 0 0.75rem 0.5rem 0;
+  box-shadow: var(--bevel-in);
+  image-rendering: pixelated;
+}
+.facts {
+  clear: both;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+.facts div {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 0.5rem;
+  padding: 4px 8px;
+  background: var(--surface);
+  box-shadow: var(--bevel-in);
+}
+.facts dt {
+  font: 700 11px var(--font-ui);
+  align-self: center;
+}
+.facts dd {
+  margin: 0;
+}
+.favorites {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.35rem;
 }
 
 /* ---------- Home: scrolling tool gallery = console "channel" tiles ---------- */
@@ -407,20 +1015,16 @@ button:disabled {
 .tool-card {
   flex: 0 0 min(80%, 300px);
   scroll-snap-align: start;
-  background: var(--gloss);
-  border: 3px solid var(--border);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
-  transition:
-    border-color 0.15s,
-    box-shadow 0.15s,
-    transform 0.15s;
+  background: #c0c0c0;
+  box-shadow: var(--bevel-out), var(--shadow);
+  transition: transform 0.15s;
 }
 .tool-card:hover,
 .tool-card:focus-within {
   border-color: var(--accent);
   box-shadow:
-    0 0 0 4px var(--accent-glow),
+    var(--bevel-out),
+    0 0 0 2px #000080,
     var(--shadow);
   transform: translateY(-3px);
 }
@@ -431,50 +1035,13 @@ button:disabled {
   text-decoration: none;
 }
 .tool-card img {
-  border-radius: 12px;
+  border-radius: 0;
 }
 .tool-card h3 {
   margin: 0.5rem 0 0.25rem;
 }
 
-/* ---------- Tool pages: controls + output ---------- */
-.tool-layout {
-  grid-template-columns: 1fr;
-}
-#plot {
-  width: 100%;
-  min-height: 420px;
-}
-input,
-select,
-textarea {
-  font: inherit;
-  color: var(--text);
-  background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  padding: 0.4rem 0.6rem;
-  max-width: 100%;
-}
-input:focus,
-select:focus,
-textarea:focus {
-  border-color: var(--accent);
-  outline: none;
-  box-shadow: 0 0 0 4px var(--accent-glow);
-}
-textarea {
-  width: 100%;
-  font-family: var(--mono);
-}
-fieldset {
-  border: 2px solid var(--border);
-  border-radius: 16px;
-  margin: var(--space) 0;
-}
-label {
-  font-weight: 700;
-}
+
 .expression-row {
   display: flex;
   align-items: center;
@@ -499,7 +1066,6 @@ label {
 .ranges input {
   width: 100%;
 }
-/* TODO (Step 6): matrix result table. */
 
 /* ---------- Hub ---------- */
 .hub-grid {
@@ -515,14 +1081,9 @@ label {
   align-content: start;
   gap: 0.4rem;
   padding: var(--space);
-  background: var(--gloss);
-  border: 3px solid var(--border);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
-  transition:
-    border-color 0.15s,
-    box-shadow 0.15s,
-    transform 0.15s;
+  background: #c0c0c0;
+  box-shadow: var(--bevel-out), var(--shadow);
+  transition: transform 0.15s;
 }
 .hub-card h3,
 .hub-card p {
@@ -542,7 +1103,8 @@ label {
 .hub-card:focus-within {
   border-color: var(--accent);
   box-shadow:
-    0 0 0 4px var(--accent-glow),
+    var(--bevel-out),
+    0 0 0 2px #000080,
     var(--shadow);
   transform: translateY(-3px);
 }
@@ -575,26 +1137,14 @@ label {
   border-color: #f0c36b;
   color: #6e4a00;
 }
-[data-theme="dark"] .badge.status-live {
-  background: #123a24;
-  border-color: #2f8a55;
-  color: #9ff0c0;
-}
-[data-theme="dark"] .badge.status-planned {
-  background: #3a2c0c;
-  border-color: #a77b1e;
-  color: #ffd98a;
-}
 
 /* ---------- Footer: hit counter + 88x31 badges ---------- */
 .site-footer {
   padding: var(--space);
   text-align: center;
-  color: var(--muted);
-  background: var(--glass);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border-top: 2px solid var(--border);
+  color: var(--text);
+  background: #c0c0c0;
+  box-shadow: inset 0 1px #ffffff, inset 0 2px #dfdfdf;
 }
 .badges {
   list-style: none;
@@ -618,72 +1168,190 @@ label {
   letter-spacing: 0.15em;
   color: #7fffd4;
   background: #0b1420;
-  border: 2px solid var(--accent);
-  border-radius: 8px;
   padding: 0.1rem 0.5rem;
-  box-shadow: 0 0 10px var(--accent-glow);
+  box-shadow: var(--bevel-in);
 }
 
-/* ---------- Quick menu (bottom of the screen): Dark mode + Sound ---------- */
-.quick-menu {
+/* ---------- Taskbar + Start menu (built by initTaskbar in script.js) ---------- */
+body {
+  padding-bottom: 34px; /* room for the fixed taskbar */
+}
+.taskbar {
   position: fixed;
-  right: var(--space);
-  bottom: calc(var(--space) + env(safe-area-inset-bottom));
-  z-index: 30;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.5rem;
-}
-.quick-menu-toggle {
-  padding: 0.55rem 1.2rem;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.9),
-    var(--shadow);
-}
-.quick-menu-toggle[aria-expanded="true"] {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-glow);
-}
-.quick-menu-panel {
-  display: grid;
-  gap: 0.5rem;
-  min-width: 210px;
-  padding: 0.75rem;
-  background: var(--glass);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  backdrop-filter: blur(14px) saturate(1.4);
-  border: 1px solid var(--glass-border);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
-}
-/* On/off switch: the label never changes, aria-pressed moves the knob. */
-.switch {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  gap: 4px;
+  height: 32px;
+  padding: 2px 3px;
+  background: #c0c0c0;
+  box-shadow: inset 0 1px #dfdfdf, inset 0 2px #ffffff;
+}
+.start-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 0 8px;
+  font-weight: 700;
+}
+.start-button[aria-expanded="true"] {
+  box-shadow: var(--bevel-in);
+}
+.start-logo {
+  color: var(--accent);
+  font-size: 13px;
+}
+.task-button {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 45vw;
+  height: 23px;
+  padding: 0 10px;
+  background: #dfdfdf;
+  box-shadow: var(--bevel-in);
+  font: 700 11px var(--font-ui);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tray {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  height: 23px;
+  padding: 0 10px;
+  box-shadow: inset -1px -1px #ffffff, inset 1px 1px #808080;
+  font: 11px var(--font-ui);
+}
+.start-menu {
+  position: fixed;
+  left: 2px;
+  bottom: 31px;
+  z-index: 41;
+  display: flex;
+  width: min(260px, calc(100vw - 4px));
+  max-height: calc(100vh - 40px);
+}
+/* The vertical "Christopia98" stripe down the side, like the Windows 98 Start menu. */
+.start-menu-banner {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  padding: 8px 3px;
+  background: linear-gradient(0deg, #000080, #1084d0);
+  color: #c0c0c0;
+  font: 700 20px var(--font-display);
+  letter-spacing: 0.05em;
+}
+.start-menu-banner b {
+  color: #ffffff;
+}
+.start-menu-items {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 3px;
+  overflow-y: auto;
+}
+.start-menu .tree-view {
+  font-size: 11px;
+}
+.start-menu .tree-view a {
+  color: #000000;
+}
+.start-menu hr {
   width: 100%;
+  margin: 2px 0;
+  border: 0;
+  box-shadow: inset 0 1px #808080, inset 0 -1px #ffffff;
+  height: 2px;
 }
-.switch::after {
-  content: "";
-  flex: none;
-  width: 2.6rem;
-  height: 1.4rem;
-  border-radius: var(--pill);
-  background:
-    radial-gradient(circle at 0.7rem 50%, #ffffff 0.5rem, transparent 0.55rem),
-    var(--border);
-  box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.25);
+/* Menu items: flat until hovered or focused, then navy like a 98 menu highlight. */
+.start-item {
+  width: 100%;
+  min-width: 0;
+  padding: 4px 8px 4px 26px;
+  text-align: left;
+  background: none;
+  box-shadow: none;
+  position: relative;
 }
-.switch[aria-pressed="true"]::after {
-  background:
-    radial-gradient(circle at calc(100% - 0.7rem) 50%, #ffffff 0.5rem, transparent 0.55rem),
-    var(--accent);
+.start-item:hover,
+.start-item:focus-visible {
+  background: #000080;
+  color: #ffffff;
+  outline: none;
 }
-/* Keep the footer badges clear of the floating Options button. */
+/* Sound is a checkable menu item: the tick shows aria-pressed (empty alt text for screen readers). */
+.start-item[aria-pressed="true"]::before {
+  content: "✓";
+  content: "✓" / "";
+  position: absolute;
+  left: 9px;
+}
+
+/* ---------- Stickers (placed by initStickers from js/stickers.js) ----------
+   Stacking, bottom to top: page background, stickers "behind", page content (windows, bars),
+   stickers "front", sticky header (10), taskbar (40). */
+body {
+  position: relative; /* the sticker layers cover the whole page, not just the screen */
+}
+main,
+.ticker,
+.address-bar,
+.sub-nav,
 .site-footer {
-  padding-bottom: 4.5rem;
+  position: relative;
+  z-index: 1;
+}
+.sticker-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden; /* a sticker near the edge must never cause sideways scrolling */
+  pointer-events: none;
+}
+.sticker-layer.front {
+  z-index: 5;
+}
+.sticker {
+  position: absolute;
+  transform: rotate(var(--r, 0deg));
+}
+.sticker img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(3px 3px 0 rgb(0 0 0 / 0.3));
+}
+.sticker img.pixel {
+  image-rendering: pixelated;
+}
+.sticker-link {
+  display: block;
+  pointer-events: auto; /* only link stickers catch clicks */
+}
+.sticker-link:focus-visible {
+  outline: 2px dotted #ffffff;
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sticker-link:hover img {
+    transform: rotate(-4deg) scale(1.08);
+    transition: transform 0.15s;
+  }
+}
+/* Phones: only stickers marked phone: true, so small screens don't get buried. */
+@media (max-width: 767px) {
+  .sticker:not(.phone) {
+    display: none;
+  }
 }
 
 /* ---------- Sparkle cursor trail (spawned by initSparkles) ---------- */
@@ -708,178 +1376,6 @@ label {
   display: none !important;
 }
 
-/* ---------- Section sub-nav (Math / CS / Social) ---------- */
-.sub-nav {
-  background: var(--glass);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--glass-border);
-  padding: 0.5rem var(--space);
-  overflow-x: auto;
-}
-.sub-nav ul {
-  list-style: none;
-  margin: 0 auto;
-  padding: 0;
-  display: flex;
-  gap: 0.4rem;
-  width: min(1200px, 100%);
-}
-.sub-nav a {
-  display: inline-block;
-  white-space: nowrap;
-  padding: 0.25rem 0.8rem;
-  border-radius: var(--pill);
-  color: var(--text);
-  font-weight: 700;
-  font-size: 0.9rem;
-  text-decoration: none;
-  border: 2px solid transparent;
-}
-.sub-nav a:hover {
-  border-color: var(--accent);
-}
-.sub-nav a[aria-current="page"] {
-  background: var(--gloss-accent);
-  color: var(--accent-text);
-  border-color: var(--accent-strong);
-}
-
-/* ---------- Home: section tiles ---------- */
-.section-tiles {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: var(--space);
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-}
-.section-tile {
-  display: block;
-  height: 100%;
-  padding: var(--space);
-  background: var(--gloss);
-  border: 3px solid var(--border);
-  border-radius: 18px;
-  color: var(--text);
-  text-decoration: none;
-  box-shadow: var(--shadow);
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
-}
-.section-tile:hover,
-.section-tile:focus-visible {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-glow), var(--shadow);
-  transform: translateY(-3px);
-}
-.section-tile h3 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.6rem;
-  margin: 0 0 0.25rem;
-}
-.section-tile p {
-  margin: 0;
-  color: var(--muted);
-}
-
-/* ---------- Shared bits for tool pages ---------- */
-.notice {
-  padding: 0.5rem 0.75rem;
-  border-radius: 12px;
-  background: rgb(41 182 246 / 0.12);
-  border: 1px solid var(--accent-glow);
-  font-size: 0.9rem;
-}
-.empty-state,
-.meta {
-  color: var(--muted);
-}
-form label,
-.tool-layout > section > label {
-  display: block;
-  margin-top: 0.6rem;
-}
-form input:not([type="radio"], [type="checkbox"]),
-form select,
-form textarea {
-  width: 100%;
-}
-.stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 0.5rem;
-  margin: var(--space) 0 0;
-}
-.stats div {
-  background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  padding: 0.4rem 0.6rem;
-}
-.stats dt {
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-.stats dd {
-  margin: 0;
-  font-family: var(--mono);
-  font-weight: 700;
-  font-size: 1.05rem;
-  white-space: nowrap; /* keep O(n log n) on one line */
-  color: var(--accent-strong);
-}
-/* Radio groups shown as pill toggles. */
-.segmented {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-.segmented label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.2rem 0.7rem;
-  border: 2px solid var(--border);
-  border-radius: var(--pill);
-  background: var(--surface);
-  cursor: pointer;
-}
-.segmented label:has(input:checked) {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
-}
-.plot {
-  width: 100%;
-  min-height: 420px;
-}
-/* Checkbox lists: keep each option whole ("O(n log n)" must not wrap mid-name). */
-#bigo-classes label {
-  display: inline-block;
-  white-space: nowrap;
-  margin: 0 0.75rem 0.25rem 0;
-}
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: var(--space);
-  font-size: 0.9rem;
-}
-.data-table th,
-.data-table td {
-  text-align: left;
-  padding: 0.3rem 0.5rem;
-  border-bottom: 1px solid var(--border);
-  overflow-wrap: anywhere; /* long matches (emails, URLs) must not push a phone screen sideways */
-}
-.output {
-  white-space: pre-wrap;
-  background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  padding: 0.6rem;
-  min-height: 2.5rem;
-}
 
 /* ---------- Sorting ---------- */
 .bars {
@@ -889,8 +1385,7 @@ form textarea {
   height: 320px;
   padding: 0.5rem;
   background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: 16px;
+  box-shadow: var(--bevel-in);
 }
 .bar {
   flex: 1;
@@ -914,19 +1409,18 @@ form textarea {
 }
 .pseudocode li {
   white-space: pre;
-  border-radius: 6px;
   padding: 0 0.3rem;
 }
 .pseudocode li.active {
-  background: var(--accent-glow);
+  background: #000080;
+  color: #ffffff;
 }
 
 /* ---------- Data structures ---------- */
 .ds-scroll {
   overflow-x: auto;
   background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: 16px;
+  box-shadow: var(--bevel-in);
   padding: 0.5rem 0;
 }
 .ds-canvas {
@@ -1007,9 +1501,9 @@ form textarea {
   display: grid;
   grid-template-columns: repeat(var(--cols, 41), 1fr);
   gap: 1px;
-  background: var(--border);
-  border: 2px solid var(--border);
-  border-radius: 8px;
+  background: var(--border); /* shows through the 1px gaps as grid lines */
+  border: 2px solid transparent;
+  box-shadow: var(--bevel-in);
   overflow: hidden;
   touch-action: none; /* drag to draw on touch screens */
 }
@@ -1035,9 +1529,6 @@ form textarea {
 /* background-color (not the shorthand) so the weight dot survives visited/path colors. */
 .cell.wall {
   background-color: #34495e;
-}
-[data-theme="dark"] .cell.wall {
-  background-color: #6b7d91; /* lighter than empty cells, darker than visited */
 }
 .cell.weight {
   background-color: #f5b041;
@@ -1110,15 +1601,13 @@ form textarea {
 .data-table code {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 6px;
   padding: 0 0.3rem;
 }
 .highlight {
   white-space: pre-wrap;
   font-family: var(--mono);
   background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: 12px;
+  box-shadow: var(--bevel-in);
   padding: 0.6rem;
   min-height: 3rem;
 }
@@ -1160,12 +1649,12 @@ form textarea {
 .reply-list > li,
 .event-list > li {
   background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: 14px;
+  box-shadow: var(--bevel-in);
   padding: 0.75rem;
 }
 .thread-list > li:hover {
-  border-color: var(--accent);
+  outline: 1px dotted #000080;
+  outline-offset: -4px;
 }
 #new-thread summary {
   list-style: none;
@@ -1186,6 +1675,45 @@ form textarea {
   white-space: pre-wrap;
 }
 
+/* ---------- Friends page (social/friends.html) ---------- */
+.window-stack {
+  display: grid;
+  gap: calc(var(--space) * 1.25);
+  align-content: start;
+  min-width: 0;
+}
+.friend-list {
+  margin: 0.5rem 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.3rem;
+}
+.pixel-button {
+  display: block;
+  image-rendering: pixelated;
+}
+.gb-entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.gb-entries > li:not(.empty-state) {
+  padding: 6px 10px;
+  background: var(--surface);
+  box-shadow: var(--bevel-in);
+}
+.gb-meta {
+  margin: 0;
+  font: 11px var(--font-ui);
+}
+.gb-message {
+  margin: 0.25rem 0 0;
+  white-space: pre-wrap; /* keep the visitor's line breaks without trusting any HTML */
+  overflow-wrap: anywhere;
+}
+
 /* ---------- Journal (Notion-style) ---------- */
 .journal-main {
   width: min(1400px, 100%);
@@ -1199,12 +1727,6 @@ form textarea {
   display: grid;
   grid-template-columns: 1fr;
   min-height: 75vh;
-  background: var(--glass);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
   overflow: hidden;
 }
 .journal-sidebar {
@@ -1414,6 +1936,7 @@ kbd {
   background: var(--surface);
 }
 
+
 /* ---------- Wider screens ---------- */
 @media (min-width: 768px) {
   .nav-toggle {
@@ -1428,21 +1951,21 @@ kbd {
     flex-direction: row;
     padding: 0;
   }
-  #hero {
-    grid-template-columns: 1fr 1fr;
-  }
-  #hero > :not(img) {
-    grid-column: 1;
-  }
-  #hero img {
-    grid-column: 2;
-    grid-row: 1 / span 3;
-  }
   .tool-layout {
     grid-template-columns: minmax(280px, 1fr) 2fr;
   }
   .journal-app {
     grid-template-columns: 260px 1fr;
+  }
+  .me-columns {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+/* Home portal: three columns once there's room for them. */
+@media (min-width: 1000px) {
+  .portal {
+    grid-template-columns: 200px minmax(0, 1fr) 250px;
   }
 }
 

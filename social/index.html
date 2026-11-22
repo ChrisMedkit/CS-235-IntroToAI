@@ -7,23 +7,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
     <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body data-root="../">
     <!-- Shared header: identical on every page except aria-current. -->
     <header class="site-header">
-      <a class="brand" href="../index.html">Christopia</a>
+      <a class="brand" href="../home.html">Christopia</a>
       <p class="splash" aria-hidden="true">Now in 3D!</p>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         Menu
       </button>
       <nav id="site-nav" aria-label="Main">
         <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="../math/index.html">Math</a></li>
-          <li><a href="../cs/index.html">CS</a></li>
+          <li><a href="../home.html">Home</a></li>
+          <li><a href="../tools.html">Tools</a></li>
           <li><a href="../social/index.html" aria-current="page">Social</a></li>
-          <li><a href="../hub.html">Hub</a></li>
+          <li><a href="../me.html">Me</a></li>
+          <li><a href="../lab.html">Lab</a></li>
         </ul>
       </nav>
     </header>
@@ -31,8 +32,8 @@
     <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
     <div class="ticker" role="marquee" aria-label="Site news">
       <p class="ticker-track">
-        Welcome to Christopia &#9733; New: Math, CS and Social sections &#9733; Sorting, graphs, regex
-        and Big-O visualizers &#9733; Coming soon: home server + smart home hub &#9733; TODO: your news here
+        Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
+        Sorting, graphs, regex and Big-O tools are live &#9733; Coming soon: the Me page, stickers and a friends wall &#9733; TODO: your news here
       </p>
     </div>
 
@@ -42,42 +43,51 @@
         <li><a href="forum.html">Forum</a></li>
         <li><a href="events.html">Events</a></li>
         <li><a href="journal.html">Journal</a></li>
+        <li><a href="friends.html">Friends</a></li>
       </ul>
     </nav>
 
     <main>
-      <section id="section-intro">
-        <h1>Social</h1>
-        <!-- TODO: rewrite in your own words. -->
-        <p>A forum, event RSVPs and a private, encrypted journal.</p>
+      <section class="window" id="section-intro">
+        <div class="title-bar">
+          <h1 class="title-bar-text">Social</h1>
+        </div>
+        <div class="window-body">
+          <!-- TODO: rewrite in your own words. -->
+          <p>A forum, event RSVPs and a private, encrypted journal.</p>
+        </div>
       </section>
 
-      <section id="section-tools" aria-labelledby="section-tools-heading">
-        <h2 id="section-tools-heading">Tools</h2>
-        <!-- Static cards are the no-JS fallback; renderToolGallery() re-renders them from js/tools.js. -->
-        <ul class="tool-gallery" id="tool-gallery" data-section="social">
-          <li class="tool-card">
-            <a href="../social/forum.html">
-              <img src="../images/forum.svg" alt="Forum preview" width="640" height="360" />
-              <h3>Forum</h3>
-              <p>Threads and replies for classes, projects and anything else.</p>
-            </a>
-          </li>
-          <li class="tool-card">
-            <a href="../social/events.html">
-              <img src="../images/events.svg" alt="Events preview" width="640" height="360" />
-              <h3>Events</h3>
-              <p>Create events, RSVP, and add them to your calendar.</p>
-            </a>
-          </li>
-          <li class="tool-card">
-            <a href="../social/journal.html">
-              <img src="../images/journal.svg" alt="Private Journal preview" width="640" height="360" />
-              <h3>Private Journal</h3>
-              <p>Password-locked, encrypted notes with a Notion-style editor.</p>
-            </a>
-          </li>
-        </ul>
+      <section class="window" id="section-tools" aria-labelledby="section-tools-heading">
+        <div class="title-bar">
+          <h2 class="title-bar-text" id="section-tools-heading">Tools</h2>
+        </div>
+        <div class="window-body">
+          <!-- Static cards are the no-JS fallback; renderToolGallery() re-renders them from js/tools.js. -->
+          <ul class="tool-gallery" id="tool-gallery" data-section="social">
+            <li class="tool-card">
+              <a href="../social/forum.html">
+                <img src="../images/forum.svg" alt="Forum preview" width="640" height="360" />
+                <h3>Forum</h3>
+                <p>Threads and replies for classes, projects and anything else.</p>
+              </a>
+            </li>
+            <li class="tool-card">
+              <a href="../social/events.html">
+                <img src="../images/events.svg" alt="Events preview" width="640" height="360" />
+                <h3>Events</h3>
+                <p>Create events, RSVP, and add them to your calendar.</p>
+              </a>
+            </li>
+            <li class="tool-card">
+              <a href="../social/journal.html">
+                <img src="../images/journal.svg" alt="Private Journal preview" width="640" height="360" />
+                <h3>Private Journal</h3>
+                <p>Password-locked, encrypted notes with a Notion-style editor.</p>
+              </a>
+            </li>
+          </ul>
+        </div>
       </section>
     </main>
 
@@ -92,16 +102,6 @@
       <p>&copy; 2026 Christopia. TODO: GitHub link.</p>
     </footer>
 
-    <!-- Quick menu: display and sound settings, pinned to the bottom of the screen. -->
-    <div class="quick-menu">
-      <div id="quick-menu-panel" class="quick-menu-panel" hidden>
-        <button class="theme-toggle switch" type="button" aria-pressed="false">Dark mode</button>
-        <button class="sound-toggle switch" type="button" aria-pressed="false">Sound</button>
-      </div>
-      <button class="quick-menu-toggle" type="button" aria-expanded="false" aria-controls="quick-menu-panel">
-        <span aria-hidden="true">&#9881;</span> Options
-      </button>
-    </div>
 
     <script type="module" src="../js/script.js"></script>
   </body>

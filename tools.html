@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Tools</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body data-root="">
+    <!-- Shared header: identical on every page except aria-current. -->
+    <header class="site-header">
+      <a class="brand" href="home.html">Christopia</a>
+      <p class="splash" aria-hidden="true">Now in 3D!</p>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="tools.html" aria-current="page">Tools</a></li>
+          <li><a href="social/index.html">Social</a></li>
+          <li><a href="me.html">Me</a></li>
+          <li><a href="lab.html">Lab</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
+    <div class="ticker" role="marquee" aria-label="Site news">
+      <p class="ticker-track">
+        Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
+        Sorting, graphs, regex and Big-O tools are live &#9733; Coming soon: the Me page, stickers and a friends wall &#9733; TODO: your news here
+      </p>
+    </div>
+
+    <main class="desktop-main">
+
+      <h1 class="visually-hidden">Tools</h1>
+      <!-- The Tools desktop: folder windows you can drag by their title bars on wide screens
+           (js/desktop.js). On phones, and for keyboard use, they simply stack. -->
+      <div class="desktop" id="desktop">
+        <section class="window desktop-window" id="math" aria-labelledby="math-heading">
+          <div class="title-bar">
+            <h2 class="title-bar-text" id="math-heading"><img src="images/icons/folder.svg" alt="" width="16" height="16" /> Math</h2>
+          </div>
+          <div class="window-body">
+            <!-- Icons come from js/tools.js (renderFolders in js/desktop.js); these are the no-JS fallback. -->
+            <ul class="icon-grid" data-category="math">
+              <li><a href="math/plotter.html"><img src="images/icons/plotter.svg" alt="" width="48" height="48" /><span>Function Plotter</span></a></li>
+              <li><a href="math/matrix.html"><img src="images/icons/matrix.svg" alt="" width="48" height="48" /><span>Matrix Lab</span></a></li>
+              <li><a href="math/latex.html"><img src="images/icons/latex.svg" alt="" width="48" height="48" /><span>LaTeX Scratchpad</span></a></li>
+              <li><a href="math/scanner.html"><img src="images/icons/scanner.svg" alt="" width="48" height="48" /><span>Notes Scanner</span></a></li>
+            </ul>
+          </div>
+          <div class="status-bar">
+            <p class="status-bar-field" data-count="math">4 objects</p>
+            <p class="status-bar-field">Graphs, matrices, LaTeX and note scanning</p>
+          </div>
+        </section>
+
+        <section class="window desktop-window" id="cs" aria-labelledby="cs-heading">
+          <div class="title-bar">
+            <h2 class="title-bar-text" id="cs-heading"><img src="images/icons/folder.svg" alt="" width="16" height="16" /> CS</h2>
+          </div>
+          <div class="window-body">
+            <!-- Icons come from js/tools.js (renderFolders in js/desktop.js); these are the no-JS fallback. -->
+            <ul class="icon-grid" data-category="cs">
+              <li><a href="cs/sorting.html"><img src="images/icons/sorting.svg" alt="" width="48" height="48" /><span>Sorting Visualizer</span></a></li>
+              <li><a href="cs/data-structures.html"><img src="images/icons/structures.svg" alt="" width="48" height="48" /><span>Data Structures</span></a></li>
+              <li><a href="cs/graphs.html"><img src="images/icons/graphs.svg" alt="" width="48" height="48" /><span>Graphs &amp; Pathfinding</span></a></li>
+              <li><a href="cs/big-o.html"><img src="images/icons/bigo.svg" alt="" width="48" height="48" /><span>Big-O Playground</span></a></li>
+              <li><a href="cs/regex.html"><img src="images/icons/regex.svg" alt="" width="48" height="48" /><span>Regex Builder</span></a></li>
+            </ul>
+          </div>
+          <div class="status-bar">
+            <p class="status-bar-field" data-count="cs">5 objects</p>
+            <p class="status-bar-field">Algorithms, data structures and regex</p>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
+      <ul class="badges" aria-label="Site badges">
+        <li><img src="images/badges/christopia.svg" alt="Christopia" width="88" height="31" /></li>
+        <li><img src="images/badges/made-with-claude.svg" alt="Made with Claude" width="88" height="31" /></li>
+        <li><img src="images/badges/math-inside.svg" alt="Math inside" width="88" height="31" /></li>
+        <li><img src="images/badges/any-browser.svg" alt="Best viewed in any browser" width="88" height="31" /></li>
+      </ul>
+      <p>&copy; 2026 Christopia. TODO: GitHub link.</p>
+    </footer>
+
+
+    <script type="module" src="js/script.js"></script>
+    <script type="module" src="js/desktop.js"></script>
+  </body>
+</html>

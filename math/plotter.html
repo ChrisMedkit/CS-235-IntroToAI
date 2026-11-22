@@ -7,23 +7,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
     <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body class="math-bg" data-root="../">
     <!-- Shared header: identical on every page except aria-current. -->
     <header class="site-header">
-      <a class="brand" href="../index.html">Christopia</a>
+      <a class="brand" href="../home.html">Christopia</a>
       <p class="splash" aria-hidden="true">Now in 3D!</p>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         Menu
       </button>
       <nav id="site-nav" aria-label="Main">
         <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="../math/index.html" aria-current="page">Math</a></li>
-          <li><a href="../cs/index.html">CS</a></li>
+          <li><a href="../home.html">Home</a></li>
+          <li><a href="../tools.html" aria-current="page">Tools</a></li>
           <li><a href="../social/index.html">Social</a></li>
-          <li><a href="../hub.html">Hub</a></li>
+          <li><a href="../me.html">Me</a></li>
+          <li><a href="../lab.html">Lab</a></li>
         </ul>
       </nav>
     </header>
@@ -31,56 +32,64 @@
     <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
     <div class="ticker" role="marquee" aria-label="Site news">
       <p class="ticker-track">
-        Welcome to Christopia &#9733; New: Math, CS and Social sections &#9733; Sorting, graphs, regex
-        and Big-O visualizers &#9733; Coming soon: home server + smart home hub &#9733; TODO: your news here
+        Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
+        Sorting, graphs, regex and Big-O tools are live &#9733; Coming soon: the Me page, stickers and a friends wall &#9733; TODO: your news here
       </p>
     </div>
 
-    <nav class="sub-nav" aria-label="Math tools">
-      <ul>
-        <li><a href="index.html">Overview</a></li>
-        <li><a href="plotter.html" aria-current="page">Plotter</a></li>
-        <li><a href="matrix.html">Matrix Lab</a></li>
-        <li><a href="latex.html">LaTeX</a></li>
-        <li><a href="scanner.html">Scanner</a></li>
-      </ul>
+    <nav class="address-bar" aria-label="Breadcrumb">
+      <span class="address-label" aria-hidden="true">Address</span>
+      <ol class="address">
+        <li><a href="../tools.html">Tools</a></li>
+        <li><a href="../tools.html#math">Math</a></li>
+        <li aria-current="page">Function Plotter</li>
+      </ol>
     </nav>
 
     <main class="tool-layout">
-      <section id="plot-controls" aria-labelledby="plot-heading">
-        <h1 id="plot-heading">Function Plotter</h1>
+      <section class="window" id="plot-controls" aria-labelledby="plot-heading">
+        <div class="title-bar">
+          <h1 class="title-bar-text" id="plot-heading"><img src="../images/icons/plotter.svg" alt="" width="16" height="16" /> Function Plotter<span class="title-bar-program" aria-hidden="true"> - plotter.exe</span></h1>
+        </div>
+        <div class="window-body">
 
-        <fieldset class="mode-switch">
-          <legend>Mode</legend>
-          <label><input type="radio" name="mode" value="2d" checked /> 2D: y = f(x)</label>
-          <label><input type="radio" name="mode" value="3d" /> 3D: z = f(x, y)</label>
-        </fieldset>
+          <fieldset class="mode-switch">
+            <legend>Mode</legend>
+            <div class="field-row"><input id="mode-2d" type="radio" name="mode" value="2d" checked /><label for="mode-2d">2D: y = f(x)</label></div>
+            <div class="field-row"><input id="mode-3d" type="radio" name="mode" value="3d" /><label for="mode-3d">3D: z = f(x, y)</label></div>
+          </fieldset>
 
-        <!-- Expression list, Desmos-style: one row per function.
-             TODO (Step 7): addExpressionRow() in js/plotter.js clones this row. -->
-        <ol id="expression-list">
-          <li class="expression-row">
-            <label for="expr-0">f<sub>1</sub></label>
-            <input id="expr-0" type="text" value="sin(x)" spellcheck="false" />
-            <button type="button" class="remove-expr" aria-label="Remove f1">&times;</button>
-          </li>
-        </ol>
-        <button type="button" id="add-expr">Add function</button>
+          <!-- Expression list, Desmos-style: one row per function.
+               TODO (Step 7): addExpressionRow() in js/plotter.js clones this row. -->
+          <ol id="expression-list">
+            <li class="expression-row">
+              <label for="expr-0">f<sub>1</sub></label>
+              <input id="expr-0" type="text" value="sin(x)" spellcheck="false" />
+              <button type="button" class="remove-expr" aria-label="Remove f1">&times;</button>
+            </li>
+          </ol>
+          <button type="button" id="add-expr">Add function</button>
 
-        <fieldset class="ranges">
-          <legend>Window</legend>
-          <label>x min <input id="x-min" type="number" value="-10" /></label>
-          <label>x max <input id="x-max" type="number" value="10" /></label>
-          <label>y min <input id="y-min" type="number" value="-10" /></label>
-          <label>y max <input id="y-max" type="number" value="10" /></label>
-        </fieldset>
+          <fieldset class="ranges">
+            <legend>Window</legend>
+            <label>x min <input id="x-min" type="number" value="-10" /></label>
+            <label>x max <input id="x-max" type="number" value="10" /></label>
+            <label>y min <input id="y-min" type="number" value="-10" /></label>
+            <label>y max <input id="y-max" type="number" value="10" /></label>
+          </fieldset>
 
-        <p id="plot-error" class="error" role="alert"></p>
+          <p id="plot-error" class="error" role="alert"></p>
+        </div>
       </section>
 
-      <section id="plot-area" aria-label="Graph">
-        <!-- Plotly draws here. -->
-        <div id="plot"></div>
+      <section class="window" id="plot-area" aria-label="Graph">
+        <div class="title-bar">
+          <span class="title-bar-text" aria-hidden="true">Graph</span>
+        </div>
+        <div class="window-body">
+          <!-- Plotly draws here. -->
+          <div id="plot"></div>
+        </div>
       </section>
     </main>
 
@@ -95,16 +104,6 @@
       <p>&copy; 2026 Christopia. TODO: GitHub link.</p>
     </footer>
 
-    <!-- Quick menu: display and sound settings, pinned to the bottom of the screen. -->
-    <div class="quick-menu">
-      <div id="quick-menu-panel" class="quick-menu-panel" hidden>
-        <button class="theme-toggle switch" type="button" aria-pressed="false">Dark mode</button>
-        <button class="sound-toggle switch" type="button" aria-pressed="false">Sound</button>
-      </div>
-      <button class="quick-menu-toggle" type="button" aria-expanded="false" aria-controls="quick-menu-panel">
-        <span aria-hidden="true">&#9881;</span> Options
-      </button>
-    </div>
 
     <!-- Pinned CDN libraries (spec allows external libs as long as the shared JS file exists). -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/13.2.0/math.min.js"></script>

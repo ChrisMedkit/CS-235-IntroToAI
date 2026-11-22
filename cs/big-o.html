@@ -7,23 +7,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
     <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body data-root="../">
     <!-- Shared header: identical on every page except aria-current. -->
     <header class="site-header">
-      <a class="brand" href="../index.html">Christopia</a>
+      <a class="brand" href="../home.html">Christopia</a>
       <p class="splash" aria-hidden="true">Now in 3D!</p>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         Menu
       </button>
       <nav id="site-nav" aria-label="Main">
         <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="../math/index.html">Math</a></li>
-          <li><a href="../cs/index.html" aria-current="page">CS</a></li>
+          <li><a href="../home.html">Home</a></li>
+          <li><a href="../tools.html" aria-current="page">Tools</a></li>
           <li><a href="../social/index.html">Social</a></li>
-          <li><a href="../hub.html">Hub</a></li>
+          <li><a href="../me.html">Me</a></li>
+          <li><a href="../lab.html">Lab</a></li>
         </ul>
       </nav>
     </header>
@@ -31,76 +32,82 @@
     <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
     <div class="ticker" role="marquee" aria-label="Site news">
       <p class="ticker-track">
-        Welcome to Christopia &#9733; New: Math, CS and Social sections &#9733; Sorting, graphs, regex
-        and Big-O visualizers &#9733; Coming soon: home server + smart home hub &#9733; TODO: your news here
+        Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
+        Sorting, graphs, regex and Big-O tools are live &#9733; Coming soon: the Me page, stickers and a friends wall &#9733; TODO: your news here
       </p>
     </div>
 
-    <nav class="sub-nav" aria-label="Computer science tools">
-      <ul>
-        <li><a href="index.html">Overview</a></li>
-        <li><a href="sorting.html">Sorting</a></li>
-        <li><a href="data-structures.html">Data Structures</a></li>
-        <li><a href="graphs.html">Graphs</a></li>
-        <li><a href="big-o.html" aria-current="page">Big-O</a></li>
-        <li><a href="regex.html">Regex</a></li>
-      </ul>
+    <nav class="address-bar" aria-label="Breadcrumb">
+      <span class="address-label" aria-hidden="true">Address</span>
+      <ol class="address">
+        <li><a href="../tools.html">Tools</a></li>
+        <li><a href="../tools.html#cs">CS</a></li>
+        <li aria-current="page">Big-O Playground</li>
+      </ol>
     </nav>
 
     <main class="tool-layout">
-      <section id="bigo-controls" aria-labelledby="bigo-heading">
-        <h1 id="bigo-heading">Big-O Playground</h1>
+      <section class="window" id="bigo-controls" aria-labelledby="bigo-heading">
+        <div class="title-bar">
+          <h1 class="title-bar-text" id="bigo-heading"><img src="../images/icons/bigo.svg" alt="" width="16" height="16" /> Big-O Playground<span class="title-bar-program" aria-hidden="true"> - bigo.exe</span></h1>
+        </div>
+        <div class="window-body">
 
-        <fieldset id="bigo-classes">
-          <legend>Growth curves</legend>
-          <label><input type="checkbox" value="1" checked /> O(1)</label>
-          <label><input type="checkbox" value="log n" checked /> O(log n)</label>
-          <label><input type="checkbox" value="n" checked /> O(n)</label>
-          <label><input type="checkbox" value="n log n" checked /> O(n log n)</label>
-          <label><input type="checkbox" value="n^2" checked /> O(n²)</label>
-          <label><input type="checkbox" value="n^3" /> O(n³)</label>
-          <label><input type="checkbox" value="2^n" /> O(2ⁿ)</label>
-          <label><input type="checkbox" value="n!" /> O(n!)</label>
-        </fieldset>
+          <fieldset id="bigo-classes">
+            <legend>Growth curves</legend>
+            <div class="field-row"><input id="growth-1" type="checkbox" value="1" checked /><label for="growth-1">O(1)</label></div>
+            <div class="field-row"><input id="growth-log-n" type="checkbox" value="log n" checked /><label for="growth-log-n">O(log n)</label></div>
+            <div class="field-row"><input id="growth-n" type="checkbox" value="n" checked /><label for="growth-n">O(n)</label></div>
+            <div class="field-row"><input id="growth-n-log-n" type="checkbox" value="n log n" checked /><label for="growth-n-log-n">O(n log n)</label></div>
+            <div class="field-row"><input id="growth-npow2" type="checkbox" value="n^2" checked /><label for="growth-npow2">O(n²)</label></div>
+            <div class="field-row"><input id="growth-npow3" type="checkbox" value="n^3" /><label for="growth-npow3">O(n³)</label></div>
+            <div class="field-row"><input id="growth-2pown" type="checkbox" value="2^n" /><label for="growth-2pown">O(2ⁿ)</label></div>
+            <div class="field-row"><input id="growth-nfact" type="checkbox" value="n!" /><label for="growth-nfact">O(n!)</label></div>
+          </fieldset>
 
-        <label for="bigo-n">n up to <output id="bigo-n-out" for="bigo-n">50</output></label>
-        <input id="bigo-n" type="range" min="5" max="1000" value="50" />
-        <label class="checkbox"><input id="bigo-log" type="checkbox" checked /> Log scale (shows every curve; off shows how steep they really are)</label>
+          <label for="bigo-n">n up to <output id="bigo-n-out" for="bigo-n">50</output></label>
+          <input id="bigo-n" type="range" min="5" max="1000" value="50" />
+          <div class="field-row"><input id="bigo-log" type="checkbox" checked /><label for="bigo-log">Log scale (shows every curve; off shows how steep they really are)</label></div>
 
-        <h2>Benchmark</h2>
-        <form id="bench-form">
-          <label for="bench-algorithm">Algorithm</label>
-          <select id="bench-algorithm">
-            <option value="linear">Linear search</option>
-            <option value="binary">Binary search</option>
-            <option value="bubble">Bubble sort</option>
-            <option value="insertion">Insertion sort</option>
-            <option value="merge">Merge sort</option>
-            <option value="quick">Quick sort</option>
-            <option value="builtin">Array.prototype.sort</option>
-          </select>
-          <label for="bench-sizes">Sizes (comma separated; each algorithm fills in a good range)</label>
-          <input id="bench-sizes" type="text" value="1000, 2000, 4000, 8000" />
-          <button type="submit">Run benchmark</button>
-        </form>
-        <p id="bench-status" role="status"></p>
+          <h2>Benchmark</h2>
+          <form id="bench-form">
+            <label for="bench-algorithm">Algorithm</label>
+            <select id="bench-algorithm">
+              <option value="linear">Linear search</option>
+              <option value="binary">Binary search</option>
+              <option value="bubble">Bubble sort</option>
+              <option value="insertion">Insertion sort</option>
+              <option value="merge">Merge sort</option>
+              <option value="quick">Quick sort</option>
+              <option value="builtin">Array.prototype.sort</option>
+            </select>
+            <label for="bench-sizes">Sizes (comma separated; each algorithm fills in a good range)</label>
+            <input id="bench-sizes" type="text" value="1000, 2000, 4000, 8000" />
+            <button type="submit">Run benchmark</button>
+          </form>
+          <p id="bench-status" role="status"></p>
 
-        <table id="bench-table" class="data-table">
-          <caption>Results</caption>
-          <thead>
-            <tr><th scope="col">n</th><th scope="col">Time (ms)</th><th scope="col">Ratio to previous</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-        <p id="bench-fit"></p>
+          <table id="bench-table" class="data-table">
+            <caption>Results</caption>
+            <thead>
+              <tr><th scope="col">n</th><th scope="col">Time (ms)</th><th scope="col">Ratio to previous</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p id="bench-fit"></p>
+        </div>
       </section>
 
-      <section id="bigo-stage" aria-labelledby="bigo-stage-heading">
-        <h2 id="bigo-stage-heading">Growth</h2>
-        <!-- Plotly charts: growth curves, then measured times with the best-fit curve. -->
-        <div id="bigo-plot" class="plot" role="img" aria-label="Growth curves of the checked complexity classes"></div>
-        <h2 id="bench-plot-heading" hidden>Benchmark</h2>
-        <div id="bench-plot" class="plot" role="img" aria-label="Measured times with the best-fit curve; the table has the numbers" hidden></div>
+      <section class="window" id="bigo-stage" aria-labelledby="bigo-stage-heading">
+        <div class="title-bar">
+          <h2 class="title-bar-text" id="bigo-stage-heading">Growth</h2>
+        </div>
+        <div class="window-body">
+          <!-- Plotly charts: growth curves, then measured times with the best-fit curve. -->
+          <div id="bigo-plot" class="plot" role="img" aria-label="Growth curves of the checked complexity classes"></div>
+          <h2 id="bench-plot-heading" hidden>Benchmark</h2>
+          <div id="bench-plot" class="plot" role="img" aria-label="Measured times with the best-fit curve; the table has the numbers" hidden></div>
+        </div>
       </section>
     </main>
 
@@ -115,16 +122,6 @@
       <p>&copy; 2026 Christopia. TODO: GitHub link.</p>
     </footer>
 
-    <!-- Quick menu: display and sound settings, pinned to the bottom of the screen. -->
-    <div class="quick-menu">
-      <div id="quick-menu-panel" class="quick-menu-panel" hidden>
-        <button class="theme-toggle switch" type="button" aria-pressed="false">Dark mode</button>
-        <button class="sound-toggle switch" type="button" aria-pressed="false">Sound</button>
-      </div>
-      <button class="quick-menu-toggle" type="button" aria-expanded="false" aria-controls="quick-menu-panel">
-        <span aria-hidden="true">&#9881;</span> Options
-      </button>
-    </div>
 
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
     <script type="module" src="../js/script.js"></script>

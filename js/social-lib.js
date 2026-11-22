@@ -11,9 +11,16 @@
  *   Rules: trimmed author 1–40 chars; body 1–5000; title (when required) 1–120.
  */
 export function validatePost(post, { requireTitle = false } = {}) {
-  // TODO (Plan Social step 1)
-  void post, requireTitle;
-  throw new Error("Not implemented");
+  const errors = {};
+  const check = (field, label, max) => {
+    const length = String(post[field] ?? "").trim().length;
+    if (length === 0) errors[field] = `${label} can't be empty.`;
+    else if (length > max) errors[field] = `${label} is too long (${length} of ${max} characters).`;
+  };
+  check("author", "Name", 40);
+  check("body", "Message", 5000);
+  if (requireTitle) check("title", "Title", 120);
+  return errors;
 }
 
 /**
@@ -35,9 +42,12 @@ export function sortThreads(threads, mode) {
  * @returns {string}
  */
 export function relativeTime(then, now) {
-  // TODO (Plan Social step 1): < 60 s just now; < 60 min; < 24 h; < 7 d; else toLocaleDateString("en-US", ...)
-  void then, now;
-  throw new Error("Not implemented");
+  const seconds = Math.max(0, (now - then) / 1000); // a clock a little ahead still reads "just now"
+  if (seconds < 60) return "just now";
+  if (seconds < 3600) return `${Math.floor(seconds / 60)} min ago`;
+  if (seconds < 86_400) return `${Math.floor(seconds / 3600)} h ago`;
+  if (seconds < 7 * 86_400) return `${Math.floor(seconds / 86_400)} d ago`;
+  return new Date(then).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
 /* ---------------- Events ---------------- */

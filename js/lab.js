@@ -1,4 +1,4 @@
-// Hub page: every tool and planned service from js/tools.js, filterable by status.
+// Lab page: every tool and planned service from js/tools.js, filterable by status.
 import { TOOLS } from "./tools.js";
 import { filterTools } from "./utils.js";
 

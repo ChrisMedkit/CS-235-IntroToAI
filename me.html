@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Me</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body data-root="">
+    <!-- Shared header: identical on every page except aria-current. -->
+    <header class="site-header">
+      <a class="brand" href="home.html">Christopia</a>
+      <p class="splash" aria-hidden="true">Now in 3D!</p>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="tools.html">Tools</a></li>
+          <li><a href="social/index.html">Social</a></li>
+          <li><a href="me.html" aria-current="page">Me</a></li>
+          <li><a href="lab.html">Lab</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
+    <div class="ticker" role="marquee" aria-label="Site news">
+      <p class="ticker-track">
+        Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
+        Sorting, graphs, regex and Big-O tools are live &#9733; Coming soon: the Me page, stickers and a friends wall &#9733; TODO: your news here
+      </p>
+    </div>
+
+    <main class="me-main">
+      <section class="window" id="desk" aria-labelledby="desk-heading">
+        <div class="title-bar">
+          <h1 class="title-bar-text" id="desk-heading">Me</h1>
+        </div>
+        <div class="window-body">
+          <p class="scene-hint">Everything on my desk goes somewhere. Hover or tap a thing to see where.</p>
+          <!-- The scene: replace each image with a cut-out photo of your own thing (transparent PNG),
+               keep the label text. Positions live in css/style.css (.desk-calculator etc.). -->
+          <nav class="scene" aria-label="Things on my desk">
+            <ul>
+              <li class="scene-item desk-calculator">
+                <a href="tools.html"><img src="images/me/calculator.svg" alt="" /><span class="scene-label"><span class="visually-hidden">Calculator: </span>Tools</span></a>
+              </li>
+              <li class="scene-item desk-notebook">
+                <a href="social/journal.html"><img src="images/me/notebook.svg" alt="" /><span class="scene-label"><span class="visually-hidden">Notebook: </span>Journal</span></a>
+              </li>
+              <li class="scene-item desk-phone">
+                <a href="social/index.html"><img src="images/me/phone.svg" alt="" /><span class="scene-label"><span class="visually-hidden">Phone: </span>Social</span></a>
+              </li>
+              <li class="scene-item desk-headphones">
+                <a href="home.html#now"><img src="images/me/headphones.svg" alt="" /><span class="scene-label"><span class="visually-hidden">Headphones: </span>Now playing</span></a>
+              </li>
+              <li class="scene-item desk-floppy">
+                <a href="lab.html"><img src="images/stickers/floppy.svg" alt="" /><span class="scene-label"><span class="visually-hidden">Floppy disk: </span>Lab</span></a>
+              </li>
+              <li class="scene-item desk-polaroid">
+                <a href="#about"><img src="images/me/polaroid.svg" alt="" /><span class="scene-label"><span class="visually-hidden">Photo: </span>About me</span></a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </section>
+
+      <div class="me-columns">
+        <section class="window" id="about" aria-labelledby="about-heading">
+          <div class="title-bar">
+            <h2 class="title-bar-text" id="about-heading">about.txt</h2>
+          </div>
+          <div class="window-body">
+            <img class="me-photo" src="images/me/me.svg" alt="TODO: describe your photo or drawing" width="96" height="96" />
+            <!-- TODO: all of this, in your own words. -->
+            <p>Hi! I'm TODO. TODO: a sentence or two about you.</p>
+            <dl class="facts">
+              <div><dt>Studying</dt><dd>Applied math + computer science</dd></div>
+              <div><dt>Into</dt><dd>TODO</dd></div>
+              <div><dt>Currently</dt><dd>TODO</dd></div>
+              <div><dt>Find me</dt><dd>TODO (links you're happy to share)</dd></div>
+            </dl>
+            <h2>Why Christopia?</h2>
+            <p>TODO: why you made this place and who it's for.</p>
+          </div>
+        </section>
+
+        <section class="window" id="favorites" aria-labelledby="favorites-heading">
+          <div class="title-bar">
+            <h2 class="title-bar-text" id="favorites-heading">favorites.txt</h2>
+          </div>
+          <div class="window-body">
+            <!-- Later, any favorite can get its own shrine page (one file each). -->
+            <ul class="favorites">
+              <li><strong>Game:</strong> TODO</li>
+              <li><strong>Show:</strong> TODO</li>
+              <li><strong>Song:</strong> TODO</li>
+              <li><strong>Theorem:</strong> TODO</li>
+              <li><strong>Food:</strong> TODO</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
+      <ul class="badges" aria-label="Site badges">
+        <li><img src="images/badges/christopia.svg" alt="Christopia" width="88" height="31" /></li>
+        <li><img src="images/badges/made-with-claude.svg" alt="Made with Claude" width="88" height="31" /></li>
+        <li><img src="images/badges/math-inside.svg" alt="Math inside" width="88" height="31" /></li>
+        <li><img src="images/badges/any-browser.svg" alt="Best viewed in any browser" width="88" height="31" /></li>
+      </ul>
+      <p>&copy; 2026 Christopia. TODO: GitHub link.</p>
+    </footer>
+
+
+    <script type="module" src="js/script.js"></script>
+  </body>
+</html>

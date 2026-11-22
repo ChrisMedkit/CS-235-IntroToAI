@@ -7,23 +7,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
     <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body class="math-bg" data-root="../">
     <!-- Shared header: identical on every page except aria-current. -->
     <header class="site-header">
-      <a class="brand" href="../index.html">Christopia</a>
+      <a class="brand" href="../home.html">Christopia</a>
       <p class="splash" aria-hidden="true">Now in 3D!</p>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         Menu
       </button>
       <nav id="site-nav" aria-label="Main">
         <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="../math/index.html" aria-current="page">Math</a></li>
-          <li><a href="../cs/index.html">CS</a></li>
+          <li><a href="../home.html">Home</a></li>
+          <li><a href="../tools.html" aria-current="page">Tools</a></li>
           <li><a href="../social/index.html">Social</a></li>
-          <li><a href="../hub.html">Hub</a></li>
+          <li><a href="../me.html">Me</a></li>
+          <li><a href="../lab.html">Lab</a></li>
         </ul>
       </nav>
     </header>
@@ -31,60 +32,67 @@
     <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
     <div class="ticker" role="marquee" aria-label="Site news">
       <p class="ticker-track">
-        Welcome to Christopia &#9733; New: Math, CS and Social sections &#9733; Sorting, graphs, regex
-        and Big-O visualizers &#9733; Coming soon: home server + smart home hub &#9733; TODO: your news here
+        Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
+        Sorting, graphs, regex and Big-O tools are live &#9733; Coming soon: the Me page, stickers and a friends wall &#9733; TODO: your news here
       </p>
     </div>
 
-    <nav class="sub-nav" aria-label="Math tools">
-      <ul>
-        <li><a href="index.html">Overview</a></li>
-        <li><a href="plotter.html">Plotter</a></li>
-        <li><a href="matrix.html">Matrix Lab</a></li>
-        <li><a href="latex.html">LaTeX</a></li>
-        <li><a href="scanner.html" aria-current="page">Scanner</a></li>
-      </ul>
+    <nav class="address-bar" aria-label="Breadcrumb">
+      <span class="address-label" aria-hidden="true">Address</span>
+      <ol class="address">
+        <li><a href="../tools.html">Tools</a></li>
+        <li><a href="../tools.html#math">Math</a></li>
+        <li aria-current="page">Notes Scanner</li>
+      </ol>
     </nav>
 
     <main class="tool-layout">
-      <section id="scan-input" aria-labelledby="scan-heading">
-        <h1 id="scan-heading">Notes Scanner</h1>
-        <p>
-          TODO: one sentence on what it does. Runs in your browser with Tesseract.js; images never
-          leave your device. Works best on clear, printed or neat handwriting.
-        </p>
+      <section class="window" id="scan-input" aria-labelledby="scan-heading">
+        <div class="title-bar">
+          <h1 class="title-bar-text" id="scan-heading"><img src="../images/icons/scanner.svg" alt="" width="16" height="16" /> Notes Scanner<span class="title-bar-program" aria-hidden="true"> - scanner.exe</span></h1>
+        </div>
+        <div class="window-body">
+          <p>
+            TODO: one sentence on what it does. Runs in your browser with Tesseract.js; images never
+            leave your device. Works best on clear, printed or neat handwriting.
+          </p>
 
-        <form id="scan-form">
-          <!-- capture="environment" opens the rear camera on phones. -->
-          <label for="scan-file">Photo or image of your notes</label>
-          <input id="scan-file" type="file" accept="image/*" capture="environment" required />
+          <form id="scan-form">
+            <!-- capture="environment" opens the rear camera on phones. -->
+            <label for="scan-file">Photo or image of your notes</label>
+            <input id="scan-file" type="file" accept="image/*" capture="environment" required />
 
-          <label for="scan-lang">Language</label>
-          <select id="scan-lang">
-            <option value="eng" selected>English</option>
-          </select>
+            <label for="scan-lang">Language</label>
+            <select id="scan-lang">
+              <option value="eng" selected>English</option>
+            </select>
 
-          <button type="submit">Scan</button>
-        </form>
+            <button type="submit">Scan</button>
+          </form>
 
-        <figure id="scan-preview" hidden>
-          <img id="scan-image" alt="Preview of the uploaded notes" />
-          <figcaption>Your upload</figcaption>
-        </figure>
+          <figure id="scan-preview" hidden>
+            <img id="scan-image" alt="Preview of the uploaded notes" />
+            <figcaption>Your upload</figcaption>
+          </figure>
+        </div>
       </section>
 
-      <section id="scan-output" aria-labelledby="output-heading">
-        <h2 id="output-heading">Typed version</h2>
-        <progress id="scan-progress" max="1" value="0" hidden></progress>
-        <p id="scan-status" role="status"></p>
+      <section class="window" id="scan-output" aria-labelledby="output-heading">
+        <div class="title-bar">
+          <h2 class="title-bar-text" id="output-heading">Typed version</h2>
+        </div>
+        <div class="window-body">
+          <progress id="scan-progress" max="1" value="0" hidden></progress>
+          <p id="scan-status" role="status"></p>
 
-        <label for="scan-text" class="visually-hidden">Recognized text</label>
-        <textarea id="scan-text" rows="16" placeholder="Recognized text appears here"></textarea>
+          <label for="scan-text" class="visually-hidden">Recognized text</label>
+          <textarea id="scan-text" rows="16" placeholder="Recognized text appears here"></textarea>
 
-        <div class="button-row">
-          <button type="button" id="copy-text">Copy</button>
-          <button type="button" id="download-text">Download .txt</button>
-          <button type="button" id="send-to-latex">Open in LaTeX editor</button>
+          <div class="button-row">
+            <button type="button" id="copy-text">Copy</button>
+            <button type="button" id="download-text">Download .txt</button>
+            <button type="button" id="send-to-latex">Open in LaTeX editor</button>
+          </div>
         </div>
       </section>
     </main>
@@ -100,16 +108,6 @@
       <p>&copy; 2026 Christopia. TODO: GitHub link.</p>
     </footer>
 
-    <!-- Quick menu: display and sound settings, pinned to the bottom of the screen. -->
-    <div class="quick-menu">
-      <div id="quick-menu-panel" class="quick-menu-panel" hidden>
-        <button class="theme-toggle switch" type="button" aria-pressed="false">Dark mode</button>
-        <button class="sound-toggle switch" type="button" aria-pressed="false">Sound</button>
-      </div>
-      <button class="quick-menu-toggle" type="button" aria-expanded="false" aria-controls="quick-menu-panel">
-        <span aria-hidden="true">&#9881;</span> Options
-      </button>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
     <script type="module" src="../js/script.js"></script>
