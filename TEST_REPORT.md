@@ -1,13 +1,17 @@
 # Test Report — 8-Bit Casino Website
 
-Tested in: TODO (browser + version), date: TODO
+Tested in: Chromium (Claude desktop app's built-in browser), served from a local Python server (`python3 -m http.server`), on 2026-11-22. Re-run items 2 and 6 in Chrome after adding the images.
 
 | # | Item | What I tested | What happened | Fix made |
 |---|---|---|---|---|
-| 1 | Navigation | Every nav link + logo on Home, About, Gallery | | |
-| 2 | Images | All images load; every `<img>` has alt text | | |
+| 1 | Navigation | Clicked every nav link (Home, About, Gallery) and the logo from all three pages (12 combinations); each Home game card; the "Pick a game" button | Every link opened the right page, and `aria-current` highlighted the right nav item. Each game card jumped to its rules on About, with the heading on screen. "Pick a game" scrolled to the cards. | None needed |
+| 2 | Images | Every `<img>` on all pages: has alt text? does the file load? | **Alt text: pass.** All 8 images have descriptive alt text (the lightbox image gets its alt from the thumbnail). **Loading: FAIL.** All 8 files are missing (`home.png`, `about.png`, `game-1.png`…`game-6.png`), so each shows its alt text in a frame. | Open: add my own art to `images/`, then update each alt to match the real picture and re-test |
 | 3 | JS feature (lightbox) | Open each thumbnail; next past last; prev before first; arrow keys; Esc / X / backdrop close; keyboard only | Clicking image 6 opened "(6 of 6)"; → and Next wrapped to "(1 of 6)"; ← and Previous wrapped back to 6; a click inside the frame kept it open; X, Esc and a backdrop click each closed it; focus returned to the thumbnail; Tab + Enter opened it with no mouse. No console errors on any page. | At first a click did nothing: the browser had cached the old stub `script.js`. Fixed with a hard reload (no code change). Changed the backdrop check so clicks on the dialog's padding don't close it. |
-| 4 | Responsive layout | Desktop width; phone (F12 → device toolbar, e.g. iPhone SE 375px); tablet | | |
-| 5 | Console | F12 → Console on all three pages, no errors | | |
-| 6 | Links and paths | F12 → Network, reload each page, no 404s | | |
-| 7 | Unit tests | `npm test` (wrapIndex) | 4 tests, 4 pass: in range, past last → 0, before first → 5, single image stays 0 | none needed |
+| 4 | Responsive layout | All three pages at 375px (phone), 768px (tablet) and 1280px (desktop) | No horizontal page scroll at any width (page width = screen width on every page). Phone: header stacks, gallery is 1 column, ASCII art shrinks to fit, game cards swipe sideways with the next one peeking in. Tablet: header in a row, gallery 2 columns. Desktop: gallery 3 columns. | Step 6: the title split as "8-" / "Bit" on phones; wrapped "8-Bit Casino" in a `.nowrap` span |
+| 5 | Console | Loaded all three pages and checked for JavaScript errors | No JavaScript errors on any page. The only console messages are "Failed to load resource" for the missing images (same cause as item 2). | Will clear once images are added |
+| 6 | Links and paths | Network requests on all three pages | `css/style.css`, `js/script.js` and the Google Font load on every page (status 200). The only 404s are the 8 missing images. | Step 6: every page requested a missing `favicon.ico` (404); added an inline SVG favicon. Images still open (item 2). |
+| 7 | Unit tests | `npm test` (wrapIndex) | 4 tests, 4 pass: in range, past last → 0, before first → 5, single image stays 0 | None needed |
+| 8 | Color contrast | Computed WCAG contrast ratio for every text/background pair in `:root` | All pass AA (at least 4.5:1). Lowest: pink on card background, 5.15:1. Body text on background: 16.67:1. | None needed |
+
+## Summary
+Items 1, 3, 4, 7 and 8 pass. Items 2, 5 and 6 have one shared open issue: the 8 image files haven't been added yet. Everything else about them (alt text, paths, no other 404s or errors) passes.
