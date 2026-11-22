@@ -68,7 +68,7 @@ Milestones follow the spec's steps; commit after each.
 1. **Step 1–3 (content & plan):** pick the theme (you'll send it), write text for Home/About/Hub, gather ≥ 2 images into `images/`, fill the summaries in `js/tools.js`. Commit.
 2. **Step 2.4 warm-up:** ask your LLM the warm-up question; note it in `PROMPT_LOG.md`.
 3. **Step 4 (Home structure):** fill `#hero` / `#about` text, replace placeholder alt text. Commit.
-4. **Step 4b (gallery):** `renderToolGallery()` in `script.js` builds cards from `TOOLS`. Commit.
+4. **Step 4b (gallery):** ✅ `renderToolGallery()` in `script.js` builds cards from `TOOLS` (all live tools on Home, one section on each section index). Commit.
 5. **Step 5 (nav + pages):** ✅ mobile Menu done (`setExpanded` / `initMenus`); click every link, top nav and sub-nav, on every page. Commit.
 6. **Step 6–7 (CSS + theme):** design tokens from your theme, nav bar, buttons, hero, gallery cards, tool layouts; ✅ `applyTheme` / `toggleTheme` / `initTheme` done (saved choice, else the OS setting). Check 375 px. Commit.
 7. **Plotter:** (a) `sample2D`, (b) `sampleSurface` (tests pass), (c) add/remove rows, (d) `readWindow`, `compileExpression`, (e) `redraw` 2D then 3D, (f) debounce. Commit.

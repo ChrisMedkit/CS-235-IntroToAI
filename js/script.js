@@ -80,11 +80,32 @@ function initMenus() {
 function renderToolGallery() {
   const gallery = document.getElementById("tool-gallery");
   if (!gallery) return; // not a gallery page
-  // TODO (Plan step 4): for each live tool (filtered by gallery.dataset.section if set), build
-  //   <li class="tool-card"><a href=ROOT+href><img src=ROOT+"images/<id>.svg" alt=...><h3><p></a></li>
-  // where ROOT = document.body.dataset.root ("" on the home page, "../" in section folders).
-  // Use textContent, not innerHTML, for names/summaries.
-  void TOOLS;
+  const root = document.body.dataset.root ?? ""; // "" at the site root, "../" in section folders
+  const section = gallery.dataset.section;
+  const cards = TOOLS.filter((t) => t.status === "live" && (!section || t.category === section)).map(
+    (tool) => {
+      const img = document.createElement("img");
+      Object.assign(img, {
+        src: `${root}images/${tool.id}.svg`,
+        alt: `${tool.name} preview`,
+        width: 640,
+        height: 360,
+        loading: "lazy",
+      });
+      const name = document.createElement("h3");
+      name.textContent = tool.name; // textContent, never innerHTML
+      const summary = document.createElement("p");
+      summary.textContent = tool.summary;
+      const link = document.createElement("a");
+      link.href = root + tool.href;
+      link.append(img, name, summary);
+      const card = document.createElement("li");
+      card.className = "tool-card";
+      card.append(link);
+      return card;
+    },
+  );
+  gallery.replaceChildren(...cards);
 }
 
 /* ---------- Early-internet extras ---------- */

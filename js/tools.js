@@ -1,6 +1,6 @@
 // Tool registry: the one list the home gallery, section pages and the Hub read from.
-// To add a tool: add an entry here, add its page in its section folder, add it to that
-// section's sub-nav (every page in the section) and a static card on the section index.
+// To add a tool: add an entry here (it appears in the galleries automatically), add its page in
+// its section folder, and add it to that section's sub-nav (every page in the section).
 
 /**
  * @typedef {Object} Tool

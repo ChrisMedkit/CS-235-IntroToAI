@@ -19,9 +19,11 @@ Tests (Node 18+, nothing to install): `npm test`
 - Shared: `css/style.css`, `js/script.js`, `fonts/`, `images/`. Pages in folders link up with `../`.
 
 ## Add a tool
-1. Add an entry to `js/tools.js` (`href` is from the site root, `category` is its section).
+1. Add an entry to `js/tools.js` (`href` is from the site root, `category` is its section). The Home
+   and section galleries pick it up automatically. Add `images/<id>.svg` for its card.
 2. Copy a page in that section folder (header, ticker, sub-nav, footer are already there) and add `js/<tool>.js`.
-3. Add its link to the sub-nav on every page in that section, and a card on the section's `index.html`.
+3. Add its link to the sub-nav on every page in that section. (Optional: a static card in the
+   gallery HTML, shown only if JavaScript fails.)
 
 Live site: TODO (GitHub Pages URL)
 

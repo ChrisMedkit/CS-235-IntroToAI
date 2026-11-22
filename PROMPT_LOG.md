@@ -40,6 +40,15 @@ Record at least three significant features (page structure, navigation, CSS, res
 | What it produced | `applyTheme`, `toggleTheme`, `initTheme` (saved choice in localStorage, else the OS `prefers-color-scheme`; storage errors caught); one `setExpanded`/`initMenus` pair drives both the Menu button and the new Options button through `aria-expanded`/`aria-controls`, with Esc and click-outside to close. Moved the two toggles out of the header on all 17 pages into a fixed bottom-right Options panel styled as on/off switches (label stays the same, `aria-pressed` carries the state). CSS: stacked full-width mobile nav, `color-scheme` per theme, lighter graph walls in dark mode. Tested in the browser: toggle on/off, saved across pages, Esc returns focus, phone width, no console errors. Debug: the stacked links stayed narrow because the shared pill rule came later with equal specificity; fixed with `#site-nav li a`. |
 | Your decision | TODO: what you kept or changed, and why |
 
+## 2. Tool gallery from the registry (Step 4b)
+| Field | Entry |
+|---|---|
+| Feature | Home and section galleries rendered from `js/tools.js` |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "implement the tool gallery rendering from tools.js" |
+| What it produced | `renderToolGallery()` in `js/script.js`: filters `TOOLS` to live tools (and to the list's `data-section` on Math/CS/Social), builds each card with `createElement` + `textContent` (no `innerHTML`), prefixes links and images with `body[data-root]` so the same code works from section folders, lazy-loads card images, and swaps the static fallback cards with `replaceChildren`. Checked in the browser: Home 12 cards, Math 4, CS 5, Social 3, every link and image returns 200, no console errors. Updated the "Add a tool" steps (static cards are now only a no-JS fallback). |
+| Your decision | TODO: what you kept or changed, and why |
+
 ## Warm-up (Step 2.4)
 TODO: ask "What semantic elements should a personal website homepage include?" and note one thing you learned.
 
