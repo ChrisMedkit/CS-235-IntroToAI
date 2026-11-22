@@ -88,6 +88,16 @@ Record at least three significant features (page structure, navigation, CSS, res
 | Your decision | TODO: what you kept or changed, and why |
 | Debugging | (1) Weighted cells disappeared under the visited color; cell colors now use `background-color` so the weight dot stays. (2) Dark-mode walls looked like visited cells; darker gray. (3) On a 375 px phone the 41-column grid had 6 px cells, too small to tap; phones now get a 21x21 grid (13 px cells). |
 
+## 7. Big-O playground (Plan CS step 4)
+| Field | Entry |
+|---|---|
+| Feature | Growth-curve chart and a benchmark that times real algorithms and guesses their complexity |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "implement the big-o playground" |
+| What it produced | `fitComplexity` in `js/cs-lib.js` fits t ≈ c·f(n) for 1, log n, n, n log n, n², n³ by relative error and returns the best class and constant (tests: each class recognized exactly and with ±10% noise, zero times ignored, < 2 points → null). `js/bigo.js`: Plotly growth curves with checkboxes, an n slider and a log/linear toggle (linear zooms to the polynomial curves so 2ⁿ and n! shoot off the top; overflowing values leave gaps); benchmark of linear/binary search, bubble/insertion/merge/quick sort and `Array.prototype.sort` (repeat until ≥ 25 ms, median of 3, size limits so the tab can't freeze), results table with doubling ratios, best-fit sentence, and a measured-vs-fit chart; charts recolor when Dark mode is toggled. |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | (1) Merge, quick and built-in sort fit O(n) over sizes 10,000–160,000: n and n log n differ by only ~1.3× over that range, less than timer noise. Each algorithm now fills in its own default sizes (a 1000× range for n log n), and all three then fit O(n log n). (2) Bubble sort's first ratio was ×11 because the warm-up ran on a tiny array; the warm-up now runs at the first real size. (3) Binary search fits O(1): log n grows too slowly to see past loop overhead; the page says so instead of hiding it. |
+
 ## Warm-up (Step 2.4)
 TODO: ask "What semantic elements should a personal website homepage include?" and note one thing you learned.
 

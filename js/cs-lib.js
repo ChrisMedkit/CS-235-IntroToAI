@@ -529,18 +529,35 @@ export const GROWTH = {
   "n!": (n) => (n <= 1 ? 1 : n * GROWTH["n!"](n - 1)),
 };
 
+/** Classes fitComplexity chooses between (2^n and n! never fit real benchmarks). */
+export const FIT_CLASSES = ["1", "log n", "n", "n log n", "n^2", "n^3"];
+
 /**
- * Which growth class best explains measured times? For each class f, fit time ≈ c·f(n)
- * by least squares (c = Σ t·f / Σ f²) and pick the class with the smallest relative error.
- * Only consider 1, log n, n, n log n, n^2, n^3.
+ * Which growth class best explains measured times? For each class f, fit t ≈ c·f(n) minimizing
+ * the *relative* error Σ(1 − c·f/t)², so small and large n count equally
+ * (c = Σ(f/t) / Σ(f/t)²), and pick the class with the smallest error.
+ * Points with t <= 0 (too fast for the timer) are ignored.
  * @param {number[]} ns     input sizes
  * @param {number[]} times  matching times (ms)
- * @returns {string}  a key of GROWTH
+ * @returns {{best: string, c: number, errors: Record<string, number>}|null}
+ *   best is a key of GROWTH; null if fewer than 2 usable points
  */
 export function fitComplexity(ns, times) {
-  // TODO (Plan CS step 4)
-  void ns, times;
-  throw new Error("Not implemented");
+  const points = ns.map((n, i) => [n, times[i]]).filter(([n, t]) => n >= 1 && t > 0);
+  if (points.length < 2) return null;
+  const errors = {};
+  let best = null;
+  let bestC = 0;
+  for (const name of FIT_CLASSES) {
+    const ratios = points.map(([n, t]) => Math.max(GROWTH[name](n), 1e-12) / t); // log 1 = 0 guard
+    const c = ratios.reduce((s, r) => s + r, 0) / ratios.reduce((s, r) => s + r * r, 0);
+    errors[name] = ratios.reduce((s, r) => s + (1 - c * r) ** 2, 0);
+    if (best === null || errors[name] < errors[best]) {
+      best = name;
+      bestC = c;
+    }
+  }
+  return { best, c: bestC, errors };
 }
 
 /* ---------------- Regex ---------------- */

@@ -231,10 +231,21 @@ test("generateMaze: size, values, open corners", () => {
   assert.equal(maze[9][13], 1);
 });
 
-test("fitComplexity recognizes n^2 and n log n", () => {
-  const ns = [1000, 2000, 4000, 8000];
-  assert.equal(fitComplexity(ns, ns.map((n) => 3e-6 * n * n)), "n^2");
-  assert.equal(fitComplexity(ns, ns.map((n) => 2e-4 * GROWTH["n log n"](n))), "n log n");
+test("fitComplexity recognizes each class, even with ±10% noise", () => {
+  const ns = [1000, 2000, 4000, 8000, 16000];
+  const noise = [1.08, 0.93, 1.05, 0.97, 1.1];
+  for (const name of ["1", "log n", "n", "n log n", "n^2", "n^3"]) {
+    const exact = fitComplexity(ns, ns.map((n) => 1e-3 * GROWTH[name](n)));
+    assert.equal(exact.best, name, `${name} exact`);
+    assert.ok(Math.abs(exact.c - 1e-3) < 1e-9, `${name} constant`);
+    if (name === "1" || name === "log n") continue; // these two differ by less than the noise
+    assert.equal(fitComplexity(ns, ns.map((n, i) => 1e-3 * GROWTH[name](n) * noise[i])).best, name, `${name} noisy`);
+  }
+});
+
+test("fitComplexity ignores zero times and needs two points", () => {
+  assert.equal(fitComplexity([1000, 2000, 4000], [0, 0.4, 1.6]).best, "n^2");
+  assert.equal(fitComplexity([1000, 2000], [0, 0.5]), null);
 });
 
 test("explainRegex tokens", () => {

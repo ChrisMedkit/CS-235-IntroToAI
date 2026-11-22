@@ -65,6 +65,7 @@
 
         <label for="bigo-n">n up to <output id="bigo-n-out" for="bigo-n">50</output></label>
         <input id="bigo-n" type="range" min="5" max="1000" value="50" />
+        <label class="checkbox"><input id="bigo-log" type="checkbox" checked /> Log scale (shows every curve; off shows how steep they really are)</label>
 
         <h2>Benchmark</h2>
         <form id="bench-form">
@@ -78,7 +79,7 @@
             <option value="quick">Quick sort</option>
             <option value="builtin">Array.prototype.sort</option>
           </select>
-          <label for="bench-sizes">Sizes (comma separated)</label>
+          <label for="bench-sizes">Sizes (comma separated; each algorithm fills in a good range)</label>
           <input id="bench-sizes" type="text" value="1000, 2000, 4000, 8000" />
           <button type="submit">Run benchmark</button>
         </form>
@@ -96,8 +97,10 @@
 
       <section id="bigo-stage" aria-labelledby="bigo-stage-heading">
         <h2 id="bigo-stage-heading">Growth</h2>
-        <!-- Plotly draws the curves here, plus the benchmark points scaled to the best-fit curve. -->
-        <div id="bigo-plot" class="plot"></div>
+        <!-- Plotly charts: growth curves, then measured times with the best-fit curve. -->
+        <div id="bigo-plot" class="plot" role="img" aria-label="Growth curves of the checked complexity classes"></div>
+        <h2 id="bench-plot-heading" hidden>Benchmark</h2>
+        <div id="bench-plot" class="plot" role="img" aria-label="Measured times with the best-fit curve; the table has the numbers" hidden></div>
       </section>
     </main>
 

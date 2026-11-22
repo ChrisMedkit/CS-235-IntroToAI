@@ -80,7 +80,7 @@ Milestones follow the spec's steps; commit after each.
     1. ✅ Sorting: `sortSteps` + `applyStep` + `PSEUDOCODE` (9 tests pass), then bars, pseudocode, step/play/pause/reset, counters in `sorting.js`.
     2. ✅ Data structures: `bstInsert/Delete/Search`, `treeLayout`, `heapPush/Pop`, `hashIndex` (6 tests pass), then `renderOps`, `run`, `draw` in `structures.js`.
     3. ✅ Graphs: `gridSearch`, `generateMaze` (7 tests pass), then `buildGrid`, `paint`, `run`, `clearPath` in `graphs.js`.
-    4. Big-O: `fitComplexity` (test), then `drawCurves`, `benchmark`, `showResults` in `bigo.js`.
+    4. ✅ Big-O: `fitComplexity` (2 tests pass), then `drawCurves`, `benchmark`, `showResults` in `bigo.js`.
     5. Regex: `explainRegex`, `findMatches`, `escapeRegex` (tests), then `insertToken`, `update`, `renderHighlight`, `copyAsJs` in `regex.js`.
 13. **Social** (`js/storage.js`, `js/social-lib.js` + tests, then page scripts):
     1. Forum: `load`/`save`, `validatePost`, `sortThreads`, `relativeTime`, then `forum.js`.
@@ -127,7 +127,7 @@ Milestones follow the spec's steps; commit after each.
 - **ES modules:** each page loads `script.js` + its own module; CDN libraries are classic scripts that define globals (`math`, `Plotly`, `Tesseract`, `renderMathInElement`).
 - **Recording steps, then animating:** each visualizer computes the full list of steps first (pure, testable), and the page only replays them; that's what makes Step/Play/Reset easy.
 - **Dijkstra vs A\*:** both use a priority queue on cost so far; A\* adds an admissible heuristic (Manhattan distance on a 4-way grid), so it explores fewer cells for the same optimal path.
-- **Fitting complexity:** for each class f, the best c in t ≈ c·f(n) is Σtf/Σf²; the class with the smallest relative error wins. Timings are noisy, so use medians and big enough n.
+- **Fitting complexity:** for each class f, pick c in t ≈ c·f(n) to minimize the relative error Σ(1 − c·f/t)² (c = Σ(f/t)/Σ(f/t)²); the class with the smallest error wins. Timings are noisy, so repeat runs until ≥ 25 ms, take medians, warm up the JIT, and use a wide range of n (n vs n log n differ by only ~1.3× over a 16× range).
 - **Client-side encryption:** PBKDF2 makes guessing passwords slow; AES-GCM both hides and authenticates the data (a wrong key fails instead of returning garbage); IVs must never repeat for one key.
 - **Progressive enhancement:** the home gallery has static fallback cards so the page still works if JS fails.
 
