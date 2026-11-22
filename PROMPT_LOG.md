@@ -98,6 +98,16 @@ Record at least three significant features (page structure, navigation, CSS, res
 | Your decision | TODO: what you kept or changed, and why |
 | Debugging | (1) Merge, quick and built-in sort fit O(n) over sizes 10,000–160,000: n and n log n differ by only ~1.3× over that range, less than timer noise. Each algorithm now fills in its own default sizes (a 1000× range for n log n), and all three then fit O(n log n). (2) Bubble sort's first ratio was ×11 because the warm-up ran on a tiny array; the warm-up now runs at the first real size. (3) Binary search fits O(1): log n grows too slowly to see past loop overhead; the page says so instead of hiding it. |
 
+## 8. Regex builder (Plan CS step 5)
+| Field | Entry |
+|---|---|
+| Feature | Regex builder: building blocks, plain-English explanation, live matches, replace preview, copy as JS |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "implement the regex builder" |
+| What it produced | `js/cs-lib.js`: `explainRegex` tokenizer (escapes, sets incl. negated and ranges, numbered/named/non-capturing groups, lookarounds, anchors, alternation, greedy and lazy quantifiers; a quantifier after text splits off just the last character), `findMatches` (always global, steps over empty matches, emoji-safe in u mode, limit 1000), `escapeRegex`. `js/regex.js`: click-to-insert blocks (groups wrap the selection; set placeholders are selected for typing over), presets, flags help, explanation list, highlighted matches built from text nodes (empty matches shown as thin bars), match table with groups, replace preview with `$1`, copy as a `/.../flags` literal with slashes escaped. Matching runs in `js/regex-worker.js` and is stopped after 1 s. |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | (1) An operator-precedence bug (`!last.quantifiable === false`) would have explained `ab+` as plain text; caught on review, rewritten as `last.quantifiable !== false`. (2) Typing `(a+)+$` with a string of a's would freeze the tab (catastrophic backtracking); matching moved into a Web Worker that is terminated after 1 s, and the page recovers on the next pattern. (3) A long match like an email pushed the match table 3 px past a phone screen; table cells may now wrap anywhere. |
+
 ## Warm-up (Step 2.4)
 TODO: ask "What semantic elements should a personal website homepage include?" and note one thing you learned.
 

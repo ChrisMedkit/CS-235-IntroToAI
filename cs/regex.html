@@ -57,8 +57,12 @@
           <input id="regex-pattern" type="text" spellcheck="false" autocomplete="off" value="\b[\w.+-]+@[\w-]+\.\w+\b" />
           <span aria-hidden="true">/</span>
           <label for="regex-flags" class="visually-hidden">Flags</label>
-          <input id="regex-flags" type="text" spellcheck="false" autocomplete="off" value="g" size="4" maxlength="7" />
+          <input id="regex-flags" type="text" spellcheck="false" autocomplete="off" value="g" size="4" maxlength="7" aria-describedby="regex-flags-help" />
         </div>
+        <p id="regex-flags-help" class="meta">
+          Flags: <code>g</code> all matches · <code>i</code> ignore case · <code>m</code> ^ and $ per line ·
+          <code>s</code> . matches newlines · <code>u</code> Unicode · <code>y</code> sticky
+        </p>
         <p id="regex-error" class="error" role="alert"></p>
 
         <label for="regex-preset">Start from a preset</label>

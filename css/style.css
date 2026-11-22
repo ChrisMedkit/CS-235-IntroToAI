@@ -870,6 +870,7 @@ form textarea {
   text-align: left;
   padding: 0.3rem 0.5rem;
   border-bottom: 1px solid var(--border);
+  overflow-wrap: anywhere; /* long matches (emails, URLs) must not push a phone screen sideways */
 }
 .output {
   white-space: pre-wrap;
@@ -1120,6 +1121,17 @@ form textarea {
   border-radius: 12px;
   padding: 0.6rem;
   min-height: 3rem;
+}
+.highlight .empty-match {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin: 0 -1px;
+  vertical-align: text-bottom;
+  background: #e74c3c;
+}
+#regex-flags-help code {
+  font-weight: 700;
 }
 .highlight mark {
   background: #ffe94a;

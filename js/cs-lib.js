@@ -582,26 +582,186 @@ export const PRESETS = {
  * @returns {{token: string, meaning: string}[]}
  */
 export function explainRegex(pattern) {
-  // TODO (Plan CS step 5)
-  void pattern;
-  throw new Error("Not implemented");
+  const ESCAPES = {
+    d: "a digit (0–9)",
+    D: "any character that is not a digit",
+    w: "a word character (letter, digit or _)",
+    W: "any character that is not a word character",
+    s: "whitespace (space, tab, newline…)",
+    S: "any character that is not whitespace",
+    b: "a word boundary (edge between a word character and a non-word character)",
+    B: "a position that is not a word boundary",
+    n: "a newline",
+    t: "a tab",
+    r: "a carriage return",
+    0: "the null character",
+  };
+  const tokens = [];
+  let groupNumber = 0;
+  let i = 0;
+  const describeClassItem = (item) =>
+    item.startsWith("\\") ? (ESCAPES[item[1]] ?? `"${item[1]}"`) : item.includes("-") && item.length === 3 ? `${item[0]} to ${item[2]}` : `"${item}"`;
+
+  while (i < pattern.length) {
+    const ch = pattern[i];
+    const rest = pattern.slice(i);
+    const last = tokens.at(-1);
+
+    // Quantifiers (with an optional lazy "?") apply to the previous item.
+    const quantifier = rest.match(/^(?:[*+?]|\{\d+(?:,\d*)?\})\??/);
+    if (quantifier && last && last.quantifiable !== false) {
+      const q = quantifier[0];
+      const lazy = q.length > 1 && q.endsWith("?") ? ", as few as possible" : "";
+      const core = lazy ? q.slice(0, -1) : q;
+      let meaning;
+      if (core === "*") meaning = "0 or more of the previous item";
+      else if (core === "+") meaning = "1 or more of the previous item";
+      else if (core === "?") meaning = "the previous item is optional (0 or 1)";
+      else {
+        const [min, max] = core.slice(1, -1).split(",");
+        meaning =
+          max === undefined
+            ? `exactly ${min} of the previous item`
+            : max === ""
+              ? `${min} or more of the previous item`
+              : `${min} to ${max} of the previous item`;
+      }
+      // A quantifier only repeats the last character of a run of literal text: split it off.
+      if (last.kind === "literal" && last.token.length > 1) {
+        tokens.pop();
+        const head = last.token.slice(0, -1);
+        const tail = last.token.slice(-1);
+        tokens.push({ token: head, meaning: head.length > 1 ? `the text "${head}"` : `the character "${head}"`, kind: "literal" });
+        tokens.push({ token: tail, meaning: `the character "${tail}"`, kind: "literal" });
+      }
+      tokens.push({ token: q, meaning: meaning + lazy, kind: "quantifier", quantifiable: false });
+      i += q.length;
+      continue;
+    }
+
+    if (ch === "\\") {
+      const next = pattern[i + 1] ?? "";
+      let token = ch + next;
+      let meaning;
+      if (/[1-9]/.test(next)) meaning = `the same text that group ${next} matched`;
+      else if (next === "k" && pattern[i + 2] === "<") {
+        token = pattern.slice(i, pattern.indexOf(">", i) + 1 || undefined);
+        meaning = `the same text that group "${token.slice(3, -1)}" matched`;
+      } else if (next === "u" || next === "x") {
+        token = pattern.slice(i).match(/^\\(?:u\{[0-9a-fA-F]+\}|u[0-9a-fA-F]{4}|x[0-9a-fA-F]{2})/)?.[0] ?? token;
+        meaning = token.length > 2 ? `the character with code ${token.slice(2).replace(/[{}]/g, "")} (hex)` : `"${next}"`;
+      } else if ((next === "p" || next === "P") && pattern[i + 2] === "{") {
+        token = pattern.slice(i, pattern.indexOf("}", i) + 1 || undefined);
+        meaning = `${next === "P" ? "a character NOT in" : "a character in"} the Unicode category ${token.slice(3, -1)}`;
+      } else meaning = ESCAPES[next] ?? `the character "${next}" (escaped, so taken literally)`;
+      const kind = next === "b" || next === "B" ? "anchor" : "atom";
+      tokens.push({ token, meaning, kind, quantifiable: kind !== "anchor" });
+      i += token.length;
+      continue;
+    }
+
+    if (ch === "[") {
+      let j = i + 1;
+      if (pattern[j] === "^") j++;
+      if (pattern[j] === "]") j++; // a "]" first in the set is literal
+      while (j < pattern.length && pattern[j] !== "]") j += pattern[j] === "\\" ? 2 : 1;
+      const token = pattern.slice(i, j + 1);
+      const negated = token[1] === "^";
+      const body = token.slice(negated ? 2 : 1, -1);
+      const items = body.match(/\\.|.-[^\]]|./gs) ?? [];
+      const list = items.map(describeClassItem).join(", ");
+      tokens.push({
+        token,
+        meaning: !items.length
+          ? negated
+            ? "any character at all"
+            : "nothing (an empty set never matches)"
+          : negated
+            ? `one character that is NOT any of: ${list}`
+            : `one character from: ${list}`,
+        kind: "atom",
+      });
+      i += token.length;
+      continue;
+    }
+
+    if (ch === "(") {
+      const groups = [
+        ["(?:", "start of a group that doesn't capture"],
+        ["(?=", "start of a lookahead: what follows must match this (nothing is consumed)"],
+        ["(?!", "start of a negative lookahead: what follows must NOT match this"],
+        ["(?<=", "start of a lookbehind: what comes before must match this"],
+        ["(?<!", "start of a negative lookbehind: what comes before must NOT match this"],
+      ];
+      const known = groups.find(([open]) => rest.startsWith(open));
+      if (known) {
+        tokens.push({ token: known[0], meaning: known[1], kind: "open", quantifiable: false });
+        i += known[0].length;
+      } else if (rest.startsWith("(?<")) {
+        const token = rest.slice(0, rest.indexOf(">") + 1 || undefined);
+        groupNumber++;
+        tokens.push({ token, meaning: `start of group ${groupNumber}, named "${token.slice(3, -1)}" (captures)`, kind: "open", quantifiable: false });
+        i += token.length;
+      } else {
+        groupNumber++;
+        tokens.push({ token: "(", meaning: `start of group ${groupNumber} (captures what it matches)`, kind: "open", quantifiable: false });
+        i++;
+      }
+      continue;
+    }
+
+    const SINGLE = {
+      ")": ["end of the group", "atom"],
+      ".": ["any character except a newline (with the s flag, any character)", "atom"],
+      "^": ["start of the text (start of each line with the m flag)", "anchor"],
+      $: ["end of the text (end of each line with the m flag)", "anchor"],
+      "|": ["OR: match either the part before or the part after", "or"],
+    };
+    if (SINGLE[ch]) {
+      const [meaning, kind] = SINGLE[ch];
+      tokens.push({ token: ch, meaning, kind, quantifiable: kind === "atom" });
+      i++;
+      continue;
+    }
+
+    // Literal text: merge runs of plain characters into one token.
+    if (last?.kind === "literal") {
+      last.token += ch;
+      last.meaning = `the text "${last.token}"`;
+    } else {
+      tokens.push({ token: ch, meaning: `the character "${ch}"`, kind: "literal" });
+    }
+    i++;
+  }
+  // Only token + meaning leave this function; kind/quantifiable were bookkeeping.
+  return tokens.map(({ token, meaning }) => ({ token, meaning }));
 }
 
 /**
  * All matches of pattern in text. Always searches globally (adds "g" if missing).
- * Guards: an empty match advances lastIndex by one (no infinite loop); stops after `limit`.
+ * Guards: an empty match advances past the current character (no infinite loop); stops after `limit`.
  * @param {string} pattern
  * @param {string} flags
  * @param {string} text
  * @param {number} [limit=1000]
- * @returns {{match: string, index: number, groups: string[]}[]}
+ * @returns {{match: string, index: number, groups: (string|undefined)[]}[]}  a group that didn't
+ *   take part in the match is undefined
  * @throws {SyntaxError} for an invalid pattern or flags (message shown to the user)
  */
 export function findMatches(pattern, flags, text, limit = 1000) {
-  // TODO (Plan CS step 5): new RegExp(...); loop with exec. Catastrophic backtracking can still
-  // freeze the tab; later, run this in a Web Worker with a timeout.
-  void pattern, flags, text, limit;
-  throw new Error("Not implemented");
+  const re = new RegExp(pattern, flags.includes("g") ? flags : flags + "g");
+  const unicode = re.unicode || re.unicodeSets;
+  const out = [];
+  let m;
+  while (out.length < limit && (m = re.exec(text)) !== null) {
+    out.push({ match: m[0], index: m.index, groups: m.slice(1) });
+    if (m[0] === "") {
+      // Step over a whole surrogate pair in Unicode mode, or the next exec would split it.
+      const code = text.codePointAt(re.lastIndex);
+      re.lastIndex += unicode && code > 0xffff ? 2 : 1;
+    }
+  }
+  return out;
 }
 
 /**
@@ -610,7 +770,5 @@ export function findMatches(pattern, flags, text, limit = 1000) {
  * @returns {string}
  */
 export function escapeRegex(text) {
-  // TODO (Plan CS step 5): backslash every one of . * + ? ^ $ { } ( ) | [ ] \ /
-  void text;
-  throw new Error("Not implemented");
+  return text.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
 }

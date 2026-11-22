@@ -264,6 +264,28 @@ test("findMatches: groups, indexes, empty matches, bad pattern", () => {
   assert.throws(() => findMatches("(", "g", "x"), SyntaxError);
 });
 
+test("explainRegex: literal runs, lazy quantifiers, groups, sets, escapes", () => {
+  const explain = (p) => explainRegex(p).map((t) => t.token);
+  const meaning = (p, token) => explainRegex(p).find((t) => t.token === token).meaning;
+  assert.deepEqual(explain("abc+d"), ["ab", "c", "+", "d"], "a quantifier repeats only the last character");
+  assert.match(meaning("a*?", "*?"), /0 or more.*as few as possible/);
+  assert.match(meaning("x{2,}", "{2,}"), /2 or more/);
+  assert.match(meaning("x{2,5}", "{2,5}"), /2 to 5/);
+  assert.match(meaning("(a)(?<year>b)(?:c)", "(?<year>"), /group 2, named "year"/);
+  assert.match(meaning("(?:c)", "(?:"), /doesn't capture/);
+  assert.match(meaning("[^a-z0]", "[^a-z0]"), /NOT any of: a to z, "0"/);
+  assert.match(meaning(String.raw`\.`, String.raw`\.`), /"\." \(escaped/);
+  assert.match(meaning(String.raw`(a)\1`, String.raw`\1`), /group 1/);
+  assert.deepEqual(explain("a|b"), ["a", "|", "b"]);
+  assert.ok(explainRegex(String.raw`^(\w+)@[\w.-]+\.(com|org)$`).every((t) => t.meaning.length > 0));
+});
+
+test("findMatches: unmatched groups are undefined; empty matches step over emoji in u mode", () => {
+  assert.deepEqual(findMatches("(a)|(b)", "", "b")[0].groups, [undefined, "b"]);
+  const matches = findMatches("", "u", "😀x");
+  assert.deepEqual(matches.map((m) => m.index), [0, 2, 3], "never lands between the two halves of 😀");
+});
+
 test("escapeRegex makes text literal", () => {
   const text = "1+1=2? (yes) [a] {b} ^$ | \\ /";
   assert.ok(new RegExp(escapeRegex(text)).test(text));

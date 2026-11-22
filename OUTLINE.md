@@ -81,7 +81,7 @@ Milestones follow the spec's steps; commit after each.
     2. ✅ Data structures: `bstInsert/Delete/Search`, `treeLayout`, `heapPush/Pop`, `hashIndex` (6 tests pass), then `renderOps`, `run`, `draw` in `structures.js`.
     3. ✅ Graphs: `gridSearch`, `generateMaze` (7 tests pass), then `buildGrid`, `paint`, `run`, `clearPath` in `graphs.js`.
     4. ✅ Big-O: `fitComplexity` (2 tests pass), then `drawCurves`, `benchmark`, `showResults` in `bigo.js`.
-    5. Regex: `explainRegex`, `findMatches`, `escapeRegex` (tests), then `insertToken`, `update`, `renderHighlight`, `copyAsJs` in `regex.js`.
+    5. ✅ Regex: `explainRegex`, `findMatches`, `escapeRegex` (6 tests pass), then `insertToken`, `update`, `renderHighlight`, `copyAsJs` in `regex.js`; matching runs in `js/regex-worker.js` with a 1 s limit.
 13. **Social** (`js/storage.js`, `js/social-lib.js` + tests, then page scripts):
     1. Forum: `load`/`save`, `validatePost`, `sortThreads`, `relativeTime`, then `forum.js`.
     2. Events: `rsvpSummary`, `setRsvp`, `splitEvents`, `toICS`, then `events.js`.
@@ -103,7 +103,7 @@ Milestones follow the spec's steps; commit after each.
 | `cs/data-structures.html` / `js/structures.js` | Data structure visualizer (SVG) |
 | `cs/graphs.html` / `js/graphs.js` | Grid pathfinding |
 | `cs/big-o.html` / `js/bigo.js` | Growth curves + benchmark (Plotly) |
-| `cs/regex.html` / `js/regex.js` | Regex builder and tester |
+| `cs/regex.html` / `js/regex.js`, `js/regex-worker.js` | Regex builder and tester (matching in a worker so runaway patterns can be stopped) |
 | `social/forum.html` / `js/forum.js` | Forum |
 | `social/events.html` / `js/events.js` | Events + RSVP + .ics |
 | `social/journal.html` / `js/journal.js` | Encrypted Notion-style journal (KaTeX for math blocks) |
@@ -128,6 +128,7 @@ Milestones follow the spec's steps; commit after each.
 - **Recording steps, then animating:** each visualizer computes the full list of steps first (pure, testable), and the page only replays them; that's what makes Step/Play/Reset easy.
 - **Dijkstra vs A\*:** both use a priority queue on cost so far; A\* adds an admissible heuristic (Manhattan distance on a 4-way grid), so it explores fewer cells for the same optimal path.
 - **Fitting complexity:** for each class f, pick c in t ≈ c·f(n) to minimize the relative error Σ(1 − c·f/t)² (c = Σ(f/t)/Σ(f/t)²); the class with the smallest error wins. Timings are noisy, so repeat runs until ≥ 25 ms, take medians, warm up the JIT, and use a wide range of n (n vs n log n differ by only ~1.3× over a 16× range).
+- **Catastrophic backtracking:** nested quantifiers like `(a+)+$` try exponentially many ways to split the text before failing. A regex can't be interrupted on the main thread, so the tester matches in a Web Worker and terminates it after 1 s.
 - **Client-side encryption:** PBKDF2 makes guessing passwords slow; AES-GCM both hides and authenticates the data (a wrong key fails instead of returning garbage); IVs must never repeat for one key.
 - **Progressive enhancement:** the home gallery has static fallback cards so the page still works if JS fails.
 
