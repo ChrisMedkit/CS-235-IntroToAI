@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Graphs & Pathfinding</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body data-root="../">
+    <!-- Shared header: identical on every page except aria-current. -->
+    <header class="site-header">
+      <a class="brand" href="../index.html">Christopia</a>
+      <p class="splash" aria-hidden="true">Now in 3D!</p>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../math/index.html">Math</a></li>
+          <li><a href="../cs/index.html" aria-current="page">CS</a></li>
+          <li><a href="../social/index.html">Social</a></li>
+          <li><a href="../hub.html">Hub</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+      <button class="sound-toggle" type="button" aria-pressed="false">Sound off</button>
+    </header>
+
+    <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
+    <div class="ticker" role="marquee" aria-label="Site news">
+      <p class="ticker-track">
+        Welcome to Christopia &#9733; New: Math, CS and Social sections &#9733; Sorting, graphs, regex
+        and Big-O visualizers &#9733; Coming soon: home server + smart home hub &#9733; TODO: your news here
+      </p>
+    </div>
+
+    <nav class="sub-nav" aria-label="Computer science tools">
+      <ul>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="sorting.html">Sorting</a></li>
+        <li><a href="data-structures.html">Data Structures</a></li>
+        <li><a href="graphs.html" aria-current="page">Graphs</a></li>
+        <li><a href="big-o.html">Big-O</a></li>
+        <li><a href="regex.html">Regex</a></li>
+      </ul>
+    </nav>
+
+    <main class="tool-layout">
+      <section id="graph-controls" aria-labelledby="graph-heading">
+        <h1 id="graph-heading">Graphs &amp; Pathfinding</h1>
+
+        <label for="graph-algorithm">Algorithm</label>
+        <select id="graph-algorithm">
+          <option value="bfs">Breadth-first search</option>
+          <option value="dfs">Depth-first search</option>
+          <option value="dijkstra">Dijkstra</option>
+          <option value="astar">A* (Manhattan)</option>
+        </select>
+
+        <fieldset class="segmented" id="graph-tool">
+          <legend>Draw</legend>
+          <label><input type="radio" name="tool" value="wall" checked /> Wall</label>
+          <label><input type="radio" name="tool" value="weight" /> Weight (5)</label>
+          <label><input type="radio" name="tool" value="start" /> Start</label>
+          <label><input type="radio" name="tool" value="end" /> End</label>
+          <label><input type="radio" name="tool" value="erase" /> Erase</label>
+        </fieldset>
+
+        <label for="graph-speed">Speed</label>
+        <input id="graph-speed" type="range" min="1" max="100" value="60" />
+
+        <div class="button-row">
+          <button type="button" id="graph-run" class="button primary">Run</button>
+          <button type="button" id="graph-step">Step</button>
+          <button type="button" id="graph-clear-path">Clear path</button>
+          <button type="button" id="graph-clear-all">Clear all</button>
+          <button type="button" id="graph-maze">Random maze</button>
+        </div>
+
+        <dl class="stats">
+          <div><dt>Visited</dt><dd id="graph-visited">0</dd></div>
+          <div><dt>Path length</dt><dd id="graph-length">0</dd></div>
+          <div><dt>Path cost</dt><dd id="graph-cost">0</dd></div>
+        </dl>
+        <p id="graph-status" role="status"></p>
+      </section>
+
+      <section id="graph-stage" aria-labelledby="graph-stage-heading">
+        <h2 id="graph-stage-heading">Grid</h2>
+        <!-- buildGrid() fills this with one <button class="cell"> per square (keyboard + mouse drawing). -->
+        <div id="graph-grid" class="grid-board"></div>
+        <ul class="legend" aria-label="Legend">
+          <li><span class="cell start"></span> Start</li>
+          <li><span class="cell end"></span> End</li>
+          <li><span class="cell wall"></span> Wall</li>
+          <li><span class="cell weight"></span> Weight</li>
+          <li><span class="cell visited"></span> Visited</li>
+          <li><span class="cell path"></span> Path</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
+      <ul class="badges" aria-label="Site badges">
+        <li><img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" /></li>
+        <li><img src="../images/badges/made-with-claude.svg" alt="Made with Claude" width="88" height="31" /></li>
+        <li><img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" /></li>
+        <li><img src="../images/badges/any-browser.svg" alt="Best viewed in any browser" width="88" height="31" /></li>
+      </ul>
+      <p>&copy; 2026 Christopia. TODO: GitHub link.</p>
+    </footer>
+
+    <script type="module" src="../js/script.js"></script>
+    <script type="module" src="../js/graphs.js"></script>
+  </body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Events</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body data-root="../">
+    <!-- Shared header: identical on every page except aria-current. -->
+    <header class="site-header">
+      <a class="brand" href="../index.html">Christopia</a>
+      <p class="splash" aria-hidden="true">Now in 3D!</p>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../math/index.html">Math</a></li>
+          <li><a href="../cs/index.html">CS</a></li>
+          <li><a href="../social/index.html" aria-current="page">Social</a></li>
+          <li><a href="../hub.html">Hub</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+      <button class="sound-toggle" type="button" aria-pressed="false">Sound off</button>
+    </header>
+
+    <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
+    <div class="ticker" role="marquee" aria-label="Site news">
+      <p class="ticker-track">
+        Welcome to Christopia &#9733; New: Math, CS and Social sections &#9733; Sorting, graphs, regex
+        and Big-O visualizers &#9733; Coming soon: home server + smart home hub &#9733; TODO: your news here
+      </p>
+    </div>
+
+    <nav class="sub-nav" aria-label="Social pages">
+      <ul>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="forum.html">Forum</a></li>
+        <li><a href="events.html" aria-current="page">Events</a></li>
+        <li><a href="journal.html">Journal</a></li>
+      </ul>
+    </nav>
+
+    <main class="tool-layout">
+      <section id="event-create" aria-labelledby="events-heading">
+        <h1 id="events-heading">Events</h1>
+        <p class="notice">Events and RSVPs are saved in this browser for now.</p>
+
+        <h2>New event</h2>
+        <form id="event-form" novalidate>
+          <label for="event-title">Title</label>
+          <input id="event-title" name="title" type="text" maxlength="100" required />
+          <label for="event-start">Starts</label>
+          <input id="event-start" name="start" type="datetime-local" required />
+          <label for="event-end">Ends</label>
+          <input id="event-end" name="end" type="datetime-local" />
+          <label for="event-location">Location</label>
+          <input id="event-location" name="location" type="text" maxlength="120" />
+          <label for="event-capacity">Capacity (blank = unlimited)</label>
+          <input id="event-capacity" name="capacity" type="number" min="1" step="1" />
+          <label for="event-description">Description</label>
+          <textarea id="event-description" name="description" rows="4" maxlength="2000"></textarea>
+          <p id="event-error" class="error" role="alert"></p>
+          <button type="submit">Create event</button>
+        </form>
+      </section>
+
+      <section id="event-list-section" aria-labelledby="upcoming-heading">
+        <label for="rsvp-name">Your name (used for RSVPs)</label>
+        <input id="rsvp-name" type="text" maxlength="40" autocomplete="name" />
+
+        <h2 id="upcoming-heading">Upcoming</h2>
+        <!-- renderEvent(): title, date, location, description, Going / Maybe / Can't go buttons
+             (aria-pressed), counts, spots left, who's going, "Add to calendar (.ics)". -->
+        <ul id="event-list" class="event-list"></ul>
+        <p id="event-empty" class="empty-state">No upcoming events yet.</p>
+
+        <details>
+          <summary>Past events</summary>
+          <ul id="past-event-list" class="event-list"></ul>
+        </details>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
+      <ul class="badges" aria-label="Site badges">
+        <li><img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" /></li>
+        <li><img src="../images/badges/made-with-claude.svg" alt="Made with Claude" width="88" height="31" /></li>
+        <li><img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" /></li>
+        <li><img src="../images/badges/any-browser.svg" alt="Best viewed in any browser" width="88" height="31" /></li>
+      </ul>
+      <p>&copy; 2026 Christopia. TODO: GitHub link.</p>
+    </footer>
+
+    <script type="module" src="../js/script.js"></script>
+    <script type="module" src="../js/events.js"></script>
+  </body>
+</html>

@@ -1,32 +1,90 @@
 /* Christopia shared stylesheet (used by every page).
-   Theme is not chosen yet: change the tokens in :root and [data-theme="dark"] first,
-   everything else reads from them. */
+   Theme: glossy 2000s console menu (white tiles, aqua glow, pill buttons) + frosted-glass panels
+   over a maximalist collage. Math pages swap the collage for a faded Real Analysis mosaic.
+   Change the tokens in :root and [data-theme="dark"] first; everything else reads from them. */
 
-:root {
-  --bg: #ffffff;
-  --surface: #f6f8fa;
-  --text: #1f2328;
-  --muted: #59636e;
-  --accent: #0969da;
-  --accent-text: #ffffff;
-  --error: #cf222e;
-  --border: #d0d7de;
-  --radius: 8px;
-  --space: 1rem;
-  --font: system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: ui-monospace, "SF Mono", Menlo, monospace;
-  --header-h: 3.5rem;
+/* Y2K display fonts (cufonfonts, free for personal use) and the Minecraft font
+   (Craftron Gaming on dafont, 100% free). Paths are relative to this file. */
+@font-face {
+  font-family: "Rocket Pop";
+  src: url("../fonts/rocketpop.woff") format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Rocket Pop Italic";
+  src: url("../fonts/rocketpopital.woff") format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Digit LoFi";
+  src: url("../fonts/digit-lo-fi.woff") format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Minecraft";
+  src: url("../fonts/minecraft.ttf") format("truetype");
+  font-display: swap;
 }
 
-/* Dark mode: js/script.js sets data-theme on <html> (applyTheme). */
+:root {
+  --bg: #e9f2f8;
+  --surface: #ffffff;
+  --glass: rgb(255 255 255 / 0.62);
+  --glass-border: rgb(255 255 255 / 0.85);
+  --text: #1b2733;
+  --muted: #4d5b69;
+  --accent: #1e9bd7;
+  --accent-strong: #0b6fa4;
+  --accent-glow: rgb(41 182 246 / 0.55);
+  --accent-text: #ffffff;
+  --error: #c62828;
+  --border: #c9d6e0;
+  --splash: #ffe94a;
+  --radius: 22px;
+  --pill: 999px;
+  --space: 1rem;
+  --font: "M PLUS Rounded 1c", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --font-display: "Rocket Pop", var(--font); /* logo, page titles */
+  --font-heading: "Rocket Pop Italic", var(--font); /* section headings */
+  --font-digital: "Digit LoFi", var(--mono); /* hit counter, ticker */
+  --font-pixel: "Minecraft", var(--mono); /* splash text */
+  --header-h: 4rem;
+  --shadow: 0 8px 24px rgb(16 42 67 / 0.16);
+  /* Gloss: bright top half, soft bottom half, like a console menu button. */
+  --gloss: linear-gradient(180deg, #ffffff 0%, #f1f8fc 48%, #dceef8 52%, #f4fafd 100%);
+  --gloss-accent: linear-gradient(180deg, #7fd3fa 0%, #39b4ef 48%, #1e9bd7 52%, #3fb8f0 100%);
+
+  /* Home/tool background. Export your Photoshop collage to images/bg-collage.jpg
+     (see README "Background"), then replace `none` with: url("../images/bg-collage.jpg") */
+  --bg-collage: none;
+  --bg-fallback:
+    radial-gradient(circle at 15% 20%, rgb(255 255 255 / 0.9) 0 6%, transparent 7%),
+    radial-gradient(circle at 80% 30%, rgb(255 255 255 / 0.7) 0 4%, transparent 5%),
+    radial-gradient(circle at 60% 85%, rgb(255 255 255 / 0.6) 0 8%, transparent 9%),
+    linear-gradient(180deg, #8fd8fb 0%, #d9f1fc 45%, #f6fbfe 100%);
+  --ink-filter: none; /* math mosaic ink color; inverted in dark mode */
+  --emboss: #ffffff; /* 1px highlight under glossy headings */
+}
+
 [data-theme="dark"] {
-  /* TODO (Step 7): dark tokens; check contrast (4.5:1 for text). */
-  --bg: #0d1117;
-  --surface: #161b22;
-  --text: #e6edf3;
-  --muted: #9198a1;
-  --accent: #4493f8;
-  --border: #30363d;
+  --bg: #0c1622;
+  --surface: #16222f;
+  --glass: rgb(16 28 42 / 0.66);
+  --glass-border: rgb(120 190 230 / 0.25);
+  --text: #e8f1f8;
+  --muted: #a7b8c6;
+  --accent: #4cc3fb;
+  --accent-strong: #8ad8fd;
+  --accent-glow: rgb(76 195 251 / 0.45);
+  --border: #2c3f52;
+  --gloss: linear-gradient(180deg, #2b3d50 0%, #1f2f40 48%, #172533 52%, #1d2c3b 100%);
+  --bg-fallback:
+    radial-gradient(circle at 15% 20%, rgb(140 210 255 / 0.18) 0 6%, transparent 7%),
+    radial-gradient(circle at 80% 30%, rgb(140 210 255 / 0.12) 0 4%, transparent 5%),
+    linear-gradient(180deg, #06111c 0%, #0f2335 60%, #142c42 100%);
+  --ink-filter: invert(1);
+  --emboss: rgb(0 0 0 / 0.6);
 }
 
 *,
@@ -39,11 +97,35 @@ body {
   margin: 0;
   font-family: var(--font);
   color: var(--text);
-  background: var(--bg);
-  line-height: 1.5;
+  background-color: var(--bg);
+  background-image: var(--bg-collage), var(--bg-fallback);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  line-height: 1.6;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* Math pages: no collage; the Real Analysis portfolio, tiled, rotated, barely visible. */
+body.math-bg {
+  background-image: linear-gradient(180deg, #f4f9fc 0%, #e6f1f8 100%);
+}
+[data-theme="dark"] body.math-bg {
+  background-image: linear-gradient(180deg, #0c1622 0%, #13202e 100%);
+}
+body.math-bg::before {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: -1;
+  background: url("../images/real-analysis-bg.png") repeat;
+  background-size: 1100px auto;
+  transform: rotate(-30deg);
+  opacity: 0.09;
+  filter: var(--ink-filter);
+  pointer-events: none;
 }
 
 main {
@@ -51,6 +133,43 @@ main {
   width: min(1200px, 100%);
   margin: 0 auto;
   padding: var(--space);
+  display: grid;
+  gap: calc(var(--space) * 1.5);
+  align-content: start;
+}
+
+/* Frosted-glass panels: every section on every page. */
+main > section {
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: calc(var(--space) * 1.25);
+  min-width: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  color: var(--accent-strong);
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+h2 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+}
+
+a {
+  color: var(--accent-strong);
 }
 
 img {
@@ -70,83 +189,309 @@ img {
   color: var(--error);
 }
 
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* ---------- Header + nav ---------- */
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
-  gap: var(--space);
-  padding: 0 var(--space);
+  gap: 0.5rem var(--space);
+  padding: 0.5rem var(--space);
   min-height: var(--header-h);
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  background: var(--gloss);
+  border-bottom: 2px solid var(--border);
+  box-shadow: 0 2px 12px rgb(16 42 67 / 0.12);
   flex-wrap: wrap;
 }
 
 .brand {
-  font-weight: 700;
-  font-size: 1.25rem;
-  color: var(--text);
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+  color: var(--accent);
   text-decoration: none;
   margin-right: auto;
+  text-shadow:
+    0 1px 0 var(--emboss),
+    0 0 12px var(--accent-glow);
 }
 
-/* TODO (Step 6): nav as a horizontal bar with hover/focus styles;
-   style a[aria-current="page"] (set by markActiveNav) as the current page. */
+/* Splash text: yellow, tilted, pulsing, next to the logo (text set by initSplash). */
+.splash {
+  position: absolute;
+  left: 8.6rem;
+  top: 2.3rem;
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--splash);
+  white-space: nowrap;
+  pointer-events: none;
+  transform: rotate(-14deg);
+  text-shadow:
+    1px 1px 0 #4a4300,
+    -1px -1px 0 #4a4300,
+    1px -1px 0 #4a4300,
+    -1px 1px 0 #4a4300;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .splash {
+    animation: splash-pulse 0.55s ease-in-out infinite alternate;
+  }
+}
+@keyframes splash-pulse {
+  to {
+    transform: rotate(-14deg) scale(1.1);
+  }
+}
+
 #site-nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 /* Mobile: nav collapses behind the Menu button (toggleNav sets .open). */
 #site-nav {
   display: none;
   width: 100%;
+  order: 10;
 }
 #site-nav.open {
   display: block;
 }
 
-/* ---------- Buttons ---------- */
-/* TODO (Step 6): one button style shared by .button links and <button>. */
+/* ---------- Buttons: glossy pills (nav links, .button, <button>) ---------- */
+button,
+.button,
+#site-nav a {
+  display: inline-block;
+  font: inherit;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  background: var(--gloss);
+  border: 2px solid var(--border);
+  border-radius: var(--pill);
+  padding: 0.35rem 0.95rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    0 2px 4px rgb(16 42 67 / 0.12);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+button:hover,
+.button:hover,
+#site-nav a:hover {
+  border-color: var(--accent);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    0 0 0 4px var(--accent-glow);
+}
+button:active,
+.button:active {
+  transform: translateY(1px) scale(0.98);
+}
+#site-nav a[aria-current="page"],
+.button.primary,
+button[type="submit"] {
+  background: var(--gloss-accent);
+  border-color: var(--accent-strong);
+  color: var(--accent-text);
+  text-shadow: 0 1px 1px rgb(0 0 0 / 0.3);
+}
+button[aria-pressed="true"] {
+  border-color: var(--accent);
+}
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .button-row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-/* ---------- Home: hero ---------- */
-/* TODO (Step 6): hero layout (text + image side by side on desktop, stacked on mobile). */
+/* ---------- News ticker ---------- */
+.ticker {
+  overflow: hidden;
+  background: var(--gloss-accent);
+  color: var(--accent-text);
+  font-family: var(--font-digital);
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--accent-strong);
+  text-shadow: 0 1px 1px rgb(0 0 0 / 0.3);
+}
+.ticker-track {
+  margin: 0;
+  padding: 0.3rem var(--space);
+  white-space: nowrap;
+  display: inline-block;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ticker-track {
+    padding-left: 100%;
+    animation: ticker 30s linear infinite;
+  }
+  .ticker:hover .ticker-track,
+  .ticker:focus-within .ticker-track {
+    animation-play-state: paused;
+  }
+}
+@keyframes ticker {
+  to {
+    transform: translateX(-100%);
+  }
+}
 
-/* ---------- Home: scrolling tool gallery ---------- */
+/* ---------- Home: hero ---------- */
+#hero {
+  display: grid;
+  gap: var(--space);
+  align-items: center;
+}
+#hero h1 {
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  margin: 0;
+  color: var(--accent);
+  text-shadow:
+    0 2px 0 var(--emboss),
+    0 0 18px var(--accent-glow);
+}
+#hero .button {
+  justify-self: start;
+}
+#hero img {
+  border-radius: var(--radius);
+  border: 3px solid var(--surface);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- Home: scrolling tool gallery = console "channel" tiles ---------- */
 .tool-gallery {
   list-style: none;
-  padding: 0 0 var(--space);
+  margin: 0;
+  padding: 0.5rem 0.25rem var(--space);
   display: flex;
   gap: var(--space);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
 }
 .tool-card {
-  flex: 0 0 min(80%, 320px);
+  flex: 0 0 min(80%, 300px);
   scroll-snap-align: start;
-  /* TODO (Step 6): card look (surface, border, radius, hover lift). */
+  background: var(--gloss);
+  border: 3px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+.tool-card:hover,
+.tool-card:focus-within {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 4px var(--accent-glow),
+    var(--shadow);
+  transform: translateY(-3px);
+}
+.tool-card a {
+  display: block;
+  padding: 0.75rem;
+  color: var(--text);
+  text-decoration: none;
+}
+.tool-card img {
+  border-radius: 12px;
+}
+.tool-card h3 {
+  margin: 0.5rem 0 0.25rem;
 }
 
 /* ---------- Tool pages: controls + output ---------- */
 .tool-layout {
-  display: grid;
-  gap: var(--space);
+  grid-template-columns: 1fr;
 }
 #plot {
   width: 100%;
   min-height: 420px;
 }
+input,
+select,
+textarea {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 0.4rem 0.6rem;
+  max-width: 100%;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
 textarea {
   width: 100%;
   font-family: var(--mono);
 }
-/* TODO (Step 6): form controls, fieldsets, expression rows, matrix result table. */
+fieldset {
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  margin: var(--space) 0;
+}
+label {
+  font-weight: 700;
+}
+.expression-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.expression-row input {
+  flex: 1;
+  min-width: 0;
+}
+#expression-list {
+  padding-left: 1.2rem;
+}
+.ranges {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+.ranges label {
+  display: grid;
+}
+.ranges input {
+  width: 100%;
+}
+/* TODO (Step 6): matrix result table. */
 
 /* ---------- Hub ---------- */
 .hub-grid {
@@ -158,12 +503,661 @@ textarea {
 }
 /* TODO (Step 6): status badges (.status-live / .status-planned). */
 
-/* ---------- Footer ---------- */
+/* ---------- Footer: hit counter + 88x31 badges ---------- */
 .site-footer {
   padding: var(--space);
   text-align: center;
   color: var(--muted);
-  border-top: 1px solid var(--border);
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-top: 2px solid var(--border);
+}
+.badges {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+}
+.badges img {
+  display: block;
+  width: 88px;
+  height: 31px;
+  image-rendering: pixelated;
+}
+.hit-counter {
+  display: inline-block;
+  font-family: var(--font-digital);
+  font-size: 1.15rem;
+  letter-spacing: 0.15em;
+  color: #7fffd4;
+  background: #0b1420;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  padding: 0.1rem 0.5rem;
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* ---------- Sparkle cursor trail (spawned by initSparkles) ---------- */
+.sparkle {
+  position: fixed;
+  z-index: 100;
+  pointer-events: none;
+  color: var(--splash);
+  font-size: 14px;
+  text-shadow: 0 0 6px #ffffff;
+  animation: sparkle 0.7s ease-out forwards;
+}
+@keyframes sparkle {
+  to {
+    opacity: 0;
+    transform: translate(var(--dx), 18px) scale(0.3) rotate(90deg);
+  }
+}
+
+/* `hidden` must win over display: grid/flex set below. */
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- Section sub-nav (Math / CS / Social) ---------- */
+.sub-nav {
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 0.5rem var(--space);
+  overflow-x: auto;
+}
+.sub-nav ul {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  gap: 0.4rem;
+  width: min(1200px, 100%);
+}
+.sub-nav a {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 0.25rem 0.8rem;
+  border-radius: var(--pill);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border: 2px solid transparent;
+}
+.sub-nav a:hover {
+  border-color: var(--accent);
+}
+.sub-nav a[aria-current="page"] {
+  background: var(--gloss-accent);
+  color: var(--accent-text);
+  border-color: var(--accent-strong);
+}
+
+/* ---------- Home: section tiles ---------- */
+.section-tiles {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--space);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.section-tile {
+  display: block;
+  height: 100%;
+  padding: var(--space);
+  background: var(--gloss);
+  border: 3px solid var(--border);
+  border-radius: 18px;
+  color: var(--text);
+  text-decoration: none;
+  box-shadow: var(--shadow);
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+.section-tile:hover,
+.section-tile:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-glow), var(--shadow);
+  transform: translateY(-3px);
+}
+.section-tile h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.6rem;
+  margin: 0 0 0.25rem;
+}
+.section-tile p {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* ---------- Shared bits for tool pages ---------- */
+.notice {
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  background: rgb(41 182 246 / 0.12);
+  border: 1px solid var(--accent-glow);
+  font-size: 0.9rem;
+}
+.empty-state,
+.meta {
+  color: var(--muted);
+}
+form label,
+.tool-layout > section > label {
+  display: block;
+  margin-top: 0.6rem;
+}
+form input:not([type="radio"], [type="checkbox"]),
+form select,
+form textarea {
+  width: 100%;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 0.5rem;
+  margin: var(--space) 0 0;
+}
+.stats div {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 0.4rem 0.6rem;
+}
+.stats dt {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.stats dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--accent-strong);
+}
+/* Radio groups shown as pill toggles. */
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.segmented label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.7rem;
+  border: 2px solid var(--border);
+  border-radius: var(--pill);
+  background: var(--surface);
+  cursor: pointer;
+}
+.segmented label:has(input:checked) {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.plot {
+  width: 100%;
+  min-height: 420px;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--space);
+  font-size: 0.9rem;
+}
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 0.3rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.output {
+  white-space: pre-wrap;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 0.6rem;
+  min-height: 2.5rem;
+}
+
+/* ---------- Sorting ---------- */
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 320px;
+  padding: 0.5rem;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+}
+.bar {
+  flex: 1;
+  min-width: 2px;
+  border-radius: 4px 4px 0 0;
+  background: var(--gloss-accent);
+}
+.bar.comparing {
+  background: #ffcf3f;
+}
+.bar.swapping {
+  background: #ff6b6b;
+}
+.bar.sorted {
+  background: #4cd08a;
+}
+.pseudocode {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  padding-left: 2rem;
+}
+.pseudocode li {
+  white-space: pre;
+  border-radius: 6px;
+  padding: 0 0.3rem;
+}
+.pseudocode li.active {
+  background: var(--accent-glow);
+}
+
+/* ---------- Data structures ---------- */
+.ds-canvas {
+  width: 100%;
+  height: auto;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+}
+.log {
+  max-height: 14rem;
+  overflow-y: auto;
+  font-size: 0.9rem;
+}
+
+/* ---------- Graphs ---------- */
+.grid-board {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 41), 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  touch-action: none; /* drag to draw on touch screens */
+}
+.cell {
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+.grid-board .cell:hover {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+.cell.wall {
+  background: #34495e;
+}
+.cell.weight {
+  background: #f5b041;
+}
+.cell.visited {
+  background: #9fdcf7;
+}
+.cell.path {
+  background: #ffe94a;
+}
+.cell.start {
+  background: #2ecc71;
+}
+.cell.end {
+  background: #e74c3c;
+}
+.legend {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+}
+.legend .cell {
+  display: inline-block;
+  width: 1rem;
+  vertical-align: middle;
+  border: 1px solid var(--border);
+}
+
+/* ---------- Regex ---------- */
+.regex-input {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--mono);
+  font-size: 1.2rem;
+}
+.regex-input input {
+  font-family: var(--mono);
+}
+#regex-pattern {
+  flex: 1;
+  min-width: 0;
+}
+.token-palette h3 {
+  font-size: 0.95rem;
+  margin: 0.75rem 0 0.35rem;
+}
+.token-palette button {
+  padding: 0.25rem 0.7rem;
+}
+.explain {
+  font-size: 0.9rem;
+}
+.explain code,
+.data-table code {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0 0.3rem;
+}
+.highlight {
+  white-space: pre-wrap;
+  font-family: var(--mono);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 0.6rem;
+  min-height: 3rem;
+}
+.highlight mark {
+  background: #ffe94a;
+  color: #1b2733;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px #c9a800;
+}
+
+/* ---------- Forum ---------- */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: var(--space) 0;
+}
+.thread-list,
+.reply-list,
+.event-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+.thread-list > li,
+.reply-list > li,
+.event-list > li {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 0.75rem;
+}
+.thread-list > li:hover {
+  border-color: var(--accent);
+}
+#new-thread summary {
+  list-style: none;
+  margin-top: var(--space);
+}
+#new-thread summary::-webkit-details-marker {
+  display: none;
+}
+.vote {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.vote button {
+  padding: 0.1rem 0.6rem;
+}
+.post-body {
+  white-space: pre-wrap;
+}
+
+/* ---------- Journal (Notion-style) ---------- */
+.journal-main {
+  width: min(1400px, 100%);
+}
+.lock-card {
+  width: min(440px, 100%);
+  justify-self: center;
+  margin-top: 8vh;
+}
+.journal-app {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 75vh;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.journal-sidebar {
+  display: grid;
+  align-content: start;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  background: rgb(0 0 0 / 0.03);
+  border-right: 1px solid var(--border);
+  font-size: 0.92rem;
+}
+.sidebar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.sidebar-label {
+  font-family: var(--font);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0.75rem 0 0;
+}
+/* Sidebar actions and tree rows are quiet, Notion-like, not glossy pills. */
+.sidebar-action,
+.page-tree button {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  box-shadow: none;
+  padding: 0.25rem 0.5rem;
+  font-weight: 400;
+}
+.sidebar-action:hover,
+.page-tree button:hover,
+.page-tree [aria-selected="true"] > button {
+  background: rgb(41 182 246 / 0.12);
+  box-shadow: none;
+}
+.page-tree {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.page-tree ul {
+  list-style: none;
+  padding-left: 1rem;
+}
+.journal-editor {
+  padding: 1rem clamp(1rem, 5vw, 4rem) 4rem;
+  background: var(--surface);
+  min-width: 0;
+}
+.editor-topbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.editor-topbar nav {
+  margin-right: auto;
+}
+.editor-topbar button {
+  padding: 0.15rem 0.6rem;
+  font-size: 0.85rem;
+}
+.breadcrumb {
+  list-style: none;
+  display: flex;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+}
+.breadcrumb li + li::before {
+  content: "/";
+  margin-right: 0.3rem;
+}
+.page-header {
+  max-width: 720px;
+  margin: 2.5rem auto 1rem;
+}
+.page-icon {
+  font-size: 3rem;
+  line-height: 1;
+  padding: 0.2rem;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+.page-title {
+  display: block;
+  width: 100%;
+  font-size: 2.4rem;
+  font-weight: 800;
+  border: 0;
+  background: none;
+  padding: 0;
+}
+.page-title:focus {
+  box-shadow: none;
+}
+.page-meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.blocks {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.block {
+  padding: 0.2rem 0.3rem;
+  border-radius: 4px;
+  outline: none;
+  min-height: 1.6em;
+}
+.block:hover {
+  background: rgb(0 0 0 / 0.03);
+}
+.block:empty:focus::before {
+  content: attr(data-placeholder);
+  color: var(--muted);
+}
+.block[data-type="h1"] {
+  font-size: 1.9rem;
+  font-weight: 800;
+  margin-top: 1.2rem;
+}
+.block[data-type="h2"] {
+  font-size: 1.45rem;
+  font-weight: 800;
+  margin-top: 1rem;
+}
+.block[data-type="h3"] {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.block[data-type="quote"] {
+  border-left: 3px solid var(--text);
+  padding-left: 0.9rem;
+}
+.block[data-type="callout"] {
+  background: rgb(41 182 246 / 0.12);
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+.block[data-type="code"] {
+  font-family: var(--mono);
+  white-space: pre;
+  background: var(--bg);
+  padding: 0.75rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+.slash-menu {
+  position: absolute;
+  z-index: 20;
+  list-style: none;
+  margin: 0;
+  padding: 0.3rem;
+  width: 260px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgb(16 42 67 / 0.25);
+}
+.slash-menu li {
+  display: grid;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.slash-menu li span {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.slash-menu li[aria-selected="true"],
+.slash-menu li:hover {
+  background: rgb(41 182 246 / 0.15);
+}
+.shortcuts {
+  max-width: 720px;
+  margin: 3rem auto 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.shortcuts dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 1rem;
+}
+.shortcuts dd {
+  margin: 0;
+}
+kbd {
+  font-family: var(--mono);
+  font-size: 0.8em;
+  padding: 0 0.3rem;
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--surface);
 }
 
 /* ---------- Wider screens ---------- */
@@ -174,12 +1168,30 @@ textarea {
   #site-nav {
     display: block;
     width: auto;
+    order: 0;
   }
-  #site-nav ul {
-    display: flex;
-    gap: var(--space);
+  #hero {
+    grid-template-columns: 1fr 1fr;
+  }
+  #hero > :not(img) {
+    grid-column: 1;
+  }
+  #hero img {
+    grid-column: 2;
+    grid-row: 1 / span 3;
   }
   .tool-layout {
     grid-template-columns: minmax(280px, 1fr) 2fr;
+  }
+  .journal-app {
+    grid-template-columns: 260px 1fr;
+  }
+}
+
+/* Small phones: keep the splash from covering the buttons. */
+@media (max-width: 420px) {
+  .splash {
+    left: 7rem;
+    font-size: 0.7rem;
   }
 }

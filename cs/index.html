@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Computer Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body data-root="../">
+    <!-- Shared header: identical on every page except aria-current. -->
+    <header class="site-header">
+      <a class="brand" href="../index.html">Christopia</a>
+      <p class="splash" aria-hidden="true">Now in 3D!</p>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../math/index.html">Math</a></li>
+          <li><a href="../cs/index.html" aria-current="page">CS</a></li>
+          <li><a href="../social/index.html">Social</a></li>
+          <li><a href="../hub.html">Hub</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+      <button class="sound-toggle" type="button" aria-pressed="false">Sound off</button>
+    </header>
+
+    <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
+    <div class="ticker" role="marquee" aria-label="Site news">
+      <p class="ticker-track">
+        Welcome to Christopia &#9733; New: Math, CS and Social sections &#9733; Sorting, graphs, regex
+        and Big-O visualizers &#9733; Coming soon: home server + smart home hub &#9733; TODO: your news here
+      </p>
+    </div>
+
+    <nav class="sub-nav" aria-label="Computer science tools">
+      <ul>
+        <li><a href="index.html" aria-current="page">Overview</a></li>
+        <li><a href="sorting.html">Sorting</a></li>
+        <li><a href="data-structures.html">Data Structures</a></li>
+        <li><a href="graphs.html">Graphs</a></li>
+        <li><a href="big-o.html">Big-O</a></li>
+        <li><a href="regex.html">Regex</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <section id="section-intro">
+        <h1>Computer Science</h1>
+        <!-- TODO: rewrite in your own words. -->
+        <p>Visualizers for the algorithms and data structures from CS classes, plus a regex builder.</p>
+      </section>
+
+      <section id="section-tools" aria-labelledby="section-tools-heading">
+        <h2 id="section-tools-heading">Tools</h2>
+        <!-- Static cards are the no-JS fallback; renderToolGallery() re-renders them from js/tools.js. -->
+        <ul class="tool-gallery" id="tool-gallery" data-section="cs">
+          <li class="tool-card">
+            <a href="../cs/sorting.html">
+              <img src="../images/sorting.svg" alt="Sorting Visualizer preview" width="640" height="360" />
+              <h3>Sorting Visualizer</h3>
+              <p>Watch six sorting algorithms compare and swap, step by step.</p>
+            </a>
+          </li>
+          <li class="tool-card">
+            <a href="../cs/data-structures.html">
+              <img src="../images/structures.svg" alt="Data Structures preview" width="640" height="360" />
+              <h3>Data Structures</h3>
+              <p>Stacks, queues, linked lists, BSTs, heaps and hash tables, animated.</p>
+            </a>
+          </li>
+          <li class="tool-card">
+            <a href="../cs/graphs.html">
+              <img src="../images/graphs.svg" alt="Graphs &amp; Pathfinding preview" width="640" height="360" />
+              <h3>Graphs &amp; Pathfinding</h3>
+              <p>BFS, DFS, Dijkstra and A* on a grid you draw.</p>
+            </a>
+          </li>
+          <li class="tool-card">
+            <a href="../cs/big-o.html">
+              <img src="../images/bigo.svg" alt="Big-O Playground preview" width="640" height="360" />
+              <h3>Big-O Playground</h3>
+              <p>Compare growth rates and benchmark real algorithms.</p>
+            </a>
+          </li>
+          <li class="tool-card">
+            <a href="../cs/regex.html">
+              <img src="../images/regex.svg" alt="Regex Builder preview" width="640" height="360" />
+              <h3>Regex Builder</h3>
+              <p>Build a regular expression from blocks, see it explained and matched.</p>
+            </a>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
+      <ul class="badges" aria-label="Site badges">
+        <li><img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" /></li>
+        <li><img src="../images/badges/made-with-claude.svg" alt="Made with Claude" width="88" height="31" /></li>
+        <li><img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" /></li>
+        <li><img src="../images/badges/any-browser.svg" alt="Best viewed in any browser" width="88" height="31" /></li>
+      </ul>
+      <p>&copy; 2026 Christopia. TODO: GitHub link.</p>
+    </footer>
+
+    <script type="module" src="../js/script.js"></script>
+  </body>
+</html>

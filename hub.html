@@ -4,26 +4,39 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Christopia: Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
+  <body data-root="">
+    <!-- Shared header: identical on every page except aria-current. -->
     <header class="site-header">
       <a class="brand" href="index.html">Christopia</a>
+      <p class="splash" aria-hidden="true">Now in 3D!</p>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         Menu
       </button>
       <nav id="site-nav" aria-label="Main">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="plotter.html">Plotter</a></li>
-          <li><a href="scanner.html">Scanner</a></li>
-          <li><a href="matrix.html">Matrix Lab</a></li>
-          <li><a href="latex.html">LaTeX</a></li>
-          <li><a href="hub.html">Hub</a></li>
+          <li><a href="math/index.html">Math</a></li>
+          <li><a href="cs/index.html">CS</a></li>
+          <li><a href="social/index.html">Social</a></li>
+          <li><a href="hub.html" aria-current="page">Hub</a></li>
         </ul>
       </nav>
       <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+      <button class="sound-toggle" type="button" aria-pressed="false">Sound off</button>
     </header>
+
+    <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
+    <div class="ticker" role="marquee" aria-label="Site news">
+      <p class="ticker-track">
+        Welcome to Christopia &#9733; New: Math, CS and Social sections &#9733; Sorting, graphs, regex
+        and Big-O visualizers &#9733; Coming soon: home server + smart home hub &#9733; TODO: your news here
+      </p>
+    </div>
 
     <main>
       <section id="hub-intro">
@@ -49,7 +62,14 @@
     </main>
 
     <footer class="site-footer">
-      <p>&copy; 2026 Christopia. TODO: footer text / GitHub link.</p>
+      <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
+      <ul class="badges" aria-label="Site badges">
+        <li><img src="images/badges/christopia.svg" alt="Christopia" width="88" height="31" /></li>
+        <li><img src="images/badges/made-with-claude.svg" alt="Made with Claude" width="88" height="31" /></li>
+        <li><img src="images/badges/math-inside.svg" alt="Math inside" width="88" height="31" /></li>
+        <li><img src="images/badges/any-browser.svg" alt="Best viewed in any browser" width="88" height="31" /></li>
+      </ul>
+      <p>&copy; 2026 Christopia. TODO: GitHub link.</p>
     </footer>
 
     <script type="module" src="js/script.js"></script>

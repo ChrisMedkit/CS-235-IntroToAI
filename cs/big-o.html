@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Big-O Playground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body data-root="../">
+    <!-- Shared header: identical on every page except aria-current. -->
+    <header class="site-header">
+      <a class="brand" href="../index.html">Christopia</a>
+      <p class="splash" aria-hidden="true">Now in 3D!</p>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../math/index.html">Math</a></li>
+          <li><a href="../cs/index.html" aria-current="page">CS</a></li>
+          <li><a href="../social/index.html">Social</a></li>
+          <li><a href="../hub.html">Hub</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+      <button class="sound-toggle" type="button" aria-pressed="false">Sound off</button>
+    </header>
+
+    <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
+    <div class="ticker" role="marquee" aria-label="Site news">
+      <p class="ticker-track">
+        Welcome to Christopia &#9733; New: Math, CS and Social sections &#9733; Sorting, graphs, regex
+        and Big-O visualizers &#9733; Coming soon: home server + smart home hub &#9733; TODO: your news here
+      </p>
+    </div>
+
+    <nav class="sub-nav" aria-label="Computer science tools">
+      <ul>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="sorting.html">Sorting</a></li>
+        <li><a href="data-structures.html">Data Structures</a></li>
+        <li><a href="graphs.html">Graphs</a></li>
+        <li><a href="big-o.html" aria-current="page">Big-O</a></li>
+        <li><a href="regex.html">Regex</a></li>
+      </ul>
+    </nav>
+
+    <main class="tool-layout">
+      <section id="bigo-controls" aria-labelledby="bigo-heading">
+        <h1 id="bigo-heading">Big-O Playground</h1>
+
+        <fieldset id="bigo-classes">
+          <legend>Growth curves</legend>
+          <label><input type="checkbox" value="1" checked /> O(1)</label>
+          <label><input type="checkbox" value="log n" checked /> O(log n)</label>
+          <label><input type="checkbox" value="n" checked /> O(n)</label>
+          <label><input type="checkbox" value="n log n" checked /> O(n log n)</label>
+          <label><input type="checkbox" value="n^2" checked /> O(n²)</label>
+          <label><input type="checkbox" value="n^3" /> O(n³)</label>
+          <label><input type="checkbox" value="2^n" /> O(2ⁿ)</label>
+          <label><input type="checkbox" value="n!" /> O(n!)</label>
+        </fieldset>
+
+        <label for="bigo-n">n up to <output id="bigo-n-out" for="bigo-n">50</output></label>
+        <input id="bigo-n" type="range" min="5" max="1000" value="50" />
+
+        <h2>Benchmark</h2>
+        <form id="bench-form">
+          <label for="bench-algorithm">Algorithm</label>
+          <select id="bench-algorithm">
+            <option value="linear">Linear search</option>
+            <option value="binary">Binary search</option>
+            <option value="bubble">Bubble sort</option>
+            <option value="insertion">Insertion sort</option>
+            <option value="merge">Merge sort</option>
+            <option value="quick">Quick sort</option>
+            <option value="builtin">Array.prototype.sort</option>
+          </select>
+          <label for="bench-sizes">Sizes (comma separated)</label>
+          <input id="bench-sizes" type="text" value="1000, 2000, 4000, 8000" />
+          <button type="submit">Run benchmark</button>
+        </form>
+        <p id="bench-status" role="status"></p>
+
+        <table id="bench-table" class="data-table">
+          <caption>Results</caption>
+          <thead>
+            <tr><th scope="col">n</th><th scope="col">Time (ms)</th><th scope="col">Ratio to previous</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <p id="bench-fit"></p>
+      </section>
+
+      <section id="bigo-stage" aria-labelledby="bigo-stage-heading">
+        <h2 id="bigo-stage-heading">Growth</h2>
+        <!-- Plotly draws the curves here, plus the benchmark points scaled to the best-fit curve. -->
+        <div id="bigo-plot" class="plot"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
+      <ul class="badges" aria-label="Site badges">
+        <li><img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" /></li>
+        <li><img src="../images/badges/made-with-claude.svg" alt="Made with Claude" width="88" height="31" /></li>
+        <li><img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" /></li>
+        <li><img src="../images/badges/any-browser.svg" alt="Best viewed in any browser" width="88" height="31" /></li>
+      </ul>
+      <p>&copy; 2026 Christopia. TODO: GitHub link.</p>
+    </footer>
+
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <script type="module" src="../js/script.js"></script>
+    <script type="module" src="../js/bigo.js"></script>
+  </body>
+</html>

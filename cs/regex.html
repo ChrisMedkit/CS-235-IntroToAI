@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Regex Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body data-root="../">
+    <!-- Shared header: identical on every page except aria-current. -->
+    <header class="site-header">
+      <a class="brand" href="../index.html">Christopia</a>
+      <p class="splash" aria-hidden="true">Now in 3D!</p>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../math/index.html">Math</a></li>
+          <li><a href="../cs/index.html" aria-current="page">CS</a></li>
+          <li><a href="../social/index.html">Social</a></li>
+          <li><a href="../hub.html">Hub</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+      <button class="sound-toggle" type="button" aria-pressed="false">Sound off</button>
+    </header>
+
+    <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
+    <div class="ticker" role="marquee" aria-label="Site news">
+      <p class="ticker-track">
+        Welcome to Christopia &#9733; New: Math, CS and Social sections &#9733; Sorting, graphs, regex
+        and Big-O visualizers &#9733; Coming soon: home server + smart home hub &#9733; TODO: your news here
+      </p>
+    </div>
+
+    <nav class="sub-nav" aria-label="Computer science tools">
+      <ul>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="sorting.html">Sorting</a></li>
+        <li><a href="data-structures.html">Data Structures</a></li>
+        <li><a href="graphs.html">Graphs</a></li>
+        <li><a href="big-o.html">Big-O</a></li>
+        <li><a href="regex.html" aria-current="page">Regex</a></li>
+      </ul>
+    </nav>
+
+    <main class="tool-layout">
+      <section id="regex-builder" aria-labelledby="regex-heading">
+        <h1 id="regex-heading">Regex Builder</h1>
+
+        <div class="regex-input">
+          <span aria-hidden="true">/</span>
+          <label for="regex-pattern" class="visually-hidden">Pattern</label>
+          <input id="regex-pattern" type="text" spellcheck="false" autocomplete="off" value="\b[\w.+-]+@[\w-]+\.\w+\b" />
+          <span aria-hidden="true">/</span>
+          <label for="regex-flags" class="visually-hidden">Flags</label>
+          <input id="regex-flags" type="text" spellcheck="false" autocomplete="off" value="g" size="4" maxlength="7" />
+        </div>
+        <p id="regex-error" class="error" role="alert"></p>
+
+        <label for="regex-preset">Start from a preset</label>
+        <select id="regex-preset">
+          <option value="">Choose…</option>
+          <option value="email">Email address</option>
+          <option value="url">URL</option>
+          <option value="phone">US phone number</option>
+          <option value="isoDate">ISO date (2026-11-22)</option>
+          <option value="hexColor">Hex color</option>
+          <option value="integer">Integer</option>
+          <option value="decimal">Decimal number</option>
+        </select>
+
+        <h2>Building blocks</h2>
+        <!-- Click a block to insert its data-token at the cursor in the pattern (insertToken). -->
+        <div class="token-palette">
+          <h3>Characters</h3>
+          <div class="button-row">
+            <button type="button" data-token="." title="Any character except newline"><code>.</code></button>
+            <button type="button" data-token="\d" title="Digit 0-9"><code>\d</code></button>
+            <button type="button" data-token="\w" title="Letter, digit or _"><code>\w</code></button>
+            <button type="button" data-token="\s" title="Whitespace"><code>\s</code></button>
+            <button type="button" data-token="[abc]" title="Any of a, b, c"><code>[abc]</code></button>
+            <button type="button" data-token="[^abc]" title="Anything except a, b, c"><code>[^abc]</code></button>
+            <button type="button" data-token="[a-z]" title="Range a to z"><code>[a-z]</code></button>
+            <button type="button" data-token="\b" title="Word boundary"><code>\b</code></button>
+          </div>
+          <h3>Quantifiers</h3>
+          <div class="button-row">
+            <button type="button" data-token="*" title="0 or more"><code>*</code></button>
+            <button type="button" data-token="+" title="1 or more"><code>+</code></button>
+            <button type="button" data-token="?" title="0 or 1"><code>?</code></button>
+            <button type="button" data-token="{3}" title="Exactly 3"><code>{3}</code></button>
+            <button type="button" data-token="{2,5}" title="2 to 5"><code>{2,5}</code></button>
+            <button type="button" data-token="*?" title="0 or more, as few as possible"><code>*?</code></button>
+          </div>
+          <h3>Groups &amp; anchors</h3>
+          <div class="button-row">
+            <button type="button" data-token="()" title="Capture group"><code>( )</code></button>
+            <button type="button" data-token="(?:)" title="Group without capturing"><code>(?: )</code></button>
+            <button type="button" data-token="(?&lt;name&gt;)" title="Named group"><code>(?&lt;name&gt; )</code></button>
+            <button type="button" data-token="|" title="Or"><code>|</code></button>
+            <button type="button" data-token="^" title="Start of line"><code>^</code></button>
+            <button type="button" data-token="$" title="End of line"><code>$</code></button>
+            <button type="button" data-token="(?=)" title="Followed by"><code>(?= )</code></button>
+            <button type="button" data-token="(?!)" title="Not followed by"><code>(?! )</code></button>
+          </div>
+        </div>
+
+        <h2>Explanation</h2>
+        <ol id="regex-explain" class="explain"></ol>
+      </section>
+
+      <section id="regex-test" aria-labelledby="regex-test-heading">
+        <h2 id="regex-test-heading">Test</h2>
+        <label for="regex-text">Test string</label>
+        <textarea id="regex-text" rows="8" spellcheck="false">Write to hello@example.com or support@example.org by 2026-12-01.</textarea>
+
+        <h3>Matches: <span id="regex-count">0</span></h3>
+        <!-- Test string with <mark> around each match (renderHighlight, built from text nodes). -->
+        <div id="regex-highlight" class="highlight" aria-live="polite"></div>
+
+        <table id="regex-matches" class="data-table">
+          <thead>
+            <tr><th scope="col">#</th><th scope="col">Match</th><th scope="col">Index</th><th scope="col">Groups</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <h3>Replace</h3>
+        <label for="regex-replace">Replace with (<code>$1</code>, <code>$&amp;</code> work)</label>
+        <input id="regex-replace" type="text" value="[$&amp;]" spellcheck="false" />
+        <pre id="regex-replaced" class="output"></pre>
+
+        <button type="button" id="regex-copy">Copy as JavaScript</button>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
+      <ul class="badges" aria-label="Site badges">
+        <li><img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" /></li>
+        <li><img src="../images/badges/made-with-claude.svg" alt="Made with Claude" width="88" height="31" /></li>
+        <li><img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" /></li>
+        <li><img src="../images/badges/any-browser.svg" alt="Best viewed in any browser" width="88" height="31" /></li>
+      </ul>
+      <p>&copy; 2026 Christopia. TODO: GitHub link.</p>
+    </footer>
+
+    <script type="module" src="../js/script.js"></script>
+    <script type="module" src="../js/regex.js"></script>
+  </body>
+</html>
