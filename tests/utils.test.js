@@ -144,7 +144,10 @@ test("STICKERS: files exist, each has a page, position and width; link stickers 
     assert.ok(existsSync(new URL(s.src, site)), `${name}: image file`);
     if (s.still) assert.ok(existsSync(new URL(s.still, site)), `${name}: still file`);
     assert.ok([].concat(s.page).length > 0, `${name}: page`);
-    assert.ok(Number.isFinite(s.y) && Number.isFinite(s.w) && s.w > 0, `${name}: y and w are numbers`);
+    assert.ok(
+      Number.isFinite(s.y) && Number.isFinite(s.w) && s.w > 0,
+      `${name}: y and w are numbers`,
+    );
     assert.ok(s.x !== undefined || s.right !== undefined, `${name}: x or right`);
     if (s.href) assert.ok(s.alt, `${name}: a link sticker needs alt text`);
   }

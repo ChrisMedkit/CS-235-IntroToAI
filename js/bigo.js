@@ -27,7 +27,16 @@ function theme() {
     plot_bgcolor: "#ffffff",
     font: { family: "M PLUS Rounded 1c, system-ui, sans-serif", color: token("--text") },
     // The classic 16-color VGA palette (the dark half reads best on white).
-    colorway: ["#000080", "#008000", "#800000", "#008080", "#800080", "#808000", "#ff0000", "#0000ff"],
+    colorway: [
+      "#000080",
+      "#008000",
+      "#800000",
+      "#008080",
+      "#800080",
+      "#808000",
+      "#ff0000",
+      "#0000ff",
+    ],
     margin: { l: 60, r: 20, t: 20, b: 50 },
     legend: { orientation: "h", y: -0.2 },
     gridcolor: "#dfdfdf",
@@ -69,7 +78,13 @@ function drawCurves() {
       ...base,
       xaxis: { title: { text: "n (input size)" }, gridcolor },
       yaxis: log
-        ? { title: { text: "steps (log scale)" }, type: "log", dtick: 1, exponentformat: "power", gridcolor }
+        ? {
+            title: { text: "steps (log scale)" },
+            type: "log",
+            dtick: 1,
+            exponentformat: "power",
+            gridcolor,
+          }
         : { title: { text: "steps" }, range: [0, yMax * 1.05], gridcolor },
     },
     CONFIG,
@@ -80,7 +95,8 @@ function drawCurves() {
 
 const bubble = (a) => {
   for (let i = 0; i < a.length - 1; i++)
-    for (let j = 0; j < a.length - 1 - i; j++) if (a[j] > a[j + 1]) [a[j], a[j + 1]] = [a[j + 1], a[j]];
+    for (let j = 0; j < a.length - 1 - i; j++)
+      if (a[j] > a[j + 1]) [a[j], a[j + 1]] = [a[j + 1], a[j]];
 };
 const insertion = (a) => {
   for (let i = 1; i < a.length; i++) {
@@ -130,7 +146,14 @@ const quick = (a, lo = 0, hi = a.length - 1) => {
  * two differ by only ~1.3x, which timer noise swamps.
  */
 const ALGORITHMS = {
-  linear: { expect: "n", sizes: "100000, 200000, 400000, 800000, 1600000", maxN: 10_000_000, sorted: false, mutates: false, run: (a) => a.indexOf(-1) }, // never found: full scan
+  linear: {
+    expect: "n",
+    sizes: "100000, 200000, 400000, 800000, 1600000",
+    maxN: 10_000_000,
+    sorted: false,
+    mutates: false,
+    run: (a) => a.indexOf(-1),
+  }, // never found: full scan
   binary: {
     expect: "log n",
     sizes: "1000, 10000, 100000, 1000000",
@@ -142,21 +165,58 @@ const ALGORITHMS = {
       let hi = a.length - 1;
       while (lo <= hi) {
         const mid = (lo + hi) >> 1;
-        if (a[mid] < 0.5) lo = mid + 1; // 0.5 is never in the array (integers): worst case
+        if (a[mid] < 0.5)
+          lo = mid + 1; // 0.5 is never in the array (integers): worst case
         else hi = mid - 1;
       }
       return lo;
     },
   },
-  bubble: { expect: "n^2", sizes: "500, 1000, 2000, 4000, 8000", maxN: 20_000, sorted: false, mutates: true, run: bubble },
-  insertion: { expect: "n^2", sizes: "500, 1000, 2000, 4000, 8000", maxN: 20_000, sorted: false, mutates: true, run: insertion },
-  merge: { expect: "n log n", sizes: "1000, 10000, 100000, 1000000", maxN: 1_000_000, sorted: false, mutates: true, run: merge },
-  quick: { expect: "n log n", sizes: "1000, 10000, 100000, 1000000", maxN: 1_000_000, sorted: false, mutates: true, run: quick },
-  builtin: { expect: "n log n", sizes: "1000, 10000, 100000, 1000000", maxN: 1_000_000, sorted: false, mutates: true, run: (a) => a.sort((x, y) => x - y) },
+  bubble: {
+    expect: "n^2",
+    sizes: "500, 1000, 2000, 4000, 8000",
+    maxN: 20_000,
+    sorted: false,
+    mutates: true,
+    run: bubble,
+  },
+  insertion: {
+    expect: "n^2",
+    sizes: "500, 1000, 2000, 4000, 8000",
+    maxN: 20_000,
+    sorted: false,
+    mutates: true,
+    run: insertion,
+  },
+  merge: {
+    expect: "n log n",
+    sizes: "1000, 10000, 100000, 1000000",
+    maxN: 1_000_000,
+    sorted: false,
+    mutates: true,
+    run: merge,
+  },
+  quick: {
+    expect: "n log n",
+    sizes: "1000, 10000, 100000, 1000000",
+    maxN: 1_000_000,
+    sorted: false,
+    mutates: true,
+    run: quick,
+  },
+  builtin: {
+    expect: "n log n",
+    sizes: "1000, 10000, 100000, 1000000",
+    maxN: 1_000_000,
+    sorted: false,
+    mutates: true,
+    run: (a) => a.sort((x, y) => x - y),
+  },
 };
 
 const randomArray = (n) => Array.from({ length: n }, () => Math.floor(Math.random() * 1e9));
-const nextFrame = () => new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
+const nextFrame = () =>
+  new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
 
 /**
  * Average time of one run at size n. Repeats until at least 25 ms have passed, because one
@@ -184,7 +244,8 @@ async function benchmark(name, sizes) {
   const times = [];
   let warm = false;
   for (const [index, n] of sizes.entries()) {
-    $("bench-status").textContent = `Timing n = ${n.toLocaleString()} (${index + 1} of ${sizes.length})…`;
+    $("bench-status").textContent =
+      `Timing n = ${n.toLocaleString()} (${index + 1} of ${sizes.length})…`;
     await nextFrame(); // let the status paint before the busy loop
     const base = randomArray(n);
     if (algorithm.sorted) base.sort((x, y) => x - y);
@@ -197,7 +258,9 @@ async function benchmark(name, sizes) {
       times.push(first);
       continue;
     }
-    const samples = [first, measureOnce(algorithm, base), measureOnce(algorithm, base)].sort((x, y) => x - y);
+    const samples = [first, measureOnce(algorithm, base), measureOnce(algorithm, base)].sort(
+      (x, y) => x - y,
+    );
     times.push(samples[1]);
   }
   return times;
@@ -207,10 +270,15 @@ async function benchmark(name, sizes) {
 function parseSizes(text, maxN) {
   const parts = text.split(/[\s,]+/).filter(Boolean);
   const sizes = parts.map(Number);
-  if (sizes.some((n) => !Number.isInteger(n) || n < 10)) return { error: "Sizes must be whole numbers of at least 10." };
+  if (sizes.some((n) => !Number.isInteger(n) || n < 10))
+    return { error: "Sizes must be whole numbers of at least 10." };
   const unique = [...new Set(sizes)].sort((a, b) => a - b);
-  if (unique.length < 2 || unique.length > 8) return { error: "Give between 2 and 8 different sizes." };
-  if (unique.at(-1) > maxN) return { error: `Keep sizes at or below ${maxN.toLocaleString()} for this algorithm, or the tab will freeze.` };
+  if (unique.length < 2 || unique.length > 8)
+    return { error: "Give between 2 and 8 different sizes." };
+  if (unique.at(-1) > maxN)
+    return {
+      error: `Keep sizes at or below ${maxN.toLocaleString()} for this algorithm, or the tab will freeze.`,
+    };
   return { sizes: unique };
 }
 
@@ -224,7 +292,9 @@ function showResults(name, sizes, times) {
   body.replaceChildren(
     ...sizes.map((n, i) => {
       const row = document.createElement("tr");
-      const ratio = i ? `×${(times[i] / times[i - 1]).toFixed(2)} for ×${(n / sizes[i - 1]).toFixed(1)} n` : "-";
+      const ratio = i
+        ? `×${(times[i] / times[i - 1]).toFixed(2)} for ×${(n / sizes[i - 1]).toFixed(1)} n`
+        : "-";
       for (const text of [n.toLocaleString(), formatMs(times[i]), ratio]) {
         row.append(Object.assign(document.createElement("td"), { textContent: text }));
       }
@@ -263,7 +333,12 @@ function drawBench() {
     "bench-plot",
     [
       { x: sizes, y: times, mode: "markers", name: "measured", marker: { size: 11 } },
-      { x: xs, y: xs.map((n) => fit.c * GROWTH[fit.best](n)), mode: "lines", name: `best fit: ${PRETTY[fit.best]}` },
+      {
+        x: xs,
+        y: xs.map((n) => fit.c * GROWTH[fit.best](n)),
+        mode: "lines",
+        name: `best fit: ${PRETTY[fit.best]}`,
+      },
     ],
     {
       ...base,
@@ -282,7 +357,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   $("bigo-classes").addEventListener("change", drawCurves);
   $("bigo-log").addEventListener("change", drawCurves);
-  const defaultSizes = () => ($("bench-sizes").value = ALGORITHMS[$("bench-algorithm").value].sizes);
+  const defaultSizes = () =>
+    ($("bench-sizes").value = ALGORITHMS[$("bench-algorithm").value].sizes);
   $("bench-algorithm").addEventListener("change", defaultSizes);
   defaultSizes();
 

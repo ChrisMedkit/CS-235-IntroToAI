@@ -23,16 +23,49 @@
 /** @type {{src: string, page: string|string[], x?: string|number, right?: string|number, y: number, w: number, r?: number, front?: boolean, phone?: boolean, still?: string, pixel?: boolean, href?: string, alt?: string}[]} */
 export const STICKERS = [
   // Splash
-  { src: "images/stickers/sparkle.svg", page: "index", x: "14%", y: 120, w: 56, r: -10, pixel: true, phone: true },
-  { src: "images/stickers/floppy.svg", page: "index", right: "14%", y: 440, w: 96, r: 10, pixel: true },
+  {
+    src: "images/stickers/sparkle.svg",
+    page: "index",
+    x: "14%",
+    y: 120,
+    w: 56,
+    r: -10,
+    pixel: true,
+    phone: true,
+  },
+  {
+    src: "images/stickers/floppy.svg",
+    page: "index",
+    right: "14%",
+    y: 440,
+    w: 96,
+    r: 10,
+    pixel: true,
+  },
 
   // Home: beside the centered title (empty space at that height)
-  { src: "images/stickers/sparkle.svg", page: "home", x: "16%", y: 92, w: 44, r: 8, pixel: true, front: true },
+  {
+    src: "images/stickers/sparkle.svg",
+    page: "home",
+    x: "16%",
+    y: 92,
+    w: 44,
+    r: 8,
+    pixel: true,
+    front: true,
+  },
 
   // Tools desktop: open desktop space below and between the folders
-  { src: "images/stickers/floppy.svg", page: "tools", right: "8%", y: 470, w: 88, r: 8, pixel: true },
+  {
+    src: "images/stickers/floppy.svg",
+    page: "tools",
+    right: "8%",
+    y: 470,
+    w: 88,
+    r: 8,
+    pixel: true,
+  },
   { src: "images/stickers/cd.svg", page: "tools", x: "6%", y: 520, w: 110, r: -10 },
 
   // Lab: it's under construction, after all
-
 ];

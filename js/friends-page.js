@@ -37,11 +37,21 @@ function renderFriends() {
   const withButtons = FRIENDS.filter((f) => f.button && webUrl(f.url));
   $("friend-buttons").replaceChildren(
     ...withButtons.map((f) => {
-      const img = el("img", { src: root + f.button, alt: f.name, width: 88, height: 31, title: f.note ?? f.name });
+      const img = el("img", {
+        src: root + f.button,
+        alt: f.name,
+        width: 88,
+        height: 31,
+        title: f.note ?? f.name,
+      });
       return el("li", {}, outLink(webUrl(f.url), img));
     }),
   );
-  $("friend-list").replaceChildren(...FRIENDS.filter((f) => !f.button).map(friendItem).filter(Boolean));
+  $("friend-list").replaceChildren(
+    ...FRIENDS.filter((f) => !f.button)
+      .map(friendItem)
+      .filter(Boolean),
+  );
   $("friends-empty").hidden = FRIENDS.length > 0;
   $("neighbor-list").replaceChildren(...NEIGHBORS.map(friendItem).filter(Boolean));
 }
@@ -52,7 +62,8 @@ function renderFriends() {
 function renderButtonCode() {
   const home = new URL(`${root}index.html`, location.href).href;
   const img = new URL(`${root}images/badges/christopia.svg`, location.href).href;
-  $("button-code").value = `<a href="${home}"><img src="${img}" alt="Christopia" width="88" height="31"></a>`;
+  $("button-code").value =
+    `<a href="${home}"><img src="${img}" alt="Christopia" width="88" height="31"></a>`;
 }
 
 async function copyButtonCode() {
@@ -61,7 +72,8 @@ async function copyButtonCode() {
     $("copy-status").textContent = "Copied! Paste it into your site's HTML.";
   } catch {
     $("button-code").select(); // clipboard blocked: select it so ⌘C / Ctrl+C works
-    $("copy-status").textContent = "Couldn't copy automatically; it's selected, so press Ctrl+C (⌘C on a Mac).";
+    $("copy-status").textContent =
+      "Couldn't copy automatically; it's selected, so press Ctrl+C (⌘C on a Mac).";
   }
 }
 
@@ -72,7 +84,9 @@ let entries = [];
 function renderEntries() {
   const list = $("gb-entries");
   if (!entries.length) {
-    list.replaceChildren(el("li", { className: "empty-state", textContent: "No one has signed yet. Be the first!" }));
+    list.replaceChildren(
+      el("li", { className: "empty-state", textContent: "No one has signed yet. Be the first!" }),
+    );
     return;
   }
   const now = Date.now();
@@ -97,18 +111,26 @@ async function sign(form) {
   const message = $("gb-message").value.trim();
   const site = $("gb-site").value.trim();
   const errors = Object.values(validatePost({ author: name, body: message }));
-  if (message.length > 1000) errors.push(`Message is too long (${message.length} of 1000 characters).`);
+  if (message.length > 1000)
+    errors.push(`Message is too long (${message.length} of 1000 characters).`);
   if (site && !webUrl(site)) errors.push("Website must be a full address starting with https://");
   $("gb-error").textContent = errors.join(" ");
   $("gb-status").textContent = "";
   if (errors.length) return;
 
-  const entry = { id: crypto.randomUUID(), name, message, site: site ? webUrl(site) : null, createdAt: Date.now() };
+  const entry = {
+    id: crypto.randomUUID(),
+    name,
+    message,
+    site: site ? webUrl(site) : null,
+    createdAt: Date.now(),
+  };
   const next = [entry, ...entries].slice(0, MAX_ENTRIES);
   try {
     await save("guestbook", next);
   } catch {
-    $("gb-error").textContent = "Not saved: this browser isn't letting the page store anything (private mode?).";
+    $("gb-error").textContent =
+      "Not saved: this browser isn't letting the page store anything (private mode?).";
     return; // keep what they typed
   }
   entries = next;
@@ -122,7 +144,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderButtonCode();
   $("copy-button-code").addEventListener("click", copyButtonCode);
   const saved = await load("guestbook", []);
-  entries = Array.isArray(saved) ? saved.filter((e) => e && typeof e.name === "string" && typeof e.message === "string") : [];
+  entries = Array.isArray(saved)
+    ? saved.filter((e) => e && typeof e.name === "string" && typeof e.message === "string")
+    : [];
   renderEntries();
   $("gb-form").addEventListener("submit", (e) => {
     e.preventDefault();

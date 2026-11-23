@@ -11,7 +11,13 @@ const $ = (id) => document.getElementById(id);
 /* ---------------- Building blocks ---------------- */
 
 /** Group blocks wrap the selected text; set blocks select their placeholder so you can type over it. */
-const WRAP = { "()": ["(", ")"], "(?:)": ["(?:", ")"], "(?<name>)": ["(?<name>", ")"], "(?=)": ["(?=", ")"], "(?!)": ["(?!", ")"] };
+const WRAP = {
+  "()": ["(", ")"],
+  "(?:)": ["(?:", ")"],
+  "(?<name>)": ["(?<name>", ")"],
+  "(?=)": ["(?=", ")"],
+  "(?!)": ["(?!", ")"],
+};
 const PLACEHOLDER = { "[abc]": "abc", "[^abc]": "abc", "[a-z]": "a-z", "(?<name>)": "name" };
 
 /** Insert a building block at the cursor in #regex-pattern (or around the selection, for groups). */
@@ -42,13 +48,20 @@ function renderExplanation(pattern) {
   const list = $("regex-explain");
   const tokens = pattern ? explainRegex(pattern) : [];
   if (!tokens.length) {
-    list.replaceChildren(Object.assign(document.createElement("li"), { textContent: "Type a pattern or click a building block." }));
+    list.replaceChildren(
+      Object.assign(document.createElement("li"), {
+        textContent: "Type a pattern or click a building block.",
+      }),
+    );
     return;
   }
   list.replaceChildren(
     ...tokens.map(({ token, meaning }) => {
       const li = document.createElement("li");
-      li.append(Object.assign(document.createElement("code"), { textContent: token }), ` ${meaning}`);
+      li.append(
+        Object.assign(document.createElement("code"), { textContent: token }),
+        ` ${meaning}`,
+      );
       return li;
     }),
   );
@@ -62,7 +75,12 @@ function renderHighlight(text, matches) {
     if (index > pos) nodes.push(document.createTextNode(text.slice(pos, index)));
     if (match === "") {
       // An empty match is a position, not text: show it as a thin bar.
-      nodes.push(Object.assign(document.createElement("span"), { className: "empty-match", title: `empty match at index ${index}` }));
+      nodes.push(
+        Object.assign(document.createElement("span"), {
+          className: "empty-match",
+          title: `empty match at index ${index}`,
+        }),
+      );
     } else {
       nodes.push(Object.assign(document.createElement("mark"), { textContent: match }));
     }
@@ -81,8 +99,15 @@ function renderTable(matches) {
   const code = (text) => Object.assign(document.createElement("code"), { textContent: text });
   const rows = matches.slice(0, TABLE_ROWS).map(({ match, index, groups }, i) => {
     const tr = document.createElement("tr");
-    const groupText = groups.length ? groups.map((g, k) => `$${k + 1} = ${g === undefined ? "(no match)" : `"${g}"`}`).join(", ") : "-";
-    tr.append(cell(String(i + 1)), cell(match === "" ? "(empty)" : code(match)), cell(String(index)), cell(groupText));
+    const groupText = groups.length
+      ? groups.map((g, k) => `$${k + 1} = ${g === undefined ? "(no match)" : `"${g}"`}`).join(", ")
+      : "-";
+    tr.append(
+      cell(String(i + 1)),
+      cell(match === "" ? "(empty)" : code(match)),
+      cell(String(index)),
+      cell(groupText),
+    );
     return tr;
   });
   if (matches.length > TABLE_ROWS) {
@@ -96,7 +121,8 @@ function renderTable(matches) {
 }
 
 function showResults(text, matches, replaced) {
-  $("regex-count").textContent = matches.length >= LIMIT ? `${LIMIT}+ (stopped counting)` : matches.length;
+  $("regex-count").textContent =
+    matches.length >= LIMIT ? `${LIMIT}+ (stopped counting)` : matches.length;
   renderHighlight(text, matches);
   renderTable(matches);
   $("regex-replaced").textContent = replaced;

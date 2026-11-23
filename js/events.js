@@ -35,7 +35,8 @@ async function createEvent(form) {
   if (!title) errors.push("Give the event a title.");
   if (!Number.isFinite(start)) errors.push("Pick when it starts.");
   if (end !== undefined && !(end > start)) errors.push("It has to end after it starts.");
-  if (capacity !== null && !(Number.isInteger(capacity) && capacity >= 1)) errors.push("Capacity must be a whole number of 1 or more, or blank.");
+  if (capacity !== null && !(Number.isInteger(capacity) && capacity >= 1))
+    errors.push("Capacity must be a whole number of 1 or more, or blank.");
   $("event-error").textContent = errors.join(" ");
   if (errors.length) return;
 
@@ -52,7 +53,8 @@ async function createEvent(form) {
   events.push(event);
   if (!(await persist())) {
     events.pop(); // keep the form filled so nothing is lost
-    $("event-error").textContent = "Not saved: this browser isn't letting the page store anything (private mode?).";
+    $("event-error").textContent =
+      "Not saved: this browser isn't letting the page store anything (private mode?).";
     return;
   }
   form.reset();
@@ -71,7 +73,14 @@ function render() {
 
 /** "Tue, Dec 1, 2026, 5:00 PM – 6:00 PM" (same day) or two full dates. */
 function dateRange(start, end) {
-  const full = { weekday: "short", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" };
+  const full = {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  };
   const from = new Date(start).toLocaleString(undefined, full);
   if (end === undefined) return from;
   const sameDay = new Date(start).toDateString() === new Date(end).toDateString();
@@ -94,14 +103,32 @@ function myStatus(event) {
 function renderEvent(event, isPast) {
   const sum = rsvpSummary(event);
   const heading = el("h3", { id: `event-${event.id}`, tabIndex: -1, textContent: event.title });
-  const card = el("li", {}, heading, el("p", { className: "meta", textContent: dateRange(event.start, event.end) }));
-  if (event.location) card.append(el("p", { className: "meta", textContent: `📍 ${event.location}` }));
-  if (event.description) card.append(el("p", { className: "post-body", textContent: event.description }));
+  const card = el(
+    "li",
+    {},
+    heading,
+    el("p", { className: "meta", textContent: dateRange(event.start, event.end) }),
+  );
+  if (event.location)
+    card.append(el("p", { className: "meta", textContent: `📍 ${event.location}` }));
+  if (event.description)
+    card.append(el("p", { className: "post-body", textContent: event.description }));
 
-  const spots = sum.spotsLeft === null ? "" : sum.spotsLeft === 0 ? " · Full" : ` · ${sum.spotsLeft} spot${sum.spotsLeft === 1 ? "" : "s"} left`;
-  card.append(el("p", { className: "rsvp-counts", textContent: `${sum.going} going · ${sum.maybe} maybe · ${sum.no} can't go${spots}` }));
+  const spots =
+    sum.spotsLeft === null
+      ? ""
+      : sum.spotsLeft === 0
+        ? " · Full"
+        : ` · ${sum.spotsLeft} spot${sum.spotsLeft === 1 ? "" : "s"} left`;
+  card.append(
+    el("p", {
+      className: "rsvp-counts",
+      textContent: `${sum.going} going · ${sum.maybe} maybe · ${sum.no} can't go${spots}`,
+    }),
+  );
   const going = Object.keys(event.rsvps).filter((n) => event.rsvps[n] === "going");
-  if (going.length) card.append(el("p", { className: "meta", textContent: `Going: ${going.join(", ")}` }));
+  if (going.length)
+    card.append(el("p", { className: "meta", textContent: `Going: ${going.join(", ")}` }));
 
   const buttons = el("div", { className: "button-row" });
   if (!isPast) {
@@ -150,13 +177,19 @@ async function rsvp(eventId, status) {
 
 /** Download toICS(event) as <title>.ics. */
 function downloadICS(event) {
-  const name = event.title.replace(/[^\w\- ]+/g, "").trim().replace(/\s+/g, "-") || "event";
+  const name =
+    event.title
+      .replace(/[^\w\- ]+/g, "")
+      .trim()
+      .replace(/\s+/g, "-") || "event";
   download(`${name}.ics`, toICS(event, Date.now()), "text/calendar");
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
   const saved = await load("events", []);
-  events = Array.isArray(saved) ? saved.filter((e) => e && typeof e.title === "string" && Number.isFinite(e.start) && e.rsvps) : [];
+  events = Array.isArray(saved)
+    ? saved.filter((e) => e && typeof e.title === "string" && Number.isFinite(e.start) && e.rsvps)
+    : [];
   const name = await load("rsvp-name", "");
   if (typeof name === "string") $("rsvp-name").value = name;
 

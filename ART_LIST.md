@@ -70,10 +70,10 @@ Position, size and tilt live in `css/style.css` (`.desk-calculator { --x; --y; -
 - [ ] `images/me/headphones.svg`: 110 × 96, links to your Spotify
 - [ ] `images/me/polaroid.svg`: 90 × 106, links to About me (a real photo inside a polaroid frame works well)
 - [ ] `images/stickers/floppy.svg`: the Services link (shared with the sticker above; give it its own file if you want them different)
-- [ ] `images/me/me.svg`: 96 × 96, your photo or self-portrait in about.txt. **Needs alt text** (`me.html`).
+- [x] `images/me/me.jpg`: your photo in about.txt (288 × 288, shown at 96 × 96), with alt text.
 
 ## 6. Other illustrations
-- [ ] `images/hero.svg`: 640 × 360, the picture in Home's welcome.txt. **Needs alt text** (`home.html`).
+- [x] `images/hero.jpg`: your lakeshore sunset in Home's welcome.txt (1280 × 720), with alt text.
 - [ ] `images/bg-collage.jpg`: **not made yet.** Your Photoshop collage, the background of every page
       except Math (README "Background" has the export steps). Until then the sky gradient shows.
 - [ ] `images/real-analysis-bg.png`: 1572 × 1078, already yours (your Real Analysis portfolio, faded, on Math pages)

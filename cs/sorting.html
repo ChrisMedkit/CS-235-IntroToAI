@@ -6,7 +6,10 @@
     <title>Christopia: Sorting Visualizer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap"
+    />
     <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
     <link rel="stylesheet" href="../css/style.css" />
   </head>
@@ -31,7 +34,8 @@
     <div class="ticker" role="marquee" aria-label="Site news">
       <p class="ticker-track">
         Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
-        Every Math, CS and Social tool is live &#9733; New: a private journal, a forum and events &#9733;
+        Every Math, CS and Social tool is live &#9733; New: a private journal, a forum and events
+        &#9733;
       </p>
     </div>
 
@@ -47,7 +51,14 @@
     <main class="tool-layout">
       <section class="window" id="sort-controls" aria-labelledby="sort-heading">
         <div class="title-bar">
-          <h1 class="title-bar-text" id="sort-heading"><img src="../images/icons/sorting.svg" alt="" width="16" height="16" /> Sorting<span class="title-bar-program" aria-hidden="true"> - sorting.exe</span></h1>
+          <h1 class="title-bar-text" id="sort-heading">
+            <img src="../images/icons/sorting.svg" alt="" width="16" height="16" /> Sorting<span
+              class="title-bar-program"
+              aria-hidden="true"
+            >
+              - sorting.exe</span
+            >
+          </h1>
         </div>
         <div class="window-body">
           <form id="sort-form">
@@ -61,7 +72,9 @@
               <option value="heap">Heap sort</option>
             </select>
 
-            <label for="sort-size">Array size <output id="sort-size-out" for="sort-size">30</output></label>
+            <label for="sort-size"
+              >Array size <output id="sort-size-out" for="sort-size">30</output></label
+            >
             <input id="sort-size" type="range" min="5" max="120" value="30" />
 
             <label for="sort-speed">Speed</label>
@@ -76,9 +89,18 @@
           </form>
 
           <dl class="stats">
-            <div><dt>Comparisons</dt><dd id="sort-compares">0</dd></div>
-            <div><dt>Swaps / writes</dt><dd id="sort-writes">0</dd></div>
-            <div><dt>Average</dt><dd id="sort-bigo">O(n²)</dd></div>
+            <div>
+              <dt>Comparisons</dt>
+              <dd id="sort-compares">0</dd>
+            </div>
+            <div>
+              <dt>Swaps / writes</dt>
+              <dd id="sort-writes">0</dd>
+            </div>
+            <div>
+              <dt>Average</dt>
+              <dd id="sort-bigo">O(n²)</dd>
+            </div>
           </dl>
         </div>
       </section>
@@ -101,13 +123,31 @@
     <footer class="site-footer">
       <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
       <ul class="badges" aria-label="Site badges">
-        <li><img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" /></li>
-        <li><img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" /></li>
-        <li><img src="../images/badges/any-browser.svg" alt="Best viewed in any browser" width="88" height="31" /></li>
+        <li>
+          <img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" />
+        </li>
+        <li>
+          <img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" />
+        </li>
+        <li>
+          <img
+            src="../images/badges/any-browser.svg"
+            alt="Best viewed in any browser"
+            width="88"
+            height="31"
+          />
+        </li>
       </ul>
-      <p>&copy; 2026 Christopia. <a href="https://github.com/ChrisMedkit/cs235-christopia" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+      <p>
+        &copy; 2026 Christopia.
+        <a
+          href="https://github.com/ChrisMedkit/cs235-christopia"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
+      </p>
     </footer>
-
 
     <script type="module" src="../js/script.js"></script>
     <script type="module" src="../js/sorting.js"></script>

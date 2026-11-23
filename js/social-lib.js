@@ -31,7 +31,11 @@ export function validatePost(post, { requireTitle = false } = {}) {
  */
 export function sortThreads(threads, mode) {
   const lastActivity = (t) => Math.max(t.createdAt, ...t.replies.map((r) => r.createdAt));
-  const key = { new: (t) => [t.createdAt], top: (t) => [t.score, t.createdAt], active: (t) => [lastActivity(t)] }[mode];
+  const key = {
+    new: (t) => [t.createdAt],
+    top: (t) => [t.score, t.createdAt],
+    active: (t) => [lastActivity(t)],
+  }[mode];
   return [...threads].sort((a, b) => {
     const [ka, kb] = [key(a), key(b)];
     for (let i = 0; i < ka.length; i++) if (ka[i] !== kb[i]) return kb[i] - ka[i];
@@ -51,7 +55,11 @@ export function relativeTime(then, now) {
   if (seconds < 3600) return `${Math.floor(seconds / 60)} min ago`;
   if (seconds < 86_400) return `${Math.floor(seconds / 3600)} h ago`;
   if (seconds < 7 * 86_400) return `${Math.floor(seconds / 86_400)} d ago`;
-  return new Date(then).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  return new Date(then).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 }
 
 /* ---------------- Events ---------------- */
@@ -75,7 +83,10 @@ const endOf = (event) => event.end ?? event.start + 3_600_000;
 export function rsvpSummary(event) {
   const counts = { going: 0, maybe: 0, no: 0 };
   for (const status of Object.values(event.rsvps)) counts[status]++;
-  return { ...counts, spotsLeft: event.capacity == null ? null : Math.max(0, event.capacity - counts.going) };
+  return {
+    ...counts,
+    spotsLeft: event.capacity == null ? null : Math.max(0, event.capacity - counts.going),
+  };
 }
 
 /**
@@ -86,14 +97,20 @@ export function rsvpSummary(event) {
 export function setRsvp(event, name, status) {
   const clean = name.trim();
   if (!clean) return { event, error: "Type your name to RSVP." };
-  if (!["going", "maybe", "no"].includes(status)) return { event, error: "Pick going, maybe or can't go." };
+  if (!["going", "maybe", "no"].includes(status))
+    return { event, error: "Pick going, maybe or can't go." };
   // Same person, any capitalization: replace their old answer (and keep the first spelling).
-  const existing = Object.keys(event.rsvps).find((n) => n.trim().toLowerCase() === clean.toLowerCase());
+  const existing = Object.keys(event.rsvps).find(
+    (n) => n.trim().toLowerCase() === clean.toLowerCase(),
+  );
   const alreadyGoing = existing !== undefined && event.rsvps[existing] === "going";
   if (status === "going" && !alreadyGoing && rsvpSummary(event).spotsLeft === 0) {
     return { event, error: "Sorry, this event is full. You can still answer maybe." };
   }
-  return { event: { ...event, rsvps: { ...event.rsvps, [existing ?? clean]: status } }, error: null };
+  return {
+    event: { ...event, rsvps: { ...event.rsvps, [existing ?? clean]: status } },
+    error: null,
+  };
 }
 
 /**
@@ -118,8 +135,16 @@ export function splitEvents(events, now) {
  * @returns {string}
  */
 export function toICS(event, now) {
-  const stamp = (ms) => new Date(ms).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
-  const text = (v = "") => String(v).replace(/\\/g, "\\\\").replace(/[;,]/g, (c) => `\\${c}`).replace(/\r?\n/g, "\\n");
+  const stamp = (ms) =>
+    new Date(ms)
+      .toISOString()
+      .replace(/[-:]/g, "")
+      .replace(/\.\d{3}/, "");
+  const text = (v = "") =>
+    String(v)
+      .replace(/\\/g, "\\\\")
+      .replace(/[;,]/g, (c) => `\\${c}`)
+      .replace(/\r?\n/g, "\\n");
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
@@ -150,7 +175,13 @@ export const PBKDF2_ITERATIONS = 600_000; // OWASP 2023 recommendation for PBKDF
  * @returns {Promise<CryptoKey>}  non-extractable
  */
 export async function deriveKey(password, salt, iterations = PBKDF2_ITERATIONS) {
-  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
+  const base = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(password),
+    "PBKDF2",
+    false,
+    ["deriveKey"],
+  );
   return crypto.subtle.deriveKey(
     { name: "PBKDF2", hash: "SHA-256", salt, iterations },
     base,
@@ -177,7 +208,11 @@ export const fromBase64 = (text) => Uint8Array.from(atob(text), (c) => c.charCod
  */
 export async function encryptJSON(key, value) {
   const iv = crypto.getRandomValues(new Uint8Array(12));
-  const data = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, new TextEncoder().encode(JSON.stringify(value)));
+  const data = await crypto.subtle.encrypt(
+    { name: "AES-GCM", iv },
+    key,
+    new TextEncoder().encode(JSON.stringify(value)),
+  );
   return { iv: toBase64(iv), data: toBase64(data) };
 }
 
@@ -189,7 +224,11 @@ export async function encryptJSON(key, value) {
  * @returns {Promise<unknown>}
  */
 export async function decryptJSON(key, payload) {
-  const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: fromBase64(payload.iv) }, key, fromBase64(payload.data));
+  const plain = await crypto.subtle.decrypt(
+    { name: "AES-GCM", iv: fromBase64(payload.iv) },
+    key,
+    fromBase64(payload.data),
+  );
   return JSON.parse(new TextDecoder().decode(plain));
 }
 
@@ -232,7 +271,9 @@ export function buildPageTree(pages) {
   const byOrder = (a, b) => a.order - b.order;
   const childrenOf = (id) =>
     live
-      .filter((p) => (id === null ? p.parentId === null || !ids.has(p.parentId) : p.parentId === id))
+      .filter((p) =>
+        id === null ? p.parentId === null || !ids.has(p.parentId) : p.parentId === id,
+      )
       .sort(byOrder)
       .map((page) => ({ page, children: childrenOf(page.id) }));
   return childrenOf(null);
@@ -248,7 +289,12 @@ export function searchPages(pages, query) {
   const q = query.trim().toLowerCase();
   if (!q) return [];
   const inTitle = (p) => p.title.toLowerCase().includes(q);
-  const inBody = (p) => p.blocks.some((b) => String(b.text ?? "").toLowerCase().includes(q));
+  const inBody = (p) =>
+    p.blocks.some((b) =>
+      String(b.text ?? "")
+        .toLowerCase()
+        .includes(q),
+    );
   return pages
     .filter((p) => !p.trashed && (inTitle(p) || inBody(p)))
     .sort((a, b) => inTitle(b) - inTitle(a) || b.updatedAt - a.updatedAt);

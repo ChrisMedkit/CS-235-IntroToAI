@@ -136,7 +136,8 @@ export function sortSteps(algorithm, values) {
         while (i < left.length && j < right.length) {
           // Indices are where those items started; good enough to show which halves are compared.
           compare(lo + i, mid + 1 + j, 5);
-          if (left[i] <= right[j]) write(k++, left[i++], 5); // <= keeps merge sort stable
+          if (left[i] <= right[j])
+            write(k++, left[i++], 5); // <= keeps merge sort stable
           else write(k++, right[j++], 6);
         }
         while (i < left.length) write(k++, left[i++], 7);
@@ -398,7 +399,12 @@ export function gridSearch(grid, start, end, algorithm) {
   const neighbors = (i) => {
     const [r, c] = cell(i);
     const out = [];
-    for (const [dr, dc] of [[-1, 0], [0, 1], [1, 0], [0, -1]]) {
+    for (const [dr, dc] of [
+      [-1, 0],
+      [0, 1],
+      [1, 0],
+      [0, -1],
+    ]) {
       const nr = r + dr;
       const nc = c + dc;
       if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] > 0) out.push(id(nr, nc));
@@ -500,8 +506,14 @@ export function generateMaze(rows, cols, random) {
   const stack = [[1, 1]];
   while (stack.length) {
     const [r, c] = stack.at(-1);
-    const options = [[-2, 0], [0, 2], [2, 0], [0, -2]].filter(
-      ([dr, dc]) => r + dr > 0 && r + dr < rows - 1 && c + dc > 0 && c + dc < cols - 1 && !grid[r + dr][c + dc],
+    const options = [
+      [-2, 0],
+      [0, 2],
+      [2, 0],
+      [0, -2],
+    ].filter(
+      ([dr, dc]) =>
+        r + dr > 0 && r + dr < rows - 1 && c + dc > 0 && c + dc < cols - 1 && !grid[r + dr][c + dc],
     );
     if (!options.length) {
       stack.pop(); // dead end: back up
@@ -600,7 +612,11 @@ export function explainRegex(pattern) {
   let groupNumber = 0;
   let i = 0;
   const describeClassItem = (item) =>
-    item.startsWith("\\") ? (ESCAPES[item[1]] ?? `"${item[1]}"`) : item.includes("-") && item.length === 3 ? `${item[0]} to ${item[2]}` : `"${item}"`;
+    item.startsWith("\\")
+      ? (ESCAPES[item[1]] ?? `"${item[1]}"`)
+      : item.includes("-") && item.length === 3
+        ? `${item[0]} to ${item[2]}`
+        : `"${item}"`;
 
   while (i < pattern.length) {
     const ch = pattern[i];
@@ -631,7 +647,11 @@ export function explainRegex(pattern) {
         tokens.pop();
         const head = last.token.slice(0, -1);
         const tail = last.token.slice(-1);
-        tokens.push({ token: head, meaning: head.length > 1 ? `the text "${head}"` : `the character "${head}"`, kind: "literal" });
+        tokens.push({
+          token: head,
+          meaning: head.length > 1 ? `the text "${head}"` : `the character "${head}"`,
+          kind: "literal",
+        });
         tokens.push({ token: tail, meaning: `the character "${tail}"`, kind: "literal" });
       }
       tokens.push({ token: q, meaning: meaning + lazy, kind: "quantifier", quantifiable: false });
@@ -648,8 +668,13 @@ export function explainRegex(pattern) {
         token = pattern.slice(i, pattern.indexOf(">", i) + 1 || undefined);
         meaning = `the same text that group "${token.slice(3, -1)}" matched`;
       } else if (next === "u" || next === "x") {
-        token = pattern.slice(i).match(/^\\(?:u\{[0-9a-fA-F]+\}|u[0-9a-fA-F]{4}|x[0-9a-fA-F]{2})/)?.[0] ?? token;
-        meaning = token.length > 2 ? `the character with code ${token.slice(2).replace(/[{}]/g, "")} (hex)` : `"${next}"`;
+        token =
+          pattern.slice(i).match(/^\\(?:u\{[0-9a-fA-F]+\}|u[0-9a-fA-F]{4}|x[0-9a-fA-F]{2})/)?.[0] ??
+          token;
+        meaning =
+          token.length > 2
+            ? `the character with code ${token.slice(2).replace(/[{}]/g, "")} (hex)`
+            : `"${next}"`;
       } else if ((next === "p" || next === "P") && pattern[i + 2] === "{") {
         token = pattern.slice(i, pattern.indexOf("}", i) + 1 || undefined);
         meaning = `${next === "P" ? "a character NOT in" : "a character in"} the Unicode category ${token.slice(3, -1)}`;
@@ -700,11 +725,21 @@ export function explainRegex(pattern) {
       } else if (rest.startsWith("(?<")) {
         const token = rest.slice(0, rest.indexOf(">") + 1 || undefined);
         groupNumber++;
-        tokens.push({ token, meaning: `start of group ${groupNumber}, named "${token.slice(3, -1)}" (captures)`, kind: "open", quantifiable: false });
+        tokens.push({
+          token,
+          meaning: `start of group ${groupNumber}, named "${token.slice(3, -1)}" (captures)`,
+          kind: "open",
+          quantifiable: false,
+        });
         i += token.length;
       } else {
         groupNumber++;
-        tokens.push({ token: "(", meaning: `start of group ${groupNumber} (captures what it matches)`, kind: "open", quantifiable: false });
+        tokens.push({
+          token: "(",
+          meaning: `start of group ${groupNumber} (captures what it matches)`,
+          kind: "open",
+          quantifiable: false,
+        });
         i++;
       }
       continue;

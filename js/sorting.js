@@ -50,7 +50,9 @@ function renderBars(step) {
   const container = $("sort-bars");
   if (container.children.length !== state.current.length) {
     container.replaceChildren(
-      ...state.current.map(() => Object.assign(document.createElement("div"), { className: "bar" })),
+      ...state.current.map(() =>
+        Object.assign(document.createElement("div"), { className: "bar" }),
+      ),
     );
   }
   const touched = step && step.type !== "sorted" ? [step.i, step.j] : [];
@@ -69,7 +71,9 @@ function renderPseudocode(line) {
   const lines = PSEUDOCODE[algorithm()];
   if (list.dataset.algorithm !== algorithm()) {
     list.dataset.algorithm = algorithm();
-    list.replaceChildren(...lines.map((text) => Object.assign(document.createElement("li"), { textContent: text })));
+    list.replaceChildren(
+      ...lines.map((text) => Object.assign(document.createElement("li"), { textContent: text })),
+    );
   }
   [...list.children].forEach((li, index) => {
     li.classList.toggle("active", index === line);
@@ -86,8 +90,10 @@ function renderStats() {
 /** Plain-English description of a step, for the status line when stepping by hand. */
 function describe(step) {
   const v = (i) => state.current[i];
-  if (step.type === "compare") return `Compare a[${step.i}] = ${v(step.i)} with a[${step.j}] = ${v(step.j)}.`;
-  if (step.type === "swap") return `Swap a[${step.i}] and a[${step.j}]; now ${v(step.i)}, ${v(step.j)}.`;
+  if (step.type === "compare")
+    return `Compare a[${step.i}] = ${v(step.i)} with a[${step.j}] = ${v(step.j)}.`;
+  if (step.type === "swap")
+    return `Swap a[${step.i}] and a[${step.j}]; now ${v(step.i)}, ${v(step.j)}.`;
   if (step.type === "write") return `Write ${step.value} into a[${step.i}].`;
   return `a[${step.i}] = ${v(step.i)} is in its final place.`;
 }
@@ -133,7 +139,8 @@ function tick() {
   for (let k = 0; k < perTick; k++) last = advance() ?? last;
   if (last) show(last);
   // finish() already paused on the last step; only schedule while steps remain.
-  if (state.pos < state.steps.length) state.timer = setTimeout(tick, perTick > 1 ? 16 : 1000 / rate());
+  if (state.pos < state.steps.length)
+    state.timer = setTimeout(tick, perTick > 1 ? 16 : 1000 / rate());
 }
 
 function play() {

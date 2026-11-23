@@ -6,7 +6,10 @@
     <title>Christopia: Data Structures</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap"
+    />
     <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
     <link rel="stylesheet" href="../css/style.css" />
   </head>
@@ -31,7 +34,8 @@
     <div class="ticker" role="marquee" aria-label="Site news">
       <p class="ticker-track">
         Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
-        Every Math, CS and Social tool is live &#9733; New: a private journal, a forum and events &#9733;
+        Every Math, CS and Social tool is live &#9733; New: a private journal, a forum and events
+        &#9733;
       </p>
     </div>
 
@@ -47,18 +51,45 @@
     <main class="tool-layout">
       <section class="window" id="ds-controls" aria-labelledby="ds-heading">
         <div class="title-bar">
-          <h1 class="title-bar-text" id="ds-heading"><img src="../images/icons/structures.svg" alt="" width="16" height="16" /> Data Structures<span class="title-bar-program" aria-hidden="true"> - structures.exe</span></h1>
+          <h1 class="title-bar-text" id="ds-heading">
+            <img src="../images/icons/structures.svg" alt="" width="16" height="16" /> Data
+            Structures<span class="title-bar-program" aria-hidden="true"> - structures.exe</span>
+          </h1>
         </div>
         <div class="window-body">
-
           <fieldset class="segmented" id="ds-kind">
             <legend>Structure</legend>
-            <div class="field-row"><input id="ds-stack" type="radio" name="ds" value="stack" checked /><label for="ds-stack">Stack</label></div>
-            <div class="field-row"><input id="ds-queue" type="radio" name="ds" value="queue" /><label for="ds-queue">Queue</label></div>
-            <div class="field-row"><input id="ds-list" type="radio" name="ds" value="list" /><label for="ds-list">Linked list</label></div>
-            <div class="field-row"><input id="ds-bst" type="radio" name="ds" value="bst" /><label for="ds-bst">Binary search tree</label></div>
-            <div class="field-row"><input id="ds-heap" type="radio" name="ds" value="heap" /><label for="ds-heap">Min-heap</label></div>
-            <div class="field-row"><input id="ds-hash" type="radio" name="ds" value="hash" /><label for="ds-hash">Hash table</label></div>
+            <div class="field-row">
+              <input id="ds-stack" type="radio" name="ds" value="stack" checked /><label
+                for="ds-stack"
+                >Stack</label
+              >
+            </div>
+            <div class="field-row">
+              <input id="ds-queue" type="radio" name="ds" value="queue" /><label for="ds-queue"
+                >Queue</label
+              >
+            </div>
+            <div class="field-row">
+              <input id="ds-list" type="radio" name="ds" value="list" /><label for="ds-list"
+                >Linked list</label
+              >
+            </div>
+            <div class="field-row">
+              <input id="ds-bst" type="radio" name="ds" value="bst" /><label for="ds-bst"
+                >Binary search tree</label
+              >
+            </div>
+            <div class="field-row">
+              <input id="ds-heap" type="radio" name="ds" value="heap" /><label for="ds-heap"
+                >Min-heap</label
+              >
+            </div>
+            <div class="field-row">
+              <input id="ds-hash" type="radio" name="ds" value="hash" /><label for="ds-hash"
+                >Hash table</label
+              >
+            </div>
           </fieldset>
 
           <form id="ds-form">
@@ -90,9 +121,18 @@
             <svg id="ds-canvas" class="ds-canvas" role="img" aria-label="Current structure"></svg>
           </div>
           <dl class="stats">
-            <div><dt>Size</dt><dd id="ds-size">0</dd></div>
-            <div><dt>Height</dt><dd id="ds-height">0</dd></div>
-            <div><dt>Last operation</dt><dd id="ds-cost">-</dd></div>
+            <div>
+              <dt>Size</dt>
+              <dd id="ds-size">0</dd>
+            </div>
+            <div>
+              <dt>Height</dt>
+              <dd id="ds-height">0</dd>
+            </div>
+            <div>
+              <dt>Last operation</dt>
+              <dd id="ds-cost">-</dd>
+            </div>
           </dl>
         </div>
       </section>
@@ -101,13 +141,31 @@
     <footer class="site-footer">
       <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
       <ul class="badges" aria-label="Site badges">
-        <li><img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" /></li>
-        <li><img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" /></li>
-        <li><img src="../images/badges/any-browser.svg" alt="Best viewed in any browser" width="88" height="31" /></li>
+        <li>
+          <img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" />
+        </li>
+        <li>
+          <img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" />
+        </li>
+        <li>
+          <img
+            src="../images/badges/any-browser.svg"
+            alt="Best viewed in any browser"
+            width="88"
+            height="31"
+          />
+        </li>
       </ul>
-      <p>&copy; 2026 Christopia. <a href="https://github.com/ChrisMedkit/cs235-christopia" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+      <p>
+        &copy; 2026 Christopia.
+        <a
+          href="https://github.com/ChrisMedkit/cs235-christopia"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
+      </p>
     </footer>
-
 
     <script type="module" src="../js/script.js"></script>
     <script type="module" src="../js/structures.js"></script>

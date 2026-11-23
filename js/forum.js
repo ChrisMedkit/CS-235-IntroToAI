@@ -5,7 +5,13 @@ import { load, save } from "./storage.js";
 import { validatePost, sortThreads, relativeTime } from "./social-lib.js";
 
 const $ = (id) => document.getElementById(id);
-const CATEGORIES = { general: "General", math: "Math", cs: "CS", homework: "Homework help", offtopic: "Off-topic" };
+const CATEGORIES = {
+  general: "General",
+  math: "Math",
+  cs: "CS",
+  homework: "Homework help",
+  offtopic: "Off-topic",
+};
 
 let threads = [];
 let votes = {}; // threadId -> +1 / -1 (this browser's vote)
@@ -19,7 +25,8 @@ async function persist(errorId) {
     await save("forum", threads);
     return true;
   } catch {
-    $(errorId).textContent = "Not saved: this browser isn't letting the page store anything (private mode?).";
+    $(errorId).textContent =
+      "Not saved: this browser isn't letting the page store anything (private mode?).";
     return false;
   }
 }
@@ -58,7 +65,8 @@ function openThread(id, { focus = true } = {}) {
   $("thread-empty").hidden = true;
   $("thread-article").hidden = false;
   $("thread-title").textContent = t.title;
-  $("thread-meta").textContent = `${CATEGORIES[t.category] ?? t.category} · posted by ${t.author} ${relativeTime(t.createdAt, now)}`;
+  $("thread-meta").textContent =
+    `${CATEGORIES[t.category] ?? t.category} · posted by ${t.author} ${relativeTime(t.createdAt, now)}`;
   $("thread-body").textContent = t.body; // .post-body keeps line breaks with white-space: pre-wrap
   $("thread-score").textContent = t.score;
   $("vote-up").setAttribute("aria-pressed", String(votes[id] === 1));
@@ -68,19 +76,27 @@ function openThread(id, { focus = true } = {}) {
       el(
         "li",
         {},
-        el("p", { className: "meta", textContent: `${r.author} · ${relativeTime(r.createdAt, now)}` }),
+        el("p", {
+          className: "meta",
+          textContent: `${r.author} · ${relativeTime(r.createdAt, now)}`,
+        }),
         el("p", { className: "post-body", textContent: r.body }),
       ),
     ),
   );
-  if (!t.replies.length) $("reply-list").append(el("li", { className: "empty-state", textContent: "No replies yet." }));
+  if (!t.replies.length)
+    $("reply-list").append(el("li", { className: "empty-state", textContent: "No replies yet." }));
   $("reply-error").textContent = "";
   renderThreads(); // move the "current" marker
   if (focus) $("thread-title").focus(); // also scrolls it into view on phones, where it's below the list
 }
 
 /** Errors from validatePost as one line, in the form's field order (title, post, name). */
-const errorText = (errors) => ["title", "body", "author"].map((f) => errors[f]).filter(Boolean).join(" ");
+const errorText = (errors) =>
+  ["title", "body", "author"]
+    .map((f) => errors[f])
+    .filter(Boolean)
+    .join(" ");
 
 /** Validate, add, save, re-render. Errors go to #thread-error / #reply-error per field. */
 async function submitThread(form) {
@@ -92,7 +108,14 @@ async function submitThread(form) {
   const errors = validatePost(post, { requireTitle: true });
   $("thread-error").textContent = errorText(errors);
   if (Object.keys(errors).length) return;
-  const thread = { id: crypto.randomUUID(), ...post, category: $("thread-category").value, createdAt: Date.now(), score: 0, replies: [] };
+  const thread = {
+    id: crypto.randomUUID(),
+    ...post,
+    category: $("thread-category").value,
+    createdAt: Date.now(),
+    score: 0,
+    replies: [],
+  };
   threads.unshift(thread);
   if (!(await persist("thread-error"))) {
     threads.shift(); // keep what they typed so nothing is lost
@@ -133,7 +156,8 @@ async function vote(delta) {
     await save("forum", threads);
     await save("forum-votes", votes);
   } catch {
-    $("reply-error").textContent = "Vote not saved: this browser isn't letting the page store anything.";
+    $("reply-error").textContent =
+      "Vote not saved: this browser isn't letting the page store anything.";
   }
   openThread(t.id, { focus: false });
 }
@@ -146,13 +170,16 @@ function rememberName(name) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   const saved = await load("forum", []);
-  threads = Array.isArray(saved) ? saved.filter((t) => t && typeof t.title === "string" && Array.isArray(t.replies)) : [];
+  threads = Array.isArray(saved)
+    ? saved.filter((t) => t && typeof t.title === "string" && Array.isArray(t.replies))
+    : [];
   votes = (await load("forum-votes", {})) ?? {};
   const name = await load("forum-name", "");
   if (typeof name === "string") $("thread-author").value = $("reply-author").value = name;
   $("thread-title").tabIndex = -1; // focus target when a thread opens
 
-  for (const id of ["forum-filter", "forum-sort", "forum-search"]) $(id).addEventListener("input", renderThreads);
+  for (const id of ["forum-filter", "forum-sort", "forum-search"])
+    $(id).addEventListener("input", renderThreads);
   $("thread-form").addEventListener("submit", (e) => {
     e.preventDefault();
     submitThread(e.target);

@@ -43,7 +43,8 @@ async function scan(file, lang) {
       : `Done (${Math.round(data.confidence)}% confidence). Check it over: OCR misreads messy handwriting and math symbols.` +
         (saved ? "" : " (This browser won't save it for the LaTeX page.)");
   } catch (err) {
-    $("scan-status").textContent = `Scan failed: ${err?.message ?? err}. Check your connection (the first scan downloads the language data) and try again.`;
+    $("scan-status").textContent =
+      `Scan failed: ${err?.message ?? err}. Check your connection (the first scan downloads the language data) and try again.`;
   } finally {
     button.disabled = false;
     $("scan-progress").hidden = true;
@@ -64,7 +65,8 @@ async function copyText() {
     $("scan-status").textContent = "Copied to the clipboard.";
   } catch {
     $("scan-text").select(); // clipboard blocked: select it so ⌘C / Ctrl+C works
-    $("scan-status").textContent = "Couldn't copy automatically; it's selected, so press Ctrl+C (⌘C on a Mac).";
+    $("scan-status").textContent =
+      "Couldn't copy automatically; it's selected, so press Ctrl+C (⌘C on a Mac).";
   }
 }
 
@@ -74,7 +76,8 @@ const downloadText = () => download("notes.txt", $("scan-text").value, "text/pla
 /** Save the current text and go to latex.html (the LaTeX page reads SCAN_STORAGE_KEY). */
 function sendToLatex() {
   if (!saveScan($("scan-text").value)) {
-    $("scan-status").textContent = "This browser won't store the text; copy it and paste it into the LaTeX page instead.";
+    $("scan-status").textContent =
+      "This browser won't store the text; copy it and paste it into the LaTeX page instead.";
     return;
   }
   location.href = "latex.html?from=scanner";

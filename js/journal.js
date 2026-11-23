@@ -22,8 +22,18 @@ const AUTO_LOCK_MS = 10 * 60 * 1000; // lock after 10 minutes without input
 const $ = (id) => document.getElementById(id);
 const ICONS = ["📄", "📓", "📐", "💻", "🧪", "🎮", "🎵", "⭐", "💡", "📅", "🌊", "🍄"];
 const LABELS = {
-  text: "Text", h1: "Heading 1", h2: "Heading 2", h3: "Heading 3", todo: "To-do", bullet: "Bulleted list item",
-  number: "Numbered list item", toggle: "Toggle", quote: "Quote", callout: "Callout", code: "Code", math: "Math equation (LaTeX)",
+  text: "Text",
+  h1: "Heading 1",
+  h2: "Heading 2",
+  h3: "Heading 3",
+  todo: "To-do",
+  bullet: "Bulleted list item",
+  number: "Numbered list item",
+  toggle: "Toggle",
+  quote: "Quote",
+  callout: "Callout",
+  code: "Code",
+  math: "Math equation (LaTeX)",
 };
 const LIST_TYPES = new Set(["bullet", "number", "todo"]);
 const PLAIN_TYPES = new Set(["code", "math"]); // stored as plain text, no formatting
@@ -67,18 +77,24 @@ async function busy(form, message, work) {
 /** First run: passwords match + length >= 8; random salt; derive key; save an empty vault. */
 async function setup(password, confirm) {
   if (password.length < 8) return void ($("lock-error").textContent = "Use at least 8 characters.");
-  if (password !== confirm) return void ($("lock-error").textContent = "The two passwords don't match.");
+  if (password !== confirm)
+    return void ($("lock-error").textContent = "The two passwords don't match.");
   await busy($("setup-form"), "Creating your journal…", async () => {
     const salt = crypto.getRandomValues(new Uint8Array(16));
     const k = await deriveKey(password, salt);
-    const fresh = { salt: toBase64(salt), iterations: PBKDF2_ITERATIONS, check: await encryptJSON(k, "christopia") };
+    const fresh = {
+      salt: toBase64(salt),
+      iterations: PBKDF2_ITERATIONS,
+      check: await encryptJSON(k, "christopia"),
+    };
     pages = [welcomePage()];
     fresh.pages = await encryptJSON(k, pages);
     try {
       await save("journal-vault", fresh);
     } catch {
       pages = [];
-      $("lock-error").textContent = "Not saved: this browser isn't letting the page store anything (private mode?).";
+      $("lock-error").textContent =
+        "Not saved: this browser isn't letting the page store anything (private mode?).";
       return;
     }
     $("setup-form").reset();
@@ -92,7 +108,11 @@ async function unlock(password) {
   await busy($("unlock-form"), "Unlocking…", async () => {
     const stored = await load("journal-vault", null);
     if (!stored) return showLockScreen();
-    const k = await deriveKey(password, fromBase64(stored.salt), stored.iterations ?? PBKDF2_ITERATIONS);
+    const k = await deriveKey(
+      password,
+      fromBase64(stored.salt),
+      stored.iterations ?? PBKDF2_ITERATIONS,
+    );
     try {
       await decryptJSON(k, stored.check);
     } catch {
@@ -104,7 +124,8 @@ async function unlock(password) {
       const decrypted = await decryptJSON(k, stored.pages);
       pages = Array.isArray(decrypted) ? decrypted : [];
     } catch {
-      $("lock-error").textContent = "Your password is right, but the saved pages are damaged and can't be read.";
+      $("lock-error").textContent =
+        "Your password is right, but the saved pages are damaged and can't be read.";
       return;
     }
     openApp(k, stored);
@@ -189,13 +210,26 @@ async function persist(k, v, snapshot) {
 function welcomePage() {
   const now = Date.now();
   return {
-    id: crypto.randomUUID(), parentId: null, order: 0, icon: "📓", title: "Welcome", favorite: true, trashed: false,
-    createdAt: now, updatedAt: now,
+    id: crypto.randomUUID(),
+    parentId: null,
+    order: 0,
+    icon: "📓",
+    title: "Welcome",
+    favorite: true,
+    trashed: false,
+    createdAt: now,
+    updatedAt: now,
     blocks: [
       newBlock("h2", "Your private journal"),
-      newBlock("text", "Everything here is encrypted with your password before it's saved in this browser."),
+      newBlock(
+        "text",
+        "Everything here is encrypted with your password before it's saved in this browser.",
+      ),
       { ...newBlock("todo", "Type / on an empty line for the block menu"), checked: false },
-      { ...newBlock("todo", "Type # and a space for a heading, - for a list, [] for a to-do"), checked: false },
+      {
+        ...newBlock("todo", "Type # and a space for a heading, - for a list, [] for a to-do"),
+        checked: false,
+      },
       newBlock("math", "e^{i\\pi} + 1 = 0"),
       newBlock("text", ""),
     ],
@@ -206,8 +240,16 @@ function addPage(parentId) {
   const siblings = pages.filter((p) => p.parentId === parentId);
   const now = Date.now();
   const page = {
-    id: crypto.randomUUID(), parentId, order: Math.max(0, ...siblings.map((p) => p.order)) + 1, icon: "📄", title: "",
-    blocks: [newBlock()], favorite: false, trashed: false, createdAt: now, updatedAt: now,
+    id: crypto.randomUUID(),
+    parentId,
+    order: Math.max(0, ...siblings.map((p) => p.order)) + 1,
+    icon: "📄",
+    title: "",
+    blocks: [newBlock()],
+    favorite: false,
+    trashed: false,
+    createdAt: now,
+    updatedAt: now,
   };
   pages.push(page);
   if (parentId) expanded.add(parentId);
@@ -217,13 +259,15 @@ function addPage(parentId) {
 /** The page and every page under it. */
 function withDescendants(id) {
   const out = [id];
-  for (let i = 0; i < out.length; i++) for (const p of pages) if (p.parentId === out[i]) out.push(p.id);
+  for (let i = 0; i < out.length; i++)
+    for (const p of pages) if (p.parentId === out[i]) out.push(p.id);
   return pages.filter((p) => out.includes(p.id));
 }
 
 function ancestors(page) {
   const chain = [];
-  for (let p = page; p && chain.length < 50; p = pages.find((x) => x.id === p.parentId)) chain.unshift(p);
+  for (let p = page; p && chain.length < 50; p = pages.find((x) => x.id === p.parentId))
+    chain.unshift(p);
   return chain;
 }
 
@@ -239,7 +283,9 @@ function pageButton(page) {
 /** Sidebar: favorites list + nested tree from buildPageTree; search results replace the tree while #page-search has text. */
 function renderTree() {
   const live = pages.filter((p) => !p.trashed);
-  $("favorite-list").replaceChildren(...live.filter((p) => p.favorite).map((p) => el("li", {}, pageButton(p))));
+  $("favorite-list").replaceChildren(
+    ...live.filter((p) => p.favorite).map((p) => el("li", {}, pageButton(p))),
+  );
   $("favorite-list").previousElementSibling.hidden = !live.some((p) => p.favorite);
   $("open-trash").setAttribute("aria-pressed", String(trashMode));
   const label = $("page-tree").previousElementSibling;
@@ -254,24 +300,39 @@ function renderTree() {
         restore.addEventListener("click", () => restorePage(p.id));
         const remove = el("button", { type: "button", textContent: "Delete forever" });
         remove.addEventListener("click", () => deleteForever(p.id));
-        return el("li", { className: "trash-row" }, el("span", { textContent: pageName(p) }), restore, remove);
+        return el(
+          "li",
+          { className: "trash-row" },
+          el("span", { textContent: pageName(p) }),
+          restore,
+          remove,
+        );
       }),
     );
-    if (!trashed.length) $("page-tree").append(el("li", { className: "empty-state", textContent: "Trash is empty." }));
+    if (!trashed.length)
+      $("page-tree").append(el("li", { className: "empty-state", textContent: "Trash is empty." }));
   } else if (q.trim()) {
     label.textContent = "Results";
     const hits = searchPages(live, q);
     $("page-tree").replaceChildren(...hits.map((p) => el("li", {}, pageButton(p))));
-    if (!hits.length) $("page-tree").append(el("li", { className: "empty-state", textContent: "No pages match." }));
+    if (!hits.length)
+      $("page-tree").append(el("li", { className: "empty-state", textContent: "No pages match." }));
   } else {
     label.textContent = "Pages";
     const item = ({ page, children }) => {
       const row = el("div", { className: "tree-row" });
       if (children.length) {
         const open = expanded.has(page.id);
-        const t = el("button", { type: "button", className: "tree-toggle", textContent: open ? "▾" : "▸" });
+        const t = el("button", {
+          type: "button",
+          className: "tree-toggle",
+          textContent: open ? "▾" : "▸",
+        });
         t.setAttribute("aria-expanded", String(open));
-        t.setAttribute("aria-label", `${open ? "Hide" : "Show"} pages inside ${page.title || "Untitled"}`);
+        t.setAttribute(
+          "aria-label",
+          `${open ? "Hide" : "Show"} pages inside ${page.title || "Untitled"}`,
+        );
         t.addEventListener("click", () => {
           if (open) expanded.delete(page.id);
           else expanded.add(page.id);
@@ -314,7 +375,12 @@ function restorePage(id) {
 function deleteForever(id) {
   const doomed = withDescendants(id);
   const name = doomed[0].title || "Untitled";
-  if (!confirm(`Delete "${name}"${doomed.length > 1 ? ` and the ${doomed.length - 1} pages inside it` : ""} forever? This can't be undone.`)) return;
+  if (
+    !confirm(
+      `Delete "${name}"${doomed.length > 1 ? ` and the ${doomed.length - 1} pages inside it` : ""} forever? This can't be undone.`,
+    )
+  )
+    return;
   pages = pages.filter((p) => !doomed.includes(p));
   dirty = true;
   flush();
@@ -429,10 +495,19 @@ function blockRow(b) {
     row.classList.toggle("checked", !!b.checked);
   }
   if (b.type === "toggle") {
-    const arrow = el("button", { type: "button", className: "toggle-arrow", textContent: b.open ? "▾" : "▸" });
+    const arrow = el("button", {
+      type: "button",
+      className: "toggle-arrow",
+      textContent: b.open ? "▾" : "▸",
+    });
     arrow.setAttribute("aria-expanded", String(!!b.open));
     arrow.setAttribute("aria-label", "Show or hide what's inside");
-    const body = el("div", { className: "toggle-body", contentEditable: "true", hidden: !b.open, textContent: b.body ?? "" });
+    const body = el("div", {
+      className: "toggle-body",
+      contentEditable: "true",
+      hidden: !b.open,
+      textContent: b.body ?? "",
+    });
     body.dataset.placeholder = "Hidden content";
     body.setAttribute("role", "textbox");
     body.setAttribute("aria-multiline", "true");
@@ -511,7 +586,13 @@ function setType(row, type, caret = Infinity) {
   const page = current();
   const i = page.blocks.findIndex((b) => b.id === row.dataset.id);
   const b = page.blocks[i];
-  page.blocks[i] = { ...newBlock(type), id: b.id, text: type === "divider" ? "" : b.text, html: b.html, checked: false };
+  page.blocks[i] = {
+    ...newBlock(type),
+    id: b.id,
+    text: type === "divider" ? "" : b.text,
+    html: b.html,
+    checked: false,
+  };
   if (type === "divider") page.blocks.splice(i + 1, 0, newBlock());
   renderBlocks(page);
   focusBlock(type === "divider" ? page.blocks[i + 1].id : b.id, caret);
@@ -567,7 +648,9 @@ function onBlockKeydown(e) {
     const at = options.findIndex((o) => o.getAttribute("aria-selected") === "true");
     if (e.key === "ArrowDown" || e.key === "ArrowUp") {
       e.preventDefault();
-      selectOption(options[(at + (e.key === "ArrowDown" ? 1 : options.length - 1)) % options.length]);
+      selectOption(
+        options[(at + (e.key === "ArrowDown" ? 1 : options.length - 1)) % options.length],
+      );
       return;
     }
     if (e.key === "Enter") {
@@ -586,7 +669,8 @@ function onBlockKeydown(e) {
   if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
     e.preventDefault();
     if (type === "code") return void document.execCommand("insertLineBreak");
-    if (type === "math") return void focusBlock(row.nextElementSibling?.dataset.id ?? insertAfter(row, "text"));
+    if (type === "math")
+      return void focusBlock(row.nextElementSibling?.dataset.id ?? insertAfter(row, "text"));
     if (LIST_TYPES.has(type) && !text) return void setType(row, "text"); // Enter on an empty item ends the list
     splitBlock(ed, row);
   } else if (e.key === "Backspace" && collapsed && offset === 0) {
@@ -625,7 +709,12 @@ function onBlockBeforeInput(e) {
   if (e.data === "/" && !text && !PLAIN_TYPES.has(type)) {
     e.preventDefault();
     openSlashMenu(row);
-  } else if (e.data === " " && getSelection().isCollapsed && caretOffset(ed) === text.length && type !== "code") {
+  } else if (
+    e.data === " " &&
+    getSelection().isCollapsed &&
+    caretOffset(ed) === text.length &&
+    type !== "code"
+  ) {
     const shortcut = markdownShortcut(text);
     if (shortcut && shortcut !== type) {
       e.preventDefault();
@@ -756,7 +845,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   blocks.addEventListener("focusout", (e) => {
     const row = rowOf(e.target);
-    if (row?.dataset.type === "math" && !row.contains(e.relatedTarget)) row.classList.remove("editing");
+    if (row?.dataset.type === "math" && !row.contains(e.relatedTarget))
+      row.classList.remove("editing");
   });
 
   $("slash-menu").addEventListener("mousedown", (e) => e.preventDefault()); // keep the caret in the block
@@ -818,7 +908,8 @@ document.addEventListener("DOMContentLoaded", () => {
       lock();
     }
   });
-  for (const type of ["keydown", "pointerdown", "input"]) document.addEventListener(type, () => (lastActivity = Date.now()));
+  for (const type of ["keydown", "pointerdown", "input"])
+    document.addEventListener(type, () => (lastActivity = Date.now()));
   setInterval(() => {
     if (key && Date.now() - lastActivity > AUTO_LOCK_MS) lock();
   }, 30_000);

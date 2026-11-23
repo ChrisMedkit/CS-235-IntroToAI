@@ -6,7 +6,10 @@
     <title>Christopia: Friends</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap"
+    />
     <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
     <link rel="stylesheet" href="../css/style.css" />
   </head>
@@ -31,7 +34,8 @@
     <div class="ticker" role="marquee" aria-label="Site news">
       <p class="ticker-track">
         Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
-        Every Math, CS and Social tool is live &#9733; New: a private journal, a forum and events &#9733;
+        Every Math, CS and Social tool is live &#9733; New: a private journal, a forum and events
+        &#9733;
       </p>
     </div>
 
@@ -49,7 +53,9 @@
       <div class="window-stack">
         <section class="window" id="friends" aria-labelledby="friends-heading">
           <div class="title-bar">
-            <h1 class="title-bar-text" id="friends-heading">Friends<span class="title-bar-program" aria-hidden="true"> - friends.exe</span></h1>
+            <h1 class="title-bar-text" id="friends-heading">
+              Friends<span class="title-bar-program" aria-hidden="true"> - friends.exe</span>
+            </h1>
           </div>
           <div class="window-body">
             <p>People I know in real life and around the web. Their buttons go to their sites.</p>
@@ -69,9 +75,17 @@
           </div>
           <div class="window-body">
             <p>Want to link to Christopia? Put my button on your site:</p>
-            <img class="pixel-button" src="../images/badges/christopia.svg" alt="The Christopia 88 by 31 button" width="88" height="31" />
+            <img
+              class="pixel-button"
+              src="../images/badges/christopia.svg"
+              alt="The Christopia 88 by 31 button"
+              width="88"
+              height="31"
+            />
             <label for="button-code">Copy this HTML</label>
-            <textarea id="button-code" rows="4" readonly>&lt;a href="https://chrismedkit.github.io/cs235-christopia/index.html"&gt;&lt;img src="https://chrismedkit.github.io/cs235-christopia/images/badges/christopia.svg" alt="Christopia" width="88" height="31"&gt;&lt;/a&gt;</textarea>
+            <textarea id="button-code" rows="4" readonly>
+&lt;a href="https://chrismedkit.github.io/cs235-christopia/index.html"&gt;&lt;img src="https://chrismedkit.github.io/cs235-christopia/images/badges/christopia.svg" alt="Christopia" width="88" height="31"&gt;&lt;/a&gt;</textarea
+            >
             <div class="button-row">
               <button type="button" id="copy-button-code">Copy</button>
             </div>
@@ -86,16 +100,29 @@
         </div>
         <div class="window-body">
           <p class="notice">
-            Messages are saved in this browser for now. When Christopia gets its home server, everyone
-            will see everyone's messages.
+            Messages are saved in this browser for now. When Christopia gets its home server,
+            everyone will see everyone's messages.
           </p>
           <form id="gb-form" novalidate>
             <label for="gb-name">Name</label>
-            <input id="gb-name" name="gb-name" type="text" maxlength="40" autocomplete="nickname" required />
+            <input
+              id="gb-name"
+              name="gb-name"
+              type="text"
+              maxlength="40"
+              autocomplete="nickname"
+              required
+            />
             <label for="gb-site">Website (optional)</label>
             <input id="gb-site" name="gb-site" type="url" maxlength="200" placeholder="https://" />
             <label for="gb-message">Message</label>
-            <textarea id="gb-message" name="gb-message" rows="4" maxlength="1000" required></textarea>
+            <textarea
+              id="gb-message"
+              name="gb-message"
+              rows="4"
+              maxlength="1000"
+              required
+            ></textarea>
             <p id="gb-error" class="error" role="alert"></p>
             <button type="submit">Sign the guestbook</button>
             <p id="gb-status" class="meta" role="status"></p>
@@ -109,13 +136,31 @@
     <footer class="site-footer">
       <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
       <ul class="badges" aria-label="Site badges">
-        <li><img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" /></li>
-        <li><img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" /></li>
-        <li><img src="../images/badges/any-browser.svg" alt="Best viewed in any browser" width="88" height="31" /></li>
+        <li>
+          <img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" />
+        </li>
+        <li>
+          <img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" />
+        </li>
+        <li>
+          <img
+            src="../images/badges/any-browser.svg"
+            alt="Best viewed in any browser"
+            width="88"
+            height="31"
+          />
+        </li>
       </ul>
-      <p>&copy; 2026 Christopia. <a href="https://github.com/ChrisMedkit/cs235-christopia" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+      <p>
+        &copy; 2026 Christopia.
+        <a
+          href="https://github.com/ChrisMedkit/cs235-christopia"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
+      </p>
     </footer>
-
 
     <script type="module" src="../js/script.js"></script>
     <script type="module" src="../js/friends-page.js"></script>

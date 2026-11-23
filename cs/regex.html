@@ -6,7 +6,10 @@
     <title>Christopia: Regex Builder</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap"
+    />
     <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
     <link rel="stylesheet" href="../css/style.css" />
   </head>
@@ -31,7 +34,8 @@
     <div class="ticker" role="marquee" aria-label="Site news">
       <p class="ticker-track">
         Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
-        Every Math, CS and Social tool is live &#9733; New: a private journal, a forum and events &#9733;
+        Every Math, CS and Social tool is live &#9733; New: a private journal, a forum and events
+        &#9733;
       </p>
     </div>
 
@@ -47,21 +51,43 @@
     <main class="tool-layout">
       <section class="window" id="regex-builder" aria-labelledby="regex-heading">
         <div class="title-bar">
-          <h1 class="title-bar-text" id="regex-heading"><img src="../images/icons/regex.svg" alt="" width="16" height="16" /> Regex Builder<span class="title-bar-program" aria-hidden="true"> - regex.exe</span></h1>
+          <h1 class="title-bar-text" id="regex-heading">
+            <img src="../images/icons/regex.svg" alt="" width="16" height="16" /> Regex Builder<span
+              class="title-bar-program"
+              aria-hidden="true"
+            >
+              - regex.exe</span
+            >
+          </h1>
         </div>
         <div class="window-body">
-
           <div class="regex-input">
             <span aria-hidden="true">/</span>
             <label for="regex-pattern" class="visually-hidden">Pattern</label>
-            <input id="regex-pattern" type="text" spellcheck="false" autocomplete="off" value="\b[\w.+-]+@[\w-]+\.\w+\b" />
+            <input
+              id="regex-pattern"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              value="\b[\w.+-]+@[\w-]+\.\w+\b"
+            />
             <span aria-hidden="true">/</span>
             <label for="regex-flags" class="visually-hidden">Flags</label>
-            <input id="regex-flags" type="text" spellcheck="false" autocomplete="off" value="g" size="4" maxlength="7" aria-describedby="regex-flags-help" />
+            <input
+              id="regex-flags"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              value="g"
+              size="4"
+              maxlength="7"
+              aria-describedby="regex-flags-help"
+            />
           </div>
           <p id="regex-flags-help" class="meta">
-            Flags: <code>g</code> all matches · <code>i</code> ignore case · <code>m</code> ^ and $ per line ·
-            <code>s</code> . matches newlines · <code>u</code> Unicode · <code>y</code> sticky
+            Flags: <code>g</code> all matches · <code>i</code> ignore case · <code>m</code> ^ and $
+            per line · <code>s</code> . matches newlines · <code>u</code> Unicode ·
+            <code>y</code> sticky
           </p>
           <p id="regex-error" class="error" role="alert"></p>
 
@@ -82,13 +108,23 @@
           <div class="token-palette">
             <h3>Characters</h3>
             <div class="button-row">
-              <button type="button" data-token="." title="Any character except newline"><code>.</code></button>
+              <button type="button" data-token="." title="Any character except newline">
+                <code>.</code>
+              </button>
               <button type="button" data-token="\d" title="Digit 0-9"><code>\d</code></button>
-              <button type="button" data-token="\w" title="Letter, digit or _"><code>\w</code></button>
+              <button type="button" data-token="\w" title="Letter, digit or _">
+                <code>\w</code>
+              </button>
               <button type="button" data-token="\s" title="Whitespace"><code>\s</code></button>
-              <button type="button" data-token="[abc]" title="Any of a, b, c"><code>[abc]</code></button>
-              <button type="button" data-token="[^abc]" title="Anything except a, b, c"><code>[^abc]</code></button>
-              <button type="button" data-token="[a-z]" title="Range a to z"><code>[a-z]</code></button>
+              <button type="button" data-token="[abc]" title="Any of a, b, c">
+                <code>[abc]</code>
+              </button>
+              <button type="button" data-token="[^abc]" title="Anything except a, b, c">
+                <code>[^abc]</code>
+              </button>
+              <button type="button" data-token="[a-z]" title="Range a to z">
+                <code>[a-z]</code>
+              </button>
               <button type="button" data-token="\b" title="Word boundary"><code>\b</code></button>
             </div>
             <h3>Quantifiers</h3>
@@ -98,18 +134,28 @@
               <button type="button" data-token="?" title="0 or 1"><code>?</code></button>
               <button type="button" data-token="{3}" title="Exactly 3"><code>{3}</code></button>
               <button type="button" data-token="{2,5}" title="2 to 5"><code>{2,5}</code></button>
-              <button type="button" data-token="*?" title="0 or more, as few as possible"><code>*?</code></button>
+              <button type="button" data-token="*?" title="0 or more, as few as possible">
+                <code>*?</code>
+              </button>
             </div>
             <h3>Groups &amp; anchors</h3>
             <div class="button-row">
               <button type="button" data-token="()" title="Capture group"><code>( )</code></button>
-              <button type="button" data-token="(?:)" title="Group without capturing"><code>(?: )</code></button>
-              <button type="button" data-token="(?&lt;name&gt;)" title="Named group"><code>(?&lt;name&gt; )</code></button>
+              <button type="button" data-token="(?:)" title="Group without capturing">
+                <code>(?: )</code>
+              </button>
+              <button type="button" data-token="(?&lt;name&gt;)" title="Named group">
+                <code>(?&lt;name&gt; )</code>
+              </button>
               <button type="button" data-token="|" title="Or"><code>|</code></button>
               <button type="button" data-token="^" title="Start of line"><code>^</code></button>
               <button type="button" data-token="$" title="End of line"><code>$</code></button>
-              <button type="button" data-token="(?=)" title="Followed by"><code>(?= )</code></button>
-              <button type="button" data-token="(?!)" title="Not followed by"><code>(?! )</code></button>
+              <button type="button" data-token="(?=)" title="Followed by">
+                <code>(?= )</code>
+              </button>
+              <button type="button" data-token="(?!)" title="Not followed by">
+                <code>(?! )</code>
+              </button>
             </div>
           </div>
 
@@ -124,7 +170,9 @@
         </div>
         <div class="window-body">
           <label for="regex-text">Test string</label>
-          <textarea id="regex-text" rows="8" spellcheck="false">Write to hello@example.com or support@example.org by 2026-12-01.</textarea>
+          <textarea id="regex-text" rows="8" spellcheck="false">
+Write to hello@example.com or support@example.org by 2026-12-01.</textarea
+          >
 
           <h3>Matches: <span id="regex-count">0</span></h3>
           <!-- Test string with <mark> around each match (renderHighlight, built from text nodes). -->
@@ -132,13 +180,20 @@
 
           <table id="regex-matches" class="data-table">
             <thead>
-              <tr><th scope="col">#</th><th scope="col">Match</th><th scope="col">Index</th><th scope="col">Groups</th></tr>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Match</th>
+                <th scope="col">Index</th>
+                <th scope="col">Groups</th>
+              </tr>
             </thead>
             <tbody></tbody>
           </table>
 
           <h3>Replace</h3>
-          <label for="regex-replace">Replace with (<code>$1</code>, <code>$&amp;</code> work)</label>
+          <label for="regex-replace"
+            >Replace with (<code>$1</code>, <code>$&amp;</code> work)</label
+          >
           <input id="regex-replace" type="text" value="[$&amp;]" spellcheck="false" />
           <pre id="regex-replaced" class="output"></pre>
 
@@ -150,13 +205,31 @@
     <footer class="site-footer">
       <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
       <ul class="badges" aria-label="Site badges">
-        <li><img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" /></li>
-        <li><img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" /></li>
-        <li><img src="../images/badges/any-browser.svg" alt="Best viewed in any browser" width="88" height="31" /></li>
+        <li>
+          <img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" />
+        </li>
+        <li>
+          <img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" />
+        </li>
+        <li>
+          <img
+            src="../images/badges/any-browser.svg"
+            alt="Best viewed in any browser"
+            width="88"
+            height="31"
+          />
+        </li>
       </ul>
-      <p>&copy; 2026 Christopia. <a href="https://github.com/ChrisMedkit/cs235-christopia" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+      <p>
+        &copy; 2026 Christopia.
+        <a
+          href="https://github.com/ChrisMedkit/cs235-christopia"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
+      </p>
     </footer>
-
 
     <script type="module" src="../js/script.js"></script>
     <script type="module" src="../js/regex.js"></script>

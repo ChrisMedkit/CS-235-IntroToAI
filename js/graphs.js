@@ -30,7 +30,10 @@ function buildGrid() {
   const board = $("graph-grid");
   board.style.setProperty("--cols", COLS);
   board.setAttribute("role", "group");
-  board.setAttribute("aria-label", `Grid, ${ROWS} rows by ${COLS} columns. Arrow keys move, Enter or Space draws.`);
+  board.setAttribute(
+    "aria-label",
+    `Grid, ${ROWS} rows by ${COLS} columns. Arrow keys move, Enter or Space draws.`,
+  );
   state.grid = Array.from({ length: ROWS }, () => Array(COLS).fill(1));
   state.cells = state.grid.map((row, r) =>
     row.map((_, c) => {
@@ -102,7 +105,8 @@ function clearPath() {
   state.result = null;
   state.frames = [];
   state.shown = 0;
-  for (const cell of $("graph-grid").querySelectorAll(".visited, .path")) cell.classList.remove("visited", "path");
+  for (const cell of $("graph-grid").querySelectorAll(".visited, .path"))
+    cell.classList.remove("visited", "path");
   $("graph-run").textContent = "Run";
   $("graph-visited").textContent = 0;
   $("graph-length").textContent = 0;
@@ -127,7 +131,8 @@ function showFrames(n) {
   for (let k = 0; k < n && state.shown < frames.length; k++) {
     const { r, c, kind } = frames[state.shown++];
     state.cells[r][c].classList.add(kind);
-    if (kind === "visited") $("graph-visited").textContent = Number($("graph-visited").textContent) + 1;
+    if (kind === "visited")
+      $("graph-visited").textContent = Number($("graph-visited").textContent) + 1;
   }
   if (state.shown < frames.length) return true;
   finish();
@@ -180,7 +185,8 @@ function step() {
   }
   if (showFrames(1)) {
     const { r, c, kind } = state.frames[state.shown - 1];
-    $("graph-status").textContent = `${kind === "visited" ? "Visit" : "Path"}: row ${r + 1}, column ${c + 1}.`;
+    $("graph-status").textContent =
+      `${kind === "visited" ? "Visit" : "Path"}: row ${r + 1}, column ${c + 1}.`;
   }
 }
 
@@ -204,7 +210,9 @@ function clearAll() {
 /** The cell under a pointer (works for touch drags too, where the target doesn't change). */
 function cellAt(x, y) {
   const el = document.elementFromPoint(x, y);
-  return el?.classList.contains("cell") && el.closest("#graph-grid") ? [Number(el.dataset.r), Number(el.dataset.c)] : null;
+  return el?.classList.contains("cell") && el.closest("#graph-grid")
+    ? [Number(el.dataset.r), Number(el.dataset.c)]
+    : null;
 }
 
 function initDrawing() {

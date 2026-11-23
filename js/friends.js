@@ -14,8 +14,24 @@ export const FRIENDS = [
 
 /** Sites that inspired Christopia (from the redesign brief). Delete any you'd rather not link. */
 export const NEIGHBORS = [
-  { name: "Mental Labour", url: "https://mental-labour.neocities.org/", note: "a pixel-art splash you walk through" },
-  { name: "Knoxstation", url: "https://knoxstation.neocities.org/", note: "a packed portal of art, shrines and widgets" },
-  { name: "Simone's Computer", url: "https://simone.computer/#/webdesktops", note: "a directory of web desktops" },
-  { name: "caramelfevers", url: "https://caramelfevers.neocities.org/", note: "a home page set out like a table of things" },
+  {
+    name: "Mental Labour",
+    url: "https://mental-labour.neocities.org/",
+    note: "a pixel-art splash you walk through",
+  },
+  {
+    name: "Knoxstation",
+    url: "https://knoxstation.neocities.org/",
+    note: "a packed portal of art, shrines and widgets",
+  },
+  {
+    name: "Simone's Computer",
+    url: "https://simone.computer/#/webdesktops",
+    note: "a directory of web desktops",
+  },
+  {
+    name: "caramelfevers",
+    url: "https://caramelfevers.neocities.org/",
+    note: "a home page set out like a table of things",
+  },
 ];

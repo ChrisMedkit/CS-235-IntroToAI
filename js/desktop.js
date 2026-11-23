@@ -50,7 +50,9 @@ function loadPositions() {
 }
 
 function savePositions() {
-  const positions = Object.fromEntries(windows().map((w) => [w.id, { x: w.offsetLeft, y: w.offsetTop }]));
+  const positions = Object.fromEntries(
+    windows().map((w) => [w.id, { x: w.offsetLeft, y: w.offsetTop }]),
+  );
   try {
     localStorage.setItem(POSITIONS_KEY, JSON.stringify(positions));
   } catch {

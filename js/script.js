@@ -50,29 +50,29 @@ function renderToolGallery() {
   const gallery = document.getElementById("tool-gallery");
   if (!gallery) return; // not a gallery page
   const section = gallery.dataset.section;
-  const cards = TOOLS.filter((t) => t.status === "live" && (!section || t.category === section)).map(
-    (tool) => {
-      const img = document.createElement("img");
-      Object.assign(img, {
-        src: `${root()}images/${tool.id}.svg`,
-        alt: `${tool.name} preview`,
-        width: 640,
-        height: 360,
-        loading: "lazy",
-      });
-      const name = document.createElement("h3");
-      name.textContent = tool.name; // textContent, never innerHTML
-      const summary = document.createElement("p");
-      summary.textContent = tool.summary;
-      const link = document.createElement("a");
-      link.href = root() + tool.href;
-      link.append(img, name, summary);
-      const card = document.createElement("li");
-      card.className = "tool-card";
-      card.append(link);
-      return card;
-    },
-  );
+  const cards = TOOLS.filter(
+    (t) => t.status === "live" && (!section || t.category === section),
+  ).map((tool) => {
+    const img = document.createElement("img");
+    Object.assign(img, {
+      src: `${root()}images/${tool.id}.svg`,
+      alt: `${tool.name} preview`,
+      width: 640,
+      height: 360,
+      loading: "lazy",
+    });
+    const name = document.createElement("h3");
+    name.textContent = tool.name; // textContent, never innerHTML
+    const summary = document.createElement("p");
+    summary.textContent = tool.summary;
+    const link = document.createElement("a");
+    link.href = root() + tool.href;
+    link.append(img, name, summary);
+    const card = document.createElement("li");
+    card.className = "tool-card";
+    card.append(link);
+    return card;
+  });
   gallery.replaceChildren(...cards);
 }
 
@@ -84,13 +84,23 @@ function renderToolGallery() {
  */
 const SITE = [
   { name: "Home", href: "home.html" }, // index.html is the splash page
-  { name: "Tools", href: "tools.html", folders: [["Math", "math"], ["CS", "cs"]] },
+  {
+    name: "Tools",
+    href: "tools.html",
+    folders: [
+      ["Math", "math"],
+      ["CS", "cs"],
+    ],
+  },
   { name: "Social", href: "social/index.html", folders: [["Pages", "social"]] },
   { name: "Me", href: "me.html" },
 ];
 
 /** Every page a visitor can open, as root-relative hrefs (for Random page). */
-const allPages = () => [...SITE.map((p) => p.href), ...TOOLS.filter((t) => t.status === "live").map((t) => t.href)];
+const allPages = () => [
+  ...SITE.map((p) => p.href),
+  ...TOOLS.filter((t) => t.status === "live").map((t) => t.href),
+];
 
 const link = (name, href) => el("a", { href: root() + href, textContent: name });
 
@@ -117,8 +127,8 @@ function siteTree() {
                   el(
                     "ul",
                     {},
-                    ...TOOLS.filter((t) => t.status === "live" && t.category === category).map((t) =>
-                      el("li", {}, link(t.name, t.href)),
+                    ...TOOLS.filter((t) => t.status === "live" && t.category === category).map(
+                      (t) => el("li", {}, link(t.name, t.href)),
                     ),
                   ),
                 ),
@@ -143,13 +153,22 @@ function initTaskbar() {
   const menu = el(
     "div",
     { id: "start-menu", className: "start-menu window", hidden: true },
-    el("div", { className: "start-menu-banner", ariaHidden: "true" }, "Christopia", el("b", { textContent: "98" })),
+    el(
+      "div",
+      { className: "start-menu-banner", ariaHidden: "true" },
+      "Christopia",
+      el("b", { textContent: "98" }),
+    ),
     el(
       "div",
       { className: "start-menu-items" },
       el("nav", { ariaLabel: "All pages" }, siteTree()),
       el("hr"),
-      el("button", { type: "button", className: "start-item random-page", textContent: "Random page" }),
+      el("button", {
+        type: "button",
+        className: "start-item random-page",
+        textContent: "Random page",
+      }),
       el("button", { type: "button", className: "start-item sound-toggle", textContent: "Sound" }),
     ),
   );
@@ -170,7 +189,13 @@ function initTaskbar() {
   const clock = el("time", { className: "clock" });
   updateClock(clock);
   setInterval(() => updateClock(clock), 15_000);
-  const bar = el("div", { className: "taskbar" }, start, task, el("div", { className: "tray" }, clock));
+  const bar = el(
+    "div",
+    { className: "taskbar" },
+    start,
+    task,
+    el("div", { className: "tray" }, clock),
+  );
   bar.setAttribute("role", "region");
   bar.setAttribute("aria-label", "Taskbar");
   document.body.append(menu, bar);
@@ -203,7 +228,12 @@ function initStickers() {
   if (!mine.length) return;
   const layers = { behind: stickerLayer("behind"), front: stickerLayer("front") };
   for (const s of mine) {
-    const img = el("img", { src: root() + s.src, alt: s.alt ?? "", loading: "lazy", decoding: "async" });
+    const img = el("img", {
+      src: root() + s.src,
+      alt: s.alt ?? "",
+      loading: "lazy",
+      decoding: "async",
+    });
     if (s.pixel) img.classList.add("pixel");
     let node = img;
     if (s.still) {
@@ -243,7 +273,7 @@ const SPLASHES = [
   "Cathedral in hear",
   "UW Stout",
   "Where am i",
-  "Lingering"
+  "Lingering",
 ]; // shown on the big title (splash page and Home); keep them short so they stay on screen on phones
 
 /** Pick a random splash phrase on every page load. */
@@ -344,7 +374,11 @@ function rackUnit(name, status, note, ledClass) {
   const li = el("li", { className: "rack-unit" });
   const led = el("span", { className: `led ${ledClass}`.trim() });
   led.setAttribute("aria-hidden", "true");
-  li.append(led, el("span", { className: "unit-name", textContent: name }), el("span", { className: "unit-status", textContent: status }));
+  li.append(
+    led,
+    el("span", { className: "unit-name", textContent: name }),
+    el("span", { className: "unit-status", textContent: status }),
+  );
   if (note) li.append(el("span", { className: "unit-note", textContent: note }));
   return li;
 }
@@ -354,14 +388,17 @@ function renderServices() {
   const list = document.getElementById("rack-units");
   if (!list) return;
   const planned = filterTools(TOOLS, "planned");
-  const units = planned.map((t) => rackUnit(t.name, "Offline · coming soon", t.summary, "led-amber"));
+  const units = planned.map((t) =>
+    rackUnit(t.name, "Offline · coming soon", t.summary, "led-amber"),
+  );
   for (let i = 0; i < EMPTY_BAYS; i++) {
     const bay = rackUnit("Empty bay", "Coming soon", "", "");
     bay.classList.add("empty");
     units.push(bay);
   }
   list.replaceChildren(...units);
-  document.getElementById("rack-summary").textContent = `0 online · ${planned.length} planned · ${EMPTY_BAYS} empty bays`;
+  document.getElementById("rack-summary").textContent =
+    `0 online · ${planned.length} planned · ${EMPTY_BAYS} empty bays`;
 }
 
 document.addEventListener("DOMContentLoaded", () => {

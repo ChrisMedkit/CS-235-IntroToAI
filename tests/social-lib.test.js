@@ -19,7 +19,10 @@ import {
 
 test("validatePost", () => {
   assert.deepEqual(validatePost({ body: "hi", author: "Sam" }), {});
-  const errors = validatePost({ title: "  ", body: "", author: "x".repeat(41) }, { requireTitle: true });
+  const errors = validatePost(
+    { title: "  ", body: "", author: "x".repeat(41) },
+    { requireTitle: true },
+  );
   assert.deepEqual(Object.keys(errors).sort(), ["author", "body", "title"]);
 });
 
@@ -72,8 +75,14 @@ test("splitEvents", () => {
   const c = { ...EVENT, id: "c", start: now - 1e8 };
   const d = { ...EVENT, id: "d", start: now - 5 * 60_000 }; // started 5 min ago, no end: still on
   const { upcoming, past } = splitEvents([a, b, c, d], now);
-  assert.deepEqual(upcoming.map((e) => e.id), ["d", "b", "a"]);
-  assert.deepEqual(past.map((e) => e.id), ["c"]);
+  assert.deepEqual(
+    upcoming.map((e) => e.id),
+    ["d", "b", "a"],
+  );
+  assert.deepEqual(
+    past.map((e) => e.id),
+    ["c"],
+  );
 });
 
 test("toICS", () => {
@@ -102,13 +111,28 @@ test("journal crypto: round trip, fresh IV, wrong password fails", async () => {
 
 test("journal crypto: a big journal (200 KB) round-trips", async () => {
   const key = await deriveKey("correct horse", new Uint8Array(16).fill(7), 1000);
-  const pages = [{ id: "p1", title: "Long", blocks: [{ type: "text", text: "x".repeat(200_000) }] }];
+  const pages = [
+    { id: "p1", title: "Long", blocks: [{ type: "text", text: "x".repeat(200_000) }] },
+  ];
   assert.deepEqual(await decryptJSON(key, await encryptJSON(key, pages)), pages);
 });
 
 test("markdownShortcut", () => {
-  const cases = { "#": "h1", "##": "h2", "###": "h3", "-": "bullet", "*": "bullet", "1.": "number", "[]": "todo", ">": "quote", "```": "code", "---": "divider", $$: "math" };
-  for (const [prefix, type] of Object.entries(cases)) assert.equal(markdownShortcut(prefix), type, prefix);
+  const cases = {
+    "#": "h1",
+    "##": "h2",
+    "###": "h3",
+    "-": "bullet",
+    "*": "bullet",
+    "1.": "number",
+    "[]": "todo",
+    ">": "quote",
+    "```": "code",
+    "---": "divider",
+    $$: "math",
+  };
+  for (const [prefix, type] of Object.entries(cases))
+    assert.equal(markdownShortcut(prefix), type, prefix);
   assert.equal(markdownShortcut("hello"), null);
 });
 
@@ -121,8 +145,14 @@ test("buildPageTree nests, orders, drops trashed, rescues orphans", () => {
     { id: "t", parentId: null, order: 3, trashed: true },
     { id: "o", parentId: "gone", order: 4 },
   ]);
-  assert.deepEqual(tree.map((n) => n.page.id), ["a", "b", "o"]);
-  assert.deepEqual(tree[0].children.map((n) => n.page.id), ["a1", "a2"]);
+  assert.deepEqual(
+    tree.map((n) => n.page.id),
+    ["a", "b", "o"],
+  );
+  assert.deepEqual(
+    tree[0].children.map((n) => n.page.id),
+    ["a1", "a2"],
+  );
 });
 
 test("searchPages: titles first, then body, no trash", () => {
@@ -131,6 +161,9 @@ test("searchPages: titles first, then body, no trash", () => {
     { id: "2", title: "Eigenvalues notes", blocks: [], updatedAt: 1 },
     { id: "3", title: "Eigen trash", blocks: [], updatedAt: 9, trashed: true },
   ];
-  assert.deepEqual(searchPages(pages, "EIGEN").map((p) => p.id), ["2", "1"]);
+  assert.deepEqual(
+    searchPages(pages, "EIGEN").map((p) => p.id),
+    ["2", "1"],
+  );
   assert.deepEqual(searchPages(pages, ""), []);
 });

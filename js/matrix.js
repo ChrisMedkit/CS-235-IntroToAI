@@ -29,7 +29,8 @@ function matrixTable(M) {
 }
 
 function requireSquare(A, what) {
-  if (A.length !== A[0].length) throw new Error(`${what} needs a square matrix; this one is ${A.length}×${A[0].length}.`);
+  if (A.length !== A[0].length)
+    throw new Error(`${what} needs a square matrix; this one is ${A.length}×${A[0].length}.`);
 }
 
 const para = (text) => Object.assign(document.createElement("p"), { textContent: text });
@@ -50,16 +51,24 @@ function compute(A, op) {
     const out = rref(A);
     const rank = out.matrix.filter((row) => row.some((v) => v !== 0)).length;
     result.append(para(`RREF of the ${size} matrix (rank ${rank}):`), matrixTable(out.matrix));
-    if (!out.steps.length) steps.append(Object.assign(document.createElement("li"), { textContent: "Already in RREF." }));
+    if (!out.steps.length)
+      steps.append(
+        Object.assign(document.createElement("li"), { textContent: "Already in RREF." }),
+      );
     for (const step of out.steps) {
       const li = document.createElement("li");
-      li.append(Object.assign(document.createElement("code"), { textContent: step.op }), matrixTable(step.matrix));
+      li.append(
+        Object.assign(document.createElement("code"), { textContent: step.op }),
+        matrixTable(step.matrix),
+      );
       steps.append(li);
     }
     return;
   }
 
-  steps.append(Object.assign(document.createElement("li"), { textContent: "Steps are shown for RREF only." }));
+  steps.append(
+    Object.assign(document.createElement("li"), { textContent: "Steps are shown for RREF only." }),
+  );
   if (op === "transpose") {
     result.append(para(`Transpose (${A[0].length}×${A.length}):`), matrixTable(math.transpose(A)));
   } else if (op === "det") {
@@ -78,7 +87,9 @@ function compute(A, op) {
     const { values } = math.eigs(A);
     const list = document.createElement("ul");
     for (const v of values) {
-      list.append(Object.assign(document.createElement("li"), { textContent: `λ = ${formatValue(v)}` }));
+      list.append(
+        Object.assign(document.createElement("li"), { textContent: `λ = ${formatValue(v)}` }),
+      );
     }
     result.append(para(`Eigenvalues (with repeats):`), list);
   }

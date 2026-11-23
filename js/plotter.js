@@ -41,7 +41,9 @@ function removeExpressionRow(button) {
 
 /** Read #x-min..#y-max; return null and show an error if min >= max. */
 function readWindow() {
-  const [xMin, xMax, yMin, yMax] = ["x-min", "x-max", "y-min", "y-max"].map((id) => Number($(id).value));
+  const [xMin, xMax, yMin, yMax] = ["x-min", "x-max", "y-min", "y-max"].map((id) =>
+    Number($(id).value),
+  );
   if (![xMin, xMax, yMin, yMax].every(Number.isFinite)) {
     $("plot-error").textContent = "Fill in all four window numbers.";
     return null;
@@ -77,12 +79,35 @@ function layout(mode, win) {
     showlegend: true,
     legend: { orientation: "h", y: -0.12 },
     // The classic 16-color VGA palette, as on the Big-O page.
-    colorway: ["#000080", "#008000", "#800000", "#008080", "#800080", "#808000", "#ff0000", "#0000ff"],
+    colorway: [
+      "#000080",
+      "#008000",
+      "#800000",
+      "#008080",
+      "#800080",
+      "#808000",
+      "#ff0000",
+      "#0000ff",
+    ],
     uirevision: mode, // keep the user's zoom / 3D camera across redraws
   };
-  const axis = (range, title) => ({ range, title: { text: title }, zerolinecolor: "#000000", gridcolor: "#dfdfdf" });
-  if (mode === "2d") return { ...base, xaxis: axis([win.xMin, win.xMax], "x"), yaxis: axis([win.yMin, win.yMax], "y") };
-  return { ...base, margin: { l: 0, r: 0, t: 0, b: 0 }, scene: { xaxis: axis(null, "x"), yaxis: axis(null, "y"), zaxis: axis(null, "z") } };
+  const axis = (range, title) => ({
+    range,
+    title: { text: title },
+    zerolinecolor: "#000000",
+    gridcolor: "#dfdfdf",
+  });
+  if (mode === "2d")
+    return {
+      ...base,
+      xaxis: axis([win.xMin, win.xMax], "x"),
+      yaxis: axis([win.yMin, win.yMax], "y"),
+    };
+  return {
+    ...base,
+    margin: { l: 0, r: 0, t: 0, b: 0 },
+    scene: { xaxis: axis(null, "x"), yaxis: axis(null, "y"), zaxis: axis(null, "z") },
+  };
 }
 
 /** Read all rows, sample each with sample2D / sampleSurface, and Plotly.react into #plot. */
@@ -116,7 +141,13 @@ function redraw() {
     } else {
       const surface = sampleSurface(f, [win.xMin, win.xMax], [win.yMin, win.yMax], POINTS_3D);
       // Only the first surface gets a color bar; more would pile up on the right.
-      traces.push({ type: "surface", name, showscale: traces.length === 0, colorscale: "Blues", ...surface });
+      traces.push({
+        type: "surface",
+        name,
+        showscale: traces.length === 0,
+        colorscale: "Blues",
+        ...surface,
+      });
     }
   });
   $("plot-error").textContent = errors.join(" ");

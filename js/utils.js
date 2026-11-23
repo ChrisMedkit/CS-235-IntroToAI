@@ -53,17 +53,28 @@ export function sampleSurface(f, xRange, yRange, n) {
  *   (message says which row/entry, shown to the user).
  */
 export function parseMatrix(text) {
-  const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+  const lines = text
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter(Boolean);
   if (!lines.length) throw new Error("Type a matrix: one row per line.");
   const rows = lines.map((line, r) =>
-    line.split(/[\s,]+/).filter(Boolean).map((entry, c) => {
-      const parts = entry.split("/");
-      const value = parts.length === 2 ? Number(parts[0]) / Number(parts[1]) : parts.length === 1 ? Number(entry) : NaN;
-      if (!Number.isFinite(value) || parts.some((p) => p === "")) {
-        throw new Error(`Row ${r + 1}, entry ${c + 1}: "${entry}" is not a number.`);
-      }
-      return value;
-    }),
+    line
+      .split(/[\s,]+/)
+      .filter(Boolean)
+      .map((entry, c) => {
+        const parts = entry.split("/");
+        const value =
+          parts.length === 2
+            ? Number(parts[0]) / Number(parts[1])
+            : parts.length === 1
+              ? Number(entry)
+              : NaN;
+        if (!Number.isFinite(value) || parts.some((p) => p === "")) {
+          throw new Error(`Row ${r + 1}, entry ${c + 1}: "${entry}" is not a number.`);
+        }
+        return value;
+      }),
   );
   rows.forEach((row, r) => {
     if (row.length !== rows[0].length) {
@@ -86,7 +97,8 @@ export function rref(A, eps = 1e-10) {
   const rows = M.length;
   const cols = rows ? M[0].length : 0;
   const steps = [];
-  const snap = () => M.forEach((row) => row.forEach((v, c) => (row[c] = Math.abs(v) < eps ? 0 : v)));
+  const snap = () =>
+    M.forEach((row) => row.forEach((v, c) => (row[c] = Math.abs(v) < eps ? 0 : v)));
   const record = (op) => {
     snap();
     steps.push({ op, matrix: M.map((row) => [...row]) });
@@ -97,7 +109,8 @@ export function rref(A, eps = 1e-10) {
     let pivot = -1;
     while (lead < cols) {
       pivot = r;
-      for (let i = r + 1; i < rows; i++) if (Math.abs(M[i][lead]) > Math.abs(M[pivot][lead])) pivot = i;
+      for (let i = r + 1; i < rows; i++)
+        if (Math.abs(M[i][lead]) > Math.abs(M[pivot][lead])) pivot = i;
       if (Math.abs(M[pivot][lead]) >= eps) break;
       lead++;
     }
@@ -115,13 +128,22 @@ export function rref(A, eps = 1e-10) {
       const k = M[i][lead];
       if (i === r || Math.abs(k) < eps) continue;
       M[i] = M[i].map((v, c) => v - k * M[r][c]);
-      record(k > 0 ? `R${i + 1} ← R${i + 1} − ${formatNumber(k)}·R${r + 1}` : `R${i + 1} ← R${i + 1} + ${formatNumber(-k)}·R${r + 1}`);
+      record(
+        k > 0
+          ? `R${i + 1} ← R${i + 1} − ${formatNumber(k)}·R${r + 1}`
+          : `R${i + 1} ← R${i + 1} + ${formatNumber(-k)}·R${r + 1}`,
+      );
     }
     lead++;
   }
   snap();
   // Round away float noise like 0.9999999999 so exact answers look exact.
-  return { matrix: M.map((row) => row.map((v) => (Math.abs(v - Math.round(v)) < eps ? Math.round(v) + 0 : v))), steps };
+  return {
+    matrix: M.map((row) =>
+      row.map((v) => (Math.abs(v - Math.round(v)) < eps ? Math.round(v) + 0 : v)),
+    ),
+    steps,
+  };
 }
 
 /**

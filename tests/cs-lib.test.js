@@ -29,7 +29,10 @@ for (const algorithm of ALGORITHMS) {
     const steps = sortSteps(algorithm, SAMPLE);
     const a = [...SAMPLE];
     for (const step of steps) applyStep(a, step);
-    assert.deepEqual(a, [...SAMPLE].sort((x, y) => x - y));
+    assert.deepEqual(
+      a,
+      [...SAMPLE].sort((x, y) => x - y),
+    );
     assert.deepEqual(SAMPLE, [5, 1, 4, 2, 8, 2, 9, 0], "input not modified");
     assert.ok(steps.some((s) => s.type === "compare"));
   });
@@ -44,18 +47,33 @@ test("sortSteps: random arrays with duplicates, plus empty and one-element array
   const random = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   const arrays = [[], [7]];
   for (let k = 0; k < 20; k++) {
-    arrays.push(Array.from({ length: 1 + Math.floor(random() * 40) }, () => Math.floor(random() * 10)));
+    arrays.push(
+      Array.from({ length: 1 + Math.floor(random() * 40) }, () => Math.floor(random() * 10)),
+    );
   }
   for (const algorithm of ALGORITHMS) {
     for (const values of arrays) {
       const steps = sortSteps(algorithm, values);
       const a = [...values];
       for (const step of steps) applyStep(a, step);
-      assert.deepEqual(a, [...values].sort((x, y) => x - y), `${algorithm} ${values}`);
+      assert.deepEqual(
+        a,
+        [...values].sort((x, y) => x - y),
+        `${algorithm} ${values}`,
+      );
       // Every index is marked sorted exactly once, and every step points at a real pseudocode line.
-      const marked = steps.filter((s) => s.type === "sorted").map((s) => s.i).sort((x, y) => x - y);
-      assert.deepEqual(marked, values.map((_, i) => i), `${algorithm} sorted marks`);
-      assert.ok(steps.every((s) => Number.isInteger(s.line) && PSEUDOCODE[algorithm][s.line] !== undefined));
+      const marked = steps
+        .filter((s) => s.type === "sorted")
+        .map((s) => s.i)
+        .sort((x, y) => x - y);
+      assert.deepEqual(
+        marked,
+        values.map((_, i) => i),
+        `${algorithm} sorted marks`,
+      );
+      assert.ok(
+        steps.every((s) => Number.isInteger(s.line) && PSEUDOCODE[algorithm][s.line] !== undefined),
+      );
     }
   }
 });
@@ -77,17 +95,25 @@ test("BST insert/search/delete", () => {
 
 test("BST: duplicates, leaf / one-child / root deletes, missing value", () => {
   const build = (values) => values.reduce((root, v) => bstInsert(root, v).root, null);
-  const inorder = (node) => (node ? [...inorder(node.left), node.value, ...inorder(node.right)] : []);
+  const inorder = (node) =>
+    node ? [...inorder(node.left), node.value, ...inorder(node.right)] : [];
   const root = build([8, 3, 10, 1, 6, 14, 13]);
   const dup = bstInsert(root, 6);
   assert.equal(dup.inserted, false);
   assert.equal(dup.root, root, "duplicate leaves the tree as is");
   assert.deepEqual(bstInsert(root, 7).path, [8, 3, 6, 7]);
-  for (const [value, children] of [[1, 0], [14, 1], [8, 2]]) {
+  for (const [value, children] of [
+    [1, 0],
+    [14, 1],
+    [8, 2],
+  ]) {
     const r = bstDelete(root, value);
     assert.equal(r.found, true);
     assert.equal(r.children, children, `children of ${value}`);
-    assert.deepEqual(inorder(r.root), [1, 3, 6, 8, 10, 13, 14].filter((v) => v !== value));
+    assert.deepEqual(
+      inorder(r.root),
+      [1, 3, 6, 8, 10, 13, 14].filter((v) => v !== value),
+    );
   }
   const missing = bstDelete(root, 99);
   assert.equal(missing.found, false);
@@ -128,8 +154,14 @@ test("min-heap: random pushes and pops match a sort; swaps are recorded; empty p
     popped.push(r.min);
     heap = r.heap;
   }
-  assert.deepEqual(popped, [...values].sort((a, b) => a - b));
-  assert.deepEqual(heapPush([1, 5, 8], 0).swaps, [[3, 1], [1, 0]]);
+  assert.deepEqual(
+    popped,
+    [...values].sort((a, b) => a - b),
+  );
+  assert.deepEqual(heapPush([1, 5, 8], 0).swaps, [
+    [3, 1],
+    [1, 0],
+  ]);
   assert.deepEqual(heapPop([]), { heap: [], min: undefined, swaps: [] });
 });
 
@@ -196,18 +228,26 @@ test("gridSearch: random weighted grids, all four algorithms", () => {
         assert.equal(Math.abs(r1 - r2) + Math.abs(c1 - c2), 1, `${name} path steps are adjacent`);
         assert.ok(grid[r2][c2] > 0, `${name} path avoids walls`);
       }
-      assert.equal(cost, path.slice(1).reduce((s, [r, c]) => s + grid[r][c], 0));
+      assert.equal(
+        cost,
+        path.slice(1).reduce((s, [r, c]) => s + grid[r][c], 0),
+      );
     }
     if (!reachable) continue;
     // BFS has the fewest moves; Dijkstra and A* the lowest cost, and they agree.
-    for (const name of ["dfs", "dijkstra", "astar"]) assert.ok(results[name].path.length >= results.bfs.path.length);
+    for (const name of ["dfs", "dijkstra", "astar"])
+      assert.ok(results[name].path.length >= results.bfs.path.length);
     assert.equal(results.astar.cost, results.dijkstra.cost);
     for (const name of ["bfs", "dfs"]) assert.ok(results[name].cost >= results.dijkstra.cost);
   }
 });
 
 test("gridSearch: start equals end; unknown algorithm", () => {
-  assert.deepEqual(gridSearch(OPEN, [1, 2], [1, 2], "astar"), { visited: [[1, 2]], path: [[1, 2]], cost: 0 });
+  assert.deepEqual(gridSearch(OPEN, [1, 2], [1, 2], "astar"), {
+    visited: [[1, 2]],
+    path: [[1, 2]],
+    cost: 0,
+  });
   assert.throws(() => gridSearch(OPEN, [0, 0], [2, 2], "teleport"), RangeError);
 });
 
@@ -217,12 +257,15 @@ test("generateMaze: every open cell is reachable (one connected maze)", () => {
   const open = maze.flat().filter((v) => v === 1).length;
   const { visited } = gridSearch(maze, [1, 1], [-1, -1], "bfs"); // unreachable end: BFS floods everything
   assert.equal(visited.length, open);
-  assert.ok(maze[0].every((v) => v === 0) && maze.every((row) => row[0] === 0), "outer wall intact");
+  assert.ok(
+    maze[0].every((v) => v === 0) && maze.every((row) => row[0] === 0),
+    "outer wall intact",
+  );
 });
 
 test("generateMaze: size, values, open corners", () => {
   let seed = 1;
-  const random = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const random = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   const maze = generateMaze(11, 15, random);
   assert.equal(maze.length, 11);
   assert.ok(maze.every((row) => row.length === 15 && row.every((v) => v === 0 || v === 1)));
@@ -234,11 +277,21 @@ test("fitComplexity recognizes each class, even with ±10% noise", () => {
   const ns = [1000, 2000, 4000, 8000, 16000];
   const noise = [1.08, 0.93, 1.05, 0.97, 1.1];
   for (const name of ["1", "log n", "n", "n log n", "n^2", "n^3"]) {
-    const exact = fitComplexity(ns, ns.map((n) => 1e-3 * GROWTH[name](n)));
+    const exact = fitComplexity(
+      ns,
+      ns.map((n) => 1e-3 * GROWTH[name](n)),
+    );
     assert.equal(exact.best, name, `${name} exact`);
     assert.ok(Math.abs(exact.c - 1e-3) < 1e-9, `${name} constant`);
     if (name === "1" || name === "log n") continue; // these two differ by less than the noise
-    assert.equal(fitComplexity(ns, ns.map((n, i) => 1e-3 * GROWTH[name](n) * noise[i])).best, name, `${name} noisy`);
+    assert.equal(
+      fitComplexity(
+        ns,
+        ns.map((n, i) => 1e-3 * GROWTH[name](n) * noise[i]),
+      ).best,
+      name,
+      `${name} noisy`,
+    );
   }
 });
 
@@ -266,7 +319,11 @@ test("findMatches: groups, indexes, empty matches, bad pattern", () => {
 test("explainRegex: literal runs, lazy quantifiers, groups, sets, escapes", () => {
   const explain = (p) => explainRegex(p).map((t) => t.token);
   const meaning = (p, token) => explainRegex(p).find((t) => t.token === token).meaning;
-  assert.deepEqual(explain("abc+d"), ["ab", "c", "+", "d"], "a quantifier repeats only the last character");
+  assert.deepEqual(
+    explain("abc+d"),
+    ["ab", "c", "+", "d"],
+    "a quantifier repeats only the last character",
+  );
   assert.match(meaning("a*?", "*?"), /0 or more.*as few as possible/);
   assert.match(meaning("x{2,}", "{2,}"), /2 or more/);
   assert.match(meaning("x{2,5}", "{2,5}"), /2 to 5/);
@@ -276,13 +333,19 @@ test("explainRegex: literal runs, lazy quantifiers, groups, sets, escapes", () =
   assert.match(meaning(String.raw`\.`, String.raw`\.`), /"\." \(escaped/);
   assert.match(meaning(String.raw`(a)\1`, String.raw`\1`), /group 1/);
   assert.deepEqual(explain("a|b"), ["a", "|", "b"]);
-  assert.ok(explainRegex(String.raw`^(\w+)@[\w.-]+\.(com|org)$`).every((t) => t.meaning.length > 0));
+  assert.ok(
+    explainRegex(String.raw`^(\w+)@[\w.-]+\.(com|org)$`).every((t) => t.meaning.length > 0),
+  );
 });
 
 test("findMatches: unmatched groups are undefined; empty matches step over emoji in u mode", () => {
   assert.deepEqual(findMatches("(a)|(b)", "", "b")[0].groups, [undefined, "b"]);
   const matches = findMatches("", "u", "😀x");
-  assert.deepEqual(matches.map((m) => m.index), [0, 2, 3], "never lands between the two halves of 😀");
+  assert.deepEqual(
+    matches.map((m) => m.index),
+    [0, 2, 3],
+    "never lands between the two halves of 😀",
+  );
 });
 
 test("PRESETS compile and match examples", () => {
