@@ -53,9 +53,9 @@ Build a multi-page website on a topic you care about, using an LLM as a developm
 | `cs/big-o.html` | growth curves, benchmark form + table; charts | toggle curves, log/linear, time real algorithms, fit a complexity class | ✅ |
 | `cs/regex.html` | pattern + flags, presets, blocks, explanation; test, matches, replace | click-to-insert tokens, live matches, replace preview, copy as JS, 1 s runaway guard | ✅ |
 | `social/index.html` | intro, Social gallery | cards from `TOOLS` | ✅ |
-| `social/forum.html` | board (filter, sort, search, threads, new thread), thread view | post threads/replies, vote | stub (storage + validation ready) |
-| `social/events.html` | new event form, upcoming/past | RSVP with capacity, .ics download | stub |
-| `social/journal.html` | lock screen; sidebar + block editor | encrypted vault, nested pages, `/` menu, Markdown shortcuts, KaTeX math, auto-lock | stub |
+| `social/forum.html` | board (filter, sort, search, threads, new thread), thread view | post threads/replies, vote | ✅ |
+| `social/events.html` | new event form, upcoming/past | RSVP with capacity, .ics download | ✅ |
+| `social/journal.html` | lock screen; sidebar + block editor | encrypted vault, nested pages, `/` menu, Markdown shortcuts, KaTeX math, auto-lock | ✅ |
 | `social/friends.html` | Friends (buttons wall, links, neighbors), link_to_me.txt, guestbook.exe | friends from `js/friends.js`; copy button HTML; sign the guestbook (validated, text-only, http(s) links only) | ✅ |
 | every page | header (logo, splash text, nav), ticker, footer (hit counter, badges), taskbar | mobile Menu; Start menu (sitemap tree, Random page, Sound); task button + clock; Esc / click-outside closes menus; sparkles; stickers | ✅ |
 
@@ -73,16 +73,14 @@ Done (one commit each, see `PROMPT_LOG.md`):
 - ✅ Site shell: shared header/nav, tool registry, galleries (`renderToolGallery`), mobile Menu, Lab cards + filters (`filterTools`, `renderHub`).
 - ✅ CS tools: sorting, data structures, graphs & pathfinding, Big-O playground, regex builder (all in `js/cs-lib.js` with tests).
 - ✅ Math tools: function plotter (2D + 3D, asymptote breaks), Matrix Lab (RREF with steps, det, inverse, eigenvalues, transpose), Notes Scanner (Tesseract OCR), LaTeX scratchpad (KaTeX preview, scan handoff, .tex download); logic in `js/utils.js` with tests.
+- ✅ Social tools: forum (categories, sort, search, replies, one vote per browser), events (RSVP with capacity, past events, .ics download), private journal (PBKDF2 + AES-GCM vault, auto-lock, nested pages, favorites, trash, search, block editor with `/` menu and Markdown shortcuts, KaTeX math); logic in `js/social-lib.js` with tests.
 - ✅ Indie-web redesign steps 1–8 (`REDESIGN_PLAN.md`): 98.css windows, taskbar + Start menu, Tools desktop, splash + Home portal, sticker layer, Me page, Friends + guestbook (with `storage.js`, `validatePost`, `relativeTime`), tool page polish.
 
 Still to do:
 1. **Your content:** Home tagline + welcome, Now box, Updates, Lab intro, Me page (about, facts, favorites, desk photos), friends in `js/friends.js`, your collage (`images/bg-collage.jpg`), real images replacing `images/*.svg` placeholders and their alt text. Commit.
 2. **Warm-up (spec step 2.4):** ask your LLM the warm-up question; note it in `PROMPT_LOG.md`.
-3. **Forum:** `sortThreads` (test), then `forum.js` (storage and validation are ready). Commit.
-4. **Events:** `rsvpSummary`, `setRsvp`, `splitEvents`, `toICS` (tests), then `events.js`. Commit.
-5. **Journal:** `deriveKey`, `encryptJSON`, `decryptJSON`, then `markdownShortcut`, `buildPageTree`, `searchPages` (tests); setup / unlock / lock / autosave / auto-lock; sidebar, blocks, slash menu, keyboard. Commit.
-6. **Redesign step 10 / spec step 8:** run every item in `TEST_REPORT.md`; fix; re-test. Commit.
-7. **Spec step 9 (submit):** finish prompt log "Your decision" rows + reflection, final push, submit the repo and live links.
+3. **Redesign step 10 / spec step 8:** run every item in `TEST_REPORT.md`; fix; re-test. Commit.
+4. **Spec step 9 (submit):** finish prompt log "Your decision" rows + reflection, final push, submit the repo and live links.
 
 ## Files
 | File | Purpose |
@@ -99,7 +97,7 @@ Still to do:
 | `cs/big-o.html` / `js/bigo.js` | Growth curves + benchmark (Plotly) |
 | `cs/regex.html` / `js/regex.js`, `js/regex-worker.js` | Regex builder (matching in a worker with a 1 s limit) |
 | `social/index.html` | Social overview |
-| `social/forum.html`, `events.html`, `journal.html` / `js/forum.js`, `events.js`, `journal.js` | Social tools (stubs) |
+| `social/forum.html`, `events.html`, `journal.html` / `js/forum.js`, `events.js`, `journal.js` | Social tools |
 | `social/friends.html` / `js/friends-page.js` | Friends wall, button code, guestbook |
 | `css/style.css` | The one shared stylesheet (loads after 98.css): tokens, `@font-face`, layout, tool visuals |
 | `js/script.js` | Shared script: taskbar + Start menu, menus, galleries, stickers, splash text, sparkles, sounds, hit counter |
@@ -131,6 +129,5 @@ Still to do:
 
 ## Questions / ambiguities
 - Due date isn't in the spec images.
-- Is 19 pages fine when some tools are still stubs, or should unfinished ones be hidden from the nav before submitting?
 - Does "at least two images" accept your own drawings and photos of your things? They are your own, so likely yes.
 - CDN libraries (98.css, math.js, Plotly, Tesseract, KaTeX) alongside the required shared `js/script.js` and `css/style.css`: worth a quick check with the instructor.

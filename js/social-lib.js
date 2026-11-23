@@ -30,9 +30,13 @@ export function validatePost(post, { requireTitle = false } = {}) {
  * @param {"new"|"top"|"active"} mode
  */
 export function sortThreads(threads, mode) {
-  // TODO (Plan Social step 1)
-  void threads, mode;
-  throw new Error("Not implemented");
+  const lastActivity = (t) => Math.max(t.createdAt, ...t.replies.map((r) => r.createdAt));
+  const key = { new: (t) => [t.createdAt], top: (t) => [t.score, t.createdAt], active: (t) => [lastActivity(t)] }[mode];
+  return [...threads].sort((a, b) => {
+    const [ka, kb] = [key(a), key(b)];
+    for (let i = 0; i < ka.length; i++) if (ka[i] !== kb[i]) return kb[i] - ka[i];
+    return 0;
+  });
 }
 
 /**
@@ -66,9 +70,9 @@ export function relativeTime(then, now) {
 
 /** @returns {{going: number, maybe: number, no: number, spotsLeft: number|null}} */
 export function rsvpSummary(event) {
-  // TODO (Plan Social step 2)
-  void event;
-  throw new Error("Not implemented");
+  const counts = { going: 0, maybe: 0, no: 0 };
+  for (const status of Object.values(event.rsvps)) counts[status]++;
+  return { ...counts, spotsLeft: event.capacity == null ? null : Math.max(0, event.capacity - counts.going) };
 }
 
 /**
@@ -77,9 +81,16 @@ export function rsvpSummary(event) {
  * @returns {{event: ChristopiaEvent, error: string|null}}
  */
 export function setRsvp(event, name, status) {
-  // TODO (Plan Social step 2)
-  void event, name, status;
-  throw new Error("Not implemented");
+  const clean = name.trim();
+  if (!clean) return { event, error: "Type your name to RSVP." };
+  if (!["going", "maybe", "no"].includes(status)) return { event, error: "Pick going, maybe or can't go." };
+  // Same person, any capitalization: replace their old answer (and keep the first spelling).
+  const existing = Object.keys(event.rsvps).find((n) => n.trim().toLowerCase() === clean.toLowerCase());
+  const alreadyGoing = existing !== undefined && event.rsvps[existing] === "going";
+  if (status === "going" && !alreadyGoing && rsvpSummary(event).spotsLeft === 0) {
+    return { event, error: "Sorry, this event is full. You can still answer maybe." };
+  }
+  return { event: { ...event, rsvps: { ...event.rsvps, [existing ?? clean]: status } }, error: null };
 }
 
 /**
@@ -88,9 +99,11 @@ export function setRsvp(event, name, status) {
  * @returns {{upcoming: ChristopiaEvent[], past: ChristopiaEvent[]}}
  */
 export function splitEvents(events, now) {
-  // TODO (Plan Social step 2)
-  void events, now;
-  throw new Error("Not implemented");
+  const isUpcoming = (e) => (e.end ?? e.start) >= now;
+  return {
+    upcoming: events.filter(isUpcoming).sort((a, b) => a.start - b.start),
+    past: events.filter((e) => !isUpcoming(e)).sort((a, b) => b.start - a.start),
+  };
 }
 
 /**
@@ -102,9 +115,24 @@ export function splitEvents(events, now) {
  * @returns {string}
  */
 export function toICS(event, now) {
-  // TODO (Plan Social step 2)
-  void event, now;
-  throw new Error("Not implemented");
+  const stamp = (ms) => new Date(ms).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  const text = (v = "") => String(v).replace(/\\/g, "\\\\").replace(/[;,]/g, (c) => `\\${c}`).replace(/\r?\n/g, "\\n");
+  const lines = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Christopia//Events//EN",
+    "BEGIN:VEVENT",
+    `UID:${event.id}@christopia`,
+    `DTSTAMP:${stamp(now)}`,
+    `DTSTART:${stamp(event.start)}`,
+    `DTEND:${stamp(event.end ?? event.start + 3_600_000)}`,
+    `SUMMARY:${text(event.title)}`,
+  ];
+  if (event.location) lines.push(`LOCATION:${text(event.location)}`);
+  if (event.description) lines.push(`DESCRIPTION:${text(event.description)}`);
+  lines.push("END:VEVENT", "END:VCALENDAR");
+  // shortcut: lines over 75 octets aren't folded; calendar apps accept them, but strict validators warn.
+  return lines.join("\r\n") + "\r\n";
 }
 
 /* ---------------- Journal: encryption ---------------- */
@@ -119,12 +147,18 @@ export const PBKDF2_ITERATIONS = 600_000; // OWASP 2023 recommendation for PBKDF
  * @returns {Promise<CryptoKey>}  non-extractable
  */
 export async function deriveKey(password, salt, iterations = PBKDF2_ITERATIONS) {
-  // TODO (Plan Social step 3): crypto.subtle.importKey("raw", utf8(password), "PBKDF2", false,
-  // ["deriveKey"]) then deriveKey({name: "PBKDF2", hash: "SHA-256", salt, iterations},
-  // base, {name: "AES-GCM", length: 256}, false, ["encrypt", "decrypt"]).
-  void password, salt, iterations;
-  throw new Error("Not implemented");
+  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
+  return crypto.subtle.deriveKey(
+    { name: "PBKDF2", hash: "SHA-256", salt, iterations },
+    base,
+    { name: "AES-GCM", length: 256 },
+    false,
+    ["encrypt", "decrypt"],
+  );
 }
+
+const toBase64 = (bytes) => btoa(String.fromCharCode(...new Uint8Array(bytes)));
+const fromBase64 = (text) => Uint8Array.from(atob(text), (c) => c.charCodeAt(0));
 
 /**
  * Encrypt any JSON-able value. A fresh random 12-byte IV every call (never reuse an IV).
@@ -133,9 +167,9 @@ export async function deriveKey(password, salt, iterations = PBKDF2_ITERATIONS) 
  * @returns {Promise<{iv: string, data: string}>}  base64 strings, safe for localStorage
  */
 export async function encryptJSON(key, value) {
-  // TODO (Plan Social step 3)
-  void key, value;
-  throw new Error("Not implemented");
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const data = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, new TextEncoder().encode(JSON.stringify(value)));
+  return { iv: toBase64(iv), data: toBase64(data) };
 }
 
 /**
@@ -146,9 +180,8 @@ export async function encryptJSON(key, value) {
  * @returns {Promise<unknown>}
  */
 export async function decryptJSON(key, payload) {
-  // TODO (Plan Social step 3)
-  void key, payload;
-  throw new Error("Not implemented");
+  const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: fromBase64(payload.iv) }, key, fromBase64(payload.data));
+  return JSON.parse(new TextDecoder().decode(plain));
 }
 
 /* ---------------- Journal: editor helpers ---------------- */
@@ -160,10 +193,22 @@ export async function decryptJSON(key, payload) {
  * @param {string} prefix
  * @returns {string|null}  block type
  */
+const SHORTCUTS = {
+  "#": "h1",
+  "##": "h2",
+  "###": "h3",
+  "-": "bullet",
+  "*": "bullet",
+  "1.": "number",
+  "[]": "todo",
+  ">": "quote",
+  "```": "code",
+  "---": "divider",
+  $$: "math",
+};
+
 export function markdownShortcut(prefix) {
-  // TODO (Plan Social step 4)
-  void prefix;
-  throw new Error("Not implemented");
+  return Object.hasOwn(SHORTCUTS, prefix) ? SHORTCUTS[prefix] : null;
 }
 
 /**
@@ -173,9 +218,15 @@ export function markdownShortcut(prefix) {
  * @returns {{page: object, children: any[]}[]}
  */
 export function buildPageTree(pages) {
-  // TODO (Plan Social step 4)
-  void pages;
-  throw new Error("Not implemented");
+  const live = pages.filter((p) => !p.trashed);
+  const ids = new Set(live.map((p) => p.id));
+  const byOrder = (a, b) => a.order - b.order;
+  const childrenOf = (id) =>
+    live
+      .filter((p) => (id === null ? p.parentId === null || !ids.has(p.parentId) : p.parentId === id))
+      .sort(byOrder)
+      .map((page) => ({ page, children: childrenOf(page.id) }));
+  return childrenOf(null);
 }
 
 /**
@@ -185,7 +236,11 @@ export function buildPageTree(pages) {
  * @param {string} query
  */
 export function searchPages(pages, query) {
-  // TODO (Plan Social step 4)
-  void pages, query;
-  throw new Error("Not implemented");
+  const q = query.trim().toLowerCase();
+  if (!q) return [];
+  const inTitle = (p) => p.title.toLowerCase().includes(q);
+  const inBody = (p) => p.blocks.some((b) => String(b.text ?? "").toLowerCase().includes(q));
+  return pages
+    .filter((p) => !p.trashed && (inTitle(p) || inBody(p)))
+    .sort((a, b) => inTitle(b) - inTitle(a) || b.updatedAt - a.updatedAt);
 }

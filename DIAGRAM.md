@@ -9,16 +9,16 @@ flowchart TD
     D2["CS tools: sorting, data structures, graphs, Big-O, regex"]
     D3["Indie-web redesign 1-9 + glass and sky-blue look"]
     D4["Math tools: plotter, matrix, scanner, LaTeX"]
-    D1 --> D2 --> D3 --> D4
+    D5["Social tools: forum, events, journal"]
+    D1 --> D2 --> D3 --> D4 --> D5
   end
   subgraph NEXT["Still to do"]
     N1["Your content: text, photos, collage, friends"]
-    N3["Social tools: forum, events, journal"]
     N4["Redesign step 10: test report"]
     N5["Submit: prompt log, reflection, links"]
-    N1 --> N3 --> N4 --> N5
+    N1 --> N4 --> N5
   end
-  D4 --> N1
+  D5 --> N1
 ```
 Where the project stands. Each box is one or more commits; `OUTLINE.md` has the details.
 
@@ -182,7 +182,7 @@ sequenceDiagram
 ```
 The photo never leaves the browser; the two pages share the text through localStorage.
 
-## Journal (to build)
+## Journal
 ```mermaid
 flowchart LR
   subgraph LOCK["section#journal-lock"]

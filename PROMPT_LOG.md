@@ -218,6 +218,16 @@ Record at least three significant features (page structure, navigation, CSS, res
 | Your decision | TODO: what you kept or changed, and why |
 | Debugging | `1/x` and `tan(x)` drew fake vertical lines because no sample lands exactly on the pole; the plotter now breaks the line where neighboring points are off-screen on opposite sides. Tested: all `utils` tests pass; every matrix operation and error case in the browser; OCR of a generated image (96% confidence, exact text) through to the LaTeX preview; no sideways scroll at 375 px; no console errors. |
 
+## 20. Social tools: forum, events, private journal
+| Field | Entry |
+|---|---|
+| Feature | The three Social tools: Forum, Events, Private Journal |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "Implement the social section tools" |
+| What it produced | `js/social-lib.js`: `sortThreads`, `rsvpSummary`, `setRsvp` (capacity, case-insensitive names), `splitEvents`, `toICS` (escaped iCalendar text), `deriveKey` / `encryptJSON` / `decryptJSON` (PBKDF2-SHA256 600k + AES-GCM, fresh IV per save), `markdownShortcut`, `buildPageTree`, `searchPages`. Forum: categories, sort, search, threads and replies (text only, never HTML), one up/down vote per browser, remembered name. Events: form validation, RSVP buttons with pressed state, "Full" and spots left, who's going, past events, .ics download. Journal: create/unlock/lock, encrypted autosave, auto-lock after 10 min, Cmd/Ctrl+K and +L, nested pages with breadcrumb, favorites, trash with restore and delete-forever, search, icon picker, a block editor (Enter splits, Backspace converts then joins, `/` menu, Markdown shortcuts, to-dos, lists, toggles, code, KaTeX math, dividers, plain-text paste). |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | Shortcuts and `/` first lived in `keydown`, which misses text typed by phone keyboards (they report keys as "Unidentified"); moved to `beforeinput`. Replying right after posting failed because the reply's name field was empty; both name fields now fill. The journal window put its title bar beside the content (grid on the wrong element) and 98.css clipped the page title at 21 px; fixed in CSS. Tested every form's errors, capacity, the .ics text, wrong password, lock + reload keeps edits, trash/restore with sub-pages, phone width, and no console errors. |
+
 ## Warm-up (Step 2.4)
 TODO: ask "What semantic elements should a personal website homepage include?" and note one thing you learned.
 
