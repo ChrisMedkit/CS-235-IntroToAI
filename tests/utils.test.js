@@ -1,5 +1,4 @@
 // Tests for js/utils.js. Run: npm test (Node's built-in test runner, nothing to install).
-// All fail until the matching TODOs are done.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {

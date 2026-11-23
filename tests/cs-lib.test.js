@@ -1,4 +1,4 @@
-// Tests for js/cs-lib.js. They fail until the matching TODOs are done.
+// Tests for js/cs-lib.js. Run: npm test
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
