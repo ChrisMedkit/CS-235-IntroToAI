@@ -41,23 +41,22 @@ Pixel art suits the 98 look.
 - [ ] `images/icons/folder.svg`: **16 × 16**, the little folder beside the Home launch-pad links and in the Tools window
 
 ## 3. 88 × 31 buttons (exactly 88 × 31)
-(`made-with-claude.svg` is no longer shown anywhere; its file is still in `images/badges/` if you want it back.)
+(`made-with-claude.svg` and `stickers/new-burst.svg` are no longer shown anywhere; its file is still in `images/badges/` if you want it back.)
 The classic web buttons in every page's footer and on the Home "Buttons" wall. `christopia.svg` is also
 the button other people copy from the Friends page to link to you, so make that one your best.
 
 - [ ] `images/badges/christopia.svg`: Christopia's own button
 - [ ] `images/badges/math-inside.svg`: "Σ Math inside"
 - [ ] `images/badges/any-browser.svg`: "Best viewed in any browser"
-- [ ] *(optional)* more of your own: add to `images/badges/` and the Home Buttons wall
+- [ ] *(optional)* more of your own: add to `images/badges/` and the footers
 
 ## 4. Stickers (any size, transparent background)
 Float over pages; placement is in `js/stickers.js` (README "Add a sticker" explains `x`, `y`, `w`, tilt).
 
 - [ ] `images/stickers/sparkle.svg`: 32 × 32, splash and Home (marked `pixel: true`, drawn crisp)
-- [ ] `images/stickers/new-burst.svg`: 64 × 64 "NEW!" starburst, splash and Home
-- [ ] `images/stickers/cd.svg`: 64 × 64, splash and Tools
-- [ ] `images/stickers/floppy.svg`: 48 × 48, splash and Tools (also the "Lab" object on the Me desk)
-- [ ] `images/stickers/under-construction.svg` + `under-construction-still.svg`: 120 × 72, Lab page.
+- [ ] `images/stickers/cd.svg`: 64 × 64, **the splash page's "Click to run" button** (shown at 160 × 160, spinning, so make it round), plus stickers on the splash and Tools
+- [ ] `images/stickers/floppy.svg`: 48 × 48, splash and Tools (also the "Services" object on the Me desk)
+- [ ] `images/stickers/under-construction.svg` + `under-construction-still.svg`: 120 × 72, **not shown anywhere now** (it was on the Lab page); add it back in `js/stickers.js` if you want it.
       The first can be an animated GIF; the "still" is its first frame, shown when someone has reduced motion turned on.
 - [ ] *(new)* add any number of your own stickers. Characters, doodles and photos of your things work best.
 
@@ -68,14 +67,13 @@ Position, size and tilt live in `css/style.css` (`.desk-calculator { --x; --y; -
 - [ ] `images/me/calculator.svg`: 60 × 110, links to Tools
 - [ ] `images/me/notebook.svg`: 96 × 120, links to the Journal
 - [ ] `images/me/phone.svg`: 50 × 104, links to Social
-- [ ] `images/me/headphones.svg`: 110 × 96, links to "Now playing" on Home
+- [ ] `images/me/headphones.svg`: 110 × 96, links to your Spotify
 - [ ] `images/me/polaroid.svg`: 90 × 106, links to About me (a real photo inside a polaroid frame works well)
-- [ ] `images/stickers/floppy.svg`: the Lab link (shared with the sticker above; give it its own file if you want them different)
+- [ ] `images/stickers/floppy.svg`: the Services link (shared with the sticker above; give it its own file if you want them different)
 - [ ] `images/me/me.svg`: 96 × 96, your photo or self-portrait in about.txt. **Needs alt text** (`me.html`).
 
 ## 6. Other illustrations
 - [ ] `images/hero.svg`: 640 × 360, the picture in Home's welcome.txt. **Needs alt text** (`home.html`).
-- [ ] `images/door.svg`: 48 × 78, shown at 120 × 195, the "Enter" door on the splash page
 - [ ] `images/bg-collage.jpg`: **not made yet.** Your Photoshop collage, the background of every page
       except Math (README "Background" has the export steps). Until then the sky gradient shows.
 - [ ] `images/real-analysis-bg.png`: 1572 × 1078, already yours (your Real Analysis portfolio, faded, on Math pages)

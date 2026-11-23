@@ -1,6 +1,6 @@
 # Christopia
 
-An indie-web home for an applied math + CS major and their friends, dressed as a Windows 98 desktop: a Tools desktop (Math and CS tools), Social (forum, events, journal, friends + guestbook), a Me page and a Lab for what's next.
+An indie-web home for an applied math + CS major and their friends, dressed as a Windows 98 desktop: a Tools desktop (Math and CS tools), Social (forum, events, journal, friends + guestbook), a Me desk, and a Services control panel on Home for what's next.
 
 **Live:** https://chrismedkit.github.io/cs235-christopia/
 
@@ -16,14 +16,14 @@ python3 -m http.server 8124
 Tests (Node 18+, nothing to install): `npm test`
 
 ## Layout
-- `index.html` (splash: big chrome title + a door), `home.html` (Home portal), `tools.html` (the Tools desktop: Math and CS folder windows), `me.html` (Me: a desk of links + about windows) and `lab.html` (Lab) at the root.
+- `index.html` (splash: big chrome title + a spinning CD-ROM "autorun" button), `home.html` (Home portal with the Services control panel), `tools.html` (the Tools desktop: Math and CS folder windows) and `me.html` (Me: the whole page is a desk with link objects and two sticky notes) at the root.
 - `math/`, `cs/`: one page per tool; the Tools desktop is their overview, and each page has a 98 address bar (`C:\Tools\Math\Plotter`).
 - `social/`: an `index.html` overview plus one page per tool, linked by a sub-nav.
 - Shared: `css/style.css`, `js/script.js`, `fonts/`, `images/`. Pages in folders link up with `../`.
 
 ## Add a tool
 1. Add an entry to `js/tools.js` (`href` is from the site root, `category` is `math`, `cs` or `social`).
-   It then shows up by itself on the Tools desktop, the Home gallery, the Start-menu sitemap and the Lab.
+   It then shows up by itself on the Tools desktop, the Home gallery and the Start-menu sitemap. A `planned` entry shows up instead as a service on Home's control panel.
 2. Add `images/<id>.svg` (card image) and, for Math/CS tools, `images/icons/<id>.svg` (48×48 desktop icon).
    `npm test` fails if either is missing.
 3. Copy a page in that folder (header, address bar or sub-nav, footer are already there), change its
@@ -38,7 +38,7 @@ Every push to `main` updates the live site within a minute or two (GitHub Pages)
    ```js
    { src: "images/stickers/my-cat.png", page: "home", x: "6%", y: 600, w: 140, r: -8 },
    ```
-   - `page`: `"home"`, `"index"` (splash), `"tools"`, `"me"`, `"lab"`, `"cs/regex"`, … or `"*"` for every page.
+   - `page`: `"home"`, `"index"` (splash), `"tools"`, `"me"`, `"cs/regex"`, … or `"*"` for every page.
    - `x` (or `right`) from the edge, `y` in px from the top of the page, `w` width in px, `r` tilt.
    - `front: true` puts it over the windows (use corners and empty spots, never over text); the default is behind them.
    - `phone: true` also shows it on phones; `still: "images/stickers/my-cat-still.png"` for GIFs; `pixel: true` for pixel art; `href` + `alt` to make it a link.
@@ -55,7 +55,7 @@ cut each one out (transparent PNG), save it in `images/me/`, and change that obj
 (keep its label text). Move or resize it with its rule in `css/style.css`: `.desk-calculator { --x: 7%; --y: 12%; --w: 10%; --r: -8deg; }`
 (position from the desk's top-left, width as a share of the desk, tilt). On phones the objects line up in a grid automatically.
 
-**88×31 buttons** go in `images/buttons/` and on the Home "Buttons" window (`home.html`, `.buttons-wall`); **blinkies** (150×20) in `images/blinkies/`; **stamps** (99×56) in `images/stamps/`. Credit art you didn't make, and download it rather than hotlinking someone else's site.
+**88×31 buttons**: your own in `images/badges/` (footer), friends' in `images/buttons/` (Friends page); **blinkies** (150×20) in `images/blinkies/`; **stamps** (99×56) in `images/stamps/`. Credit art you didn't make, and download it rather than hotlinking someone else's site.
 
 ## Background
 - **Collage (every page except Math):** browsers can't show `.psd` files. Export a flattened JPEG from
@@ -98,4 +98,4 @@ Self-hosted in `fonts/`, declared at the top of `css/style.css`:
 - Minecraft (Craftron Gaming, dafont): 100% free.
 - M PLUS Rounded 1c (Google Fonts, SIL Open Font License) for reading text.
 
-The icons, stickers, desk objects, door and badges in `images/` were drawn for this site (SVG).
+The icons, stickers, desk objects and badges in `images/` were drawn for this site (SVG).

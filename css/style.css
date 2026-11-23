@@ -195,7 +195,7 @@ button,
 #site-nav li a,
 .sub-nav a,
 .launch-pad a,
-.enter-door span,
+.autorun-label,
 .data-table th {
   background: var(--gloss);
 }
@@ -246,7 +246,7 @@ h1.title-bar-text {
 .button:active {
   box-shadow: var(--bevel-in);
 }
-/* A toggle that is on looks pressed in (hub filters). */
+/* A toggle that is on looks pressed in (e.g. the graph tool buttons). */
 [role="group"] > button[aria-pressed="true"] {
   box-shadow: var(--bevel-in);
   background: var(--pressed);
@@ -734,45 +734,50 @@ form textarea {
 .splash-note {
   font: 11px var(--font-ui);
 }
-.enter-door,
-.enter-door:visited {
+/* CD-ROM autorun button: a spinning disc with a 98-style label under it. */
+.autorun,
+.autorun:visited {
   display: grid;
   justify-items: center;
-  gap: 0.4rem;
-  color: #083d5c;
+  gap: 0.6rem;
+  color: #000000;
   text-decoration: none;
 }
-.enter-door img {
-  width: 120px;
+.autorun img {
+  width: 160px;
   height: auto;
-  image-rendering: pixelated;
-  filter: drop-shadow(4px 4px 0 rgb(0 0 0 / 0.35));
-  transform-origin: left center;
+  border-radius: 50%;
+  filter: drop-shadow(4px 6px 0 rgb(0 0 0 / 0.3));
 }
-.enter-door span {
-  padding: 4px 18px;
-  background: var(--glass);
+.autorun-label {
+  padding: 6px 16px;
   box-shadow: var(--bevel-out);
-  color: #000000;
-  font: 700 11px var(--font-ui);
+  font: 11px var(--font-ui);
 }
-.enter-door:hover span,
-.enter-door:focus-visible span {
+.autorun:hover .autorun-label,
+.autorun:focus-visible .autorun-label {
   background: var(--select);
   color: #ffffff;
 }
-.enter-door:focus-visible {
-  outline: 1px dotted #ffffff;
-  outline-offset: 4px;
+.autorun:active .autorun-label {
+  box-shadow: var(--bevel-in);
 }
-/* The door swings open a little on hover or focus. */
+.autorun:focus-visible {
+  outline: 1px dotted #000000;
+  outline-offset: 6px;
+}
 @media (prefers-reduced-motion: no-preference) {
-  .enter-door img {
-    transition: transform 0.25s ease-out;
+  .autorun img {
+    animation: cd-spin 6s linear infinite;
   }
-  .enter-door:hover img,
-  .enter-door:focus-visible img {
-    transform: perspective(400px) rotateY(-28deg);
+  .autorun:hover img,
+  .autorun:focus-visible img {
+    animation-duration: 0.8s; /* "reading the disc" */
+  }
+}
+@keyframes cd-spin {
+  to {
+    transform: rotate(1turn);
   }
 }
 
@@ -842,47 +847,202 @@ form textarea {
   margin: 0 0 0.5rem 0.75rem;
   box-shadow: var(--bevel-in);
 }
-.now-box {
+/* Services control panel: a little server rack. Amber light = planned, dark = empty bay. */
+.rack {
+  padding: 10px 18px;
+  border-radius: 4px;
+  box-shadow: var(--bevel-in);
+  /* rack rails with screw holes down both sides */
+  background-image:
+    radial-gradient(circle, #111 2px, transparent 2.5px),
+    radial-gradient(circle, #111 2px, transparent 2.5px),
+    linear-gradient(180deg, #3a4148, #23282d);
+  background-size: 10px 24px, 10px 24px, auto;
+  background-position: 4px 6px, right 4px top 6px, 0 0;
+  background-repeat: repeat-y, repeat-y, no-repeat;
+}
+.rack-units {
+  list-style: none;
   margin: 0;
+  padding: 0;
   display: grid;
   gap: 6px;
 }
-.now-box div {
-  padding: 4px 8px;
-  background: var(--surface);
-  box-shadow: var(--bevel-in);
-}
-.now-box dt {
-  font: 700 11px var(--font-ui);
-}
-.now-box dd {
-  margin: 0;
-}
-.updates {
-  margin: 0;
-  padding-left: 1.1rem;
+.rack-unit {
   display: grid;
-  gap: 0.5rem;
+  grid-template-columns: 12px 1fr;
+  column-gap: 8px;
+  align-items: center;
+  padding: 7px 10px;
+  background: linear-gradient(180deg, #4b535b, #3d444b);
+  border: 1px solid #1b1f23;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18);
+  color: #f2f6f8;
 }
-.updates time {
-  display: block;
-  font: 700 11px var(--font-ui);
-  color: var(--accent);
+.rack-unit .unit-name {
+  font: 700 0.95rem var(--font);
+}
+.rack-unit .unit-status,
+.rack-unit .unit-note {
+  grid-column: 2;
+  font: 11px var(--font-ui);
+}
+.rack-unit .unit-status {
+  color: #ffd27a;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.rack-unit .unit-note {
+  color: #d6dee4;
+}
+.rack-unit.empty {
+  background: repeating-linear-gradient(90deg, #2f353b 0 3px, #353c42 3px 6px); /* vent slots */
+}
+.rack-unit.empty .unit-name,
+.rack-unit.empty .unit-status {
+  color: #b9c3ca;
+}
+.led {
+  grid-row: 1 / span 3;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #1c2024;
+  box-shadow: inset 0 0 0 1px #000;
+}
+.led-amber {
+  background: #ffb000;
+  box-shadow: 0 0 6px #ffb000;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .led-amber {
+    animation: led-blink 1.6s steps(2, jump-none) infinite;
+  }
+}
+@keyframes led-blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+.rack-footer {
+  margin: 0.5rem 0 0;
+  font: 11px var(--font-ui);
+  color: var(--muted);
 }
 
 /* ---------- Me page (me.html): a desk whose objects are links ---------- */
 .scene-hint {
   margin-top: 0;
 }
-/* The desk: wood planks drawn with gradients (no image file). */
-.scene {
-  position: relative;
-  aspect-ratio: 16 / 9;
+/* The whole page is the desk: wood planks drawn with gradients (no image file). */
+.desk-page {
+  width: min(1400px, 100%);
+  min-height: 80vh;
+  margin-block: var(--space);
+  padding: calc(var(--space) * 1.5);
   background:
     repeating-linear-gradient(90deg, transparent 0 calc(25% - 2px), rgb(60 35 15 / 0.55) calc(25% - 2px) 25%),
     repeating-linear-gradient(0deg, rgb(255 255 255 / 0.05) 0 3px, transparent 3px 11px),
     linear-gradient(180deg, #b9824b, #9c6a38);
-  box-shadow: var(--bevel-in);
+  box-shadow: var(--bevel-in), var(--shadow);
+  color: #ffffff;
+}
+/* A brass nameplate instead of a window title. */
+.desk-nameplate {
+  justify-self: center;
+  margin: 0;
+  padding: 0.2rem 1.6rem;
+  background: linear-gradient(180deg, #f6e27a, #c9a227 55%, #e9cf5c);
+  border: 2px solid #7a5a12;
+  border-radius: 4px;
+  box-shadow: 0 3px 0 rgb(0 0 0 / 0.35);
+  color: #3b2a05;
+  font: 400 1.6rem var(--font-display);
+  letter-spacing: 0.08em;
+}
+.desk-page .scene-hint {
+  justify-self: center;
+  margin: 0;
+  padding: 2px 10px;
+  background: #fffbe6; /* a paper tag: white text on the light wood was too faint */
+  box-shadow: 2px 2px 0 rgb(0 0 0 / 0.3);
+  color: #3b2a05;
+  font: 700 11px var(--font-ui);
+}
+/* Notes | objects | notes on wide screens; objects first, then the notes, on smaller ones. */
+.desk-layout {
+  display: grid;
+  gap: calc(var(--space) * 2);
+  align-items: start;
+}
+.scene {
+  position: relative;
+  aspect-ratio: 16 / 10;
+}
+@media (min-width: 600px) and (max-width: 1099px) {
+  .desk-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+  .desk-layout .scene {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+}
+@media (min-width: 1100px) {
+  .desk-layout {
+    grid-template-columns: minmax(250px, 1fr) minmax(0, 1.7fr) minmax(220px, 0.9fr);
+  }
+}
+
+/* Sticky notes: yellow Post-its, a little tilted, with tape on top. */
+.sticky-note {
+  position: relative;
+  padding: 1.6rem 1.1rem 1.1rem;
+  background: linear-gradient(180deg, #fff59a, #ffeb6e);
+  color: #1d1a0a;
+  box-shadow: 3px 6px 10px rgb(0 0 0 / 0.35);
+  transform: rotate(var(--tilt, -2deg));
+}
+.note-favorites {
+  --tilt: 2.5deg;
+}
+.sticky-note::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 90px;
+  height: 22px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: rgb(255 255 255 / 0.55);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
+}
+.sticky-note h2,
+.sticky-note h3 {
+  margin: 0 0 0.5rem;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Marker Felt", var(--font);
+  color: #1d1a0a;
+}
+.sticky-note h2 {
+  font-size: 1.35rem;
+}
+.sticky-note h3 {
+  margin-top: 0.9rem;
+  font-size: 1.05rem;
+}
+.sticky-note p {
+  margin: 0 0 0.5rem;
+}
+.sticky-note a {
+  color: #0b4f7a;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sticky-note {
+    transition: transform 0.2s;
+  }
+  .sticky-note:hover {
+    transform: rotate(0deg) scale(1.02);
+  }
 }
 .scene ul {
   list-style: none;
@@ -1013,11 +1173,6 @@ form textarea {
     opacity: 1;
   }
 }
-.me-columns {
-  display: grid;
-  gap: calc(var(--space) * 1.25);
-  align-items: start;
-}
 .me-photo {
   float: left;
   margin: 0 0.75rem 0.5rem 0;
@@ -1030,13 +1185,13 @@ form textarea {
   display: grid;
   gap: 6px;
 }
+/* Ruled lines on the note instead of boxes. */
 .facts div {
   display: grid;
-  grid-template-columns: 7rem 1fr;
+  grid-template-columns: 6rem 1fr;
   gap: 0.5rem;
-  padding: 4px 8px;
-  background: var(--surface);
-  box-shadow: var(--bevel-in);
+  padding: 4px 0;
+  border-bottom: 1px dashed rgb(0 0 0 / 0.25);
 }
 .facts dt {
   font: 700 11px var(--font-ui);
@@ -1163,77 +1318,6 @@ table.matrix td {
 }
 #scan-progress {
   width: 100%;
-}
-
-/* ---------- Hub ---------- */
-.hub-grid {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  gap: var(--space);
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-}
-.hub-card {
-  position: relative; /* the title link's ::after covers the whole card */
-  display: grid;
-  align-content: start;
-  gap: 0.4rem;
-  padding: var(--space);
-  background: var(--glass);
-  box-shadow: var(--bevel-out), var(--shadow);
-  transition: transform 0.15s;
-}
-.hub-card h3,
-.hub-card p {
-  margin: 0;
-}
-.hub-card h3 a {
-  color: inherit;
-  text-decoration: none;
-}
-.hub-card h3 a::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-}
-.hub-card:has(a):hover,
-.hub-card:focus-within {
-  border-color: var(--accent);
-  box-shadow:
-    var(--bevel-out),
-    0 0 0 2px var(--select),
-    var(--shadow);
-  transform: translateY(-3px);
-}
-.hub-card.status-planned {
-  border-style: dashed;
-  opacity: 0.85;
-}
-.hub-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-.badge {
-  display: inline-block;
-  padding: 0.05rem 0.6rem;
-  border-radius: var(--pill);
-  font-size: 0.8rem;
-  font-weight: 700;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--muted);
-}
-.badge.status-live {
-  background: #dcf5e6;
-  border-color: #7fd3a1;
-  color: #155c33;
-}
-.badge.status-planned {
-  background: #fdf0d5;
-  border-color: #f0c36b;
-  color: #6e4a00;
 }
 
 /* ---------- Footer: hit counter + 88x31 badges ---------- */
@@ -2247,9 +2331,6 @@ kbd {
   }
   .journal-app > .window-body {
     grid-template-columns: 260px minmax(0, 1fr);
-  }
-  .me-columns {
-    grid-template-columns: 2fr 1fr;
   }
 }
 

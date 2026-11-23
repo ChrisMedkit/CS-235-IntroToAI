@@ -5,7 +5,7 @@ See [OUTLINE.md](OUTLINE.md) and [REDESIGN_PLAN.md](REDESIGN_PLAN.md)
 ```mermaid
 flowchart TD
   subgraph DONE["Done"]
-    D1["Site shell: nav, galleries, Lab filters"]
+    D1["Site shell: nav, galleries, Home services panel"]
     D2["CS tools: sorting, data structures, graphs, Big-O, regex"]
     D3["Indie-web redesign 1-9 + glass and sky-blue look"]
     D4["Math tools: plotter, matrix, scanner, LaTeX"]
@@ -25,36 +25,35 @@ Where the project stands. Each box is one or more commits; `OUTLINE.md` has the 
 ## Sitemap
 ```mermaid
 flowchart TD
-  SP["index.html: Splash"] -- "Enter door" --> H["home.html: Home"]
+  SP["index.html: Splash"] -- "CD-ROM autorun" --> H["home.html: Home"]
   NAV["Top nav + Start menu (every page)"]
   NAV --> H
   NAV --> T["tools.html: Tools desktop"]
   NAV --> S["social/index.html: Social"]
   NAV --> ME["me.html: Me"]
-  NAV --> LAB["lab.html: Lab"]
   T --> MF["Math folder"] & CF["CS folder"]
   MF --> M1["math/plotter"] & M2["math/matrix"] & M3["math/latex"] & M4["math/scanner"]
   CF --> C1["cs/sorting"] & C2["cs/data-structures"] & C3["cs/graphs"] & C4["cs/big-o"] & C5["cs/regex"]
   S --> S1["social/forum"] & S2["social/events"] & S3["social/journal"] & S4["social/friends"]
-  ME -- "desk objects" --> T & S & S3 & LAB
+  ME -- "desk objects" --> T & S & S3 & H
   M4 -- "Open in LaTeX editor" --> M3
 ```
-Nineteen pages. The splash leads to Home; the nav and the Start menu reach every page. Tools is a desktop of folders; tool pages link back through their address bar (Math, CS) or sub-nav (Social).
+Eighteen pages. The splash leads to Home; the nav and the Start menu reach every page. Tools is a desktop of folders; tool pages link back through their address bar (Math, CS) or sub-nav (Social).
 
 ## Splash and Home wireframes
 ```mermaid
 flowchart TD
   subgraph SPL["index.html (splash)"]
     direction TB
-    T1["h1.chrome-title + splash text"] --> SUB["subtitle"] --> DOOR["a.enter-door: door + Enter"] --> NOTE["best viewed in any browser"]
+    T1["h1.chrome-title + splash text"] --> SUB["subtitle"] --> CD["a.autorun: spinning CD + Click to run"] --> NOTE["best viewed in any browser"]
   end
   subgraph HOME["home.html"]
     direction TB
-    HD["header: logo, nav (Home, Tools, Social, Me, Lab)"] --> TK["ticker"] --> T2["h1.chrome-title-small + tagline"]
+    HD["header: logo, nav (Home, Tools, Social, Me)"] --> TK["ticker"] --> T2["h1.chrome-title-small + tagline"]
     T2 --> PORTAL
     subgraph PORTAL["div.portal (3 columns at 1000 px+)"]
       direction LR
-      L["Launch pad / Buttons"] --- C["welcome.txt / All tools gallery"] --- R["Now / Updates"]
+      L["Launch pad"] --- C["welcome.txt / All tools gallery"] --- R["Services control panel"]
     end
     PORTAL --> FT["footer: hit counter + badges"]
   end
@@ -62,7 +61,7 @@ flowchart TD
   SPL -.-> TB
   HOME -.-> TB
 ```
-The splash is just the title and a door; Home is the three-column portal.
+The splash is just the title and a CD-ROM button; Home is the three-column portal.
 
 ## Tool page layout
 ```mermaid
@@ -93,7 +92,7 @@ Bottom to top: what paints over what. Both sticker layers cover the whole page, 
 ```mermaid
 flowchart LR
   subgraph shared["shared (every page)"]
-    SC["script.js: taskbar, menus, galleries, stickers, extras"]
+    SC["script.js: taskbar, menus, galleries, services panel, stickers, extras"]
     TL["tools.js: tool registry"]
     STK["stickers.js: sticker list"]
   end
@@ -103,9 +102,8 @@ flowchart LR
     SL["social-lib.js"]
     ST["storage.js"]
   end
-  SC --> TL & STK
+  SC --> TL & STK & U
   DK["desktop.js (Tools)"] --> TL
-  LB["lab.js (Lab)"] --> U & TL
   MATH["plotter, matrix, latex, scanner .js"] --> U
   CS["sorting, structures, graphs, bigo, regex .js"] --> CL
   RW["regex-worker.js"] --> CL
@@ -178,7 +176,7 @@ sequenceDiagram
   U->>SC: Open in LaTeX editor
   SC->>LX: latex.html?from=scanner
   LX->>LS: read last scan
-  LX->>LX: KaTeX preview; Download .tex wraps it with toLatexDocument
+  LX->>LX: KaTeX preview, and Download .tex wraps it with toLatexDocument
 ```
 The photo never leaves the browser; the two pages share the text through localStorage.
 
@@ -229,7 +227,7 @@ The password never leaves memory and is never saved; a wrong key makes AES-GCM f
 ## Requirements → code
 ```mermaid
 flowchart LR
-  R1["3+ pages"] --> C1["19 html pages"]
+  R1["3+ pages"] --> C1["18 html pages"]
   R2["Consistent nav"] --> C2["same header on every page, aria-current, Start menu sitemap"]
   R3["2+ images with alt"] --> C3["images/ (icons, desk, stickers, badges)"]
   R4["Consistent design"] --> C4["98.css + glass/blue tokens in style.css + fonts"]

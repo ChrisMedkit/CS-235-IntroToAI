@@ -2,6 +2,7 @@
 // Tool pages add their own module (plotter.js, ...) for page-specific behavior.
 import { TOOLS } from "./tools.js";
 import { STICKERS } from "./stickers.js";
+import { filterTools } from "./utils.js";
 
 const root = () => document.body.dataset.root ?? ""; // "" at the site root, "../" in section folders
 
@@ -85,7 +86,6 @@ const SITE = [
   { name: "Tools", href: "tools.html", folders: [["Math", "math"], ["CS", "cs"]] },
   { name: "Social", href: "social/index.html", folders: [["Pages", "social"]] },
   { name: "Me", href: "me.html" },
-  { name: "Lab", href: "lab.html" },
 ];
 
 /** Every page a visitor can open, as root-relative hrefs (for Random page). */
@@ -335,10 +335,40 @@ function initHitCounter() {
   }
 }
 
+/* ---------------- Home: services control panel ---------------- */
+
+const EMPTY_BAYS = 4; // blank "coming soon" slots under the planned services
+
+/** One rack unit: status light, name, status, optional note. */
+function rackUnit(name, status, note, ledClass) {
+  const li = el("li", { className: "rack-unit" });
+  const led = el("span", { className: `led ${ledClass}`.trim() });
+  led.setAttribute("aria-hidden", "true");
+  li.append(led, el("span", { className: "unit-name", textContent: name }), el("span", { className: "unit-status", textContent: status }));
+  if (note) li.append(el("span", { className: "unit-note", textContent: note }));
+  return li;
+}
+
+/** Home's control panel: services that aren't tools yet (status "planned" in tools.js), then empty bays. */
+function renderServices() {
+  const list = document.getElementById("rack-units");
+  if (!list) return;
+  const planned = filterTools(TOOLS, "planned");
+  const units = planned.map((t) => rackUnit(t.name, "Offline · coming soon", t.summary, "led-amber"));
+  for (let i = 0; i < EMPTY_BAYS; i++) {
+    const bay = rackUnit("Empty bay", "Coming soon", "", "");
+    bay.classList.add("empty");
+    units.push(bay);
+  }
+  list.replaceChildren(...units);
+  document.getElementById("rack-summary").textContent = `0 online · ${planned.length} planned · ${EMPTY_BAYS} empty bays`;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initTaskbar(); // before initSounds and initMenus: they wire its buttons
   initStickers();
   renderToolGallery();
+  renderServices();
   initSplash();
   initSparkles();
   initSounds();

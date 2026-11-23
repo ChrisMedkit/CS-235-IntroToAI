@@ -228,6 +228,16 @@ Record at least three significant features (page structure, navigation, CSS, res
 | Your decision | TODO: what you kept or changed, and why |
 | Debugging | Shortcuts and `/` first lived in `keydown`, which misses text typed by phone keyboards (they report keys as "Unidentified"); moved to `beforeinput`. Replying right after posting failed because the reply's name field was empty; both name fields now fill. The journal window put its title bar beside the content (grid on the wrong element) and 98.css clipped the page title at 21 px; fixed in CSS. Tested every form's errors, capacity, the .ics text, wrong password, lock + reload keeps edits, trash/restore with sub-pages, phone width, and no console errors. |
 
+## 21. Your content, a CD-ROM splash, Home control panel, Me desk, Lab removed
+| Field | Entry |
+|---|---|
+| Feature | Fill in the remaining site TODOs from my answers; replace the splash door; simplify Home; turn Me into a full desk; replace the Lab |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "Help me fix the todo list items ... Give me options for how to complete these with the ability to write in my own answer. After that, remove the following items. index.html - door, I just want a fun button ... new sticker ... home.html - buttons section ... now section ... change me.html - make the whole page the "desk" and have about.txt and favorites.txt be sticky notes on the desk. change lab.html - needs a format change; Give me options" (answers: my own Into / Currently / favorites, "Hang out with me" blurb, CD-ROM autorun button, a server-rack control panel on Home replacing Now and Updates showing only services that aren't tools plus blank coming-soon slots, remove the Lab page, keep the desk objects, classic yellow sticky notes, headphones to my Spotify) |
+| What it produced | Me: the whole page is a wood desk with a brass nameplate; about.txt and favorites.txt are tilted yellow sticky notes with my answers; objects stay as links (headphones → Spotify, floppy → Services). Splash: a spinning CD-ROM "Click to run Christopia.exe" button instead of the door (`door.svg` deleted). NEW stickers removed. Home: Buttons, Now and Updates removed; a Services control panel (server rack) renders the `planned` entries from `js/tools.js` plus 4 empty bays (`renderServices`, reusing `filterTools`). Lab page, `js/lab.js` and its styles removed; Lab taken out of the nav on 17 pages, the Start menu and the launch pad. Social blurb rewritten. Docs updated to 18 pages. |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | Contrast check: the rack's amber status text (4.36:1) and the white desk hint on light wood (3.3:1) were under 4.5:1; darkened the rack units and put the hint on a paper tag. Audited all 18 pages at 1280 px and 375 px: no sideways scroll, no broken images, no broken links. |
+
 ## Warm-up (Step 2.4)
 TODO: ask "What semantic elements should a personal website homepage include?" and note one thing you learned.
 

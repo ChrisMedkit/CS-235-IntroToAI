@@ -4,27 +4,22 @@ Everything left, in a sensible order. Every tool is built; what remains is **you
 and the assignment write-ups. Search the project for `TODO` to find each spot.
 
 ## 1. Your words on the site
-- [ ] **Home tagline**: the line under the big title ([home.html:43](home.html#L43))
-- [ ] **Home welcome.txt**: rewrite the paragraph in your voice ([home.html:85](home.html#L85))
-- [ ] **Home "Now" box**: Status, Listening to, Reading ([home.html:200](home.html#L200))
-- [ ] **Me → about.txt**: "Hi! I'm …", a sentence about you, Into / Currently / Find me, and why you made the site ([me.html:80](me.html#L80))
-- [ ] **Me → favorites.txt**: Game, Show, Song, Theorem, Food ([me.html:101](me.html#L101))
-- [ ] **Lab intro**: what the Lab is and what's planned ([lab.html:46](lab.html#L46))
-- [ ] **Social overview blurb**: rewrite in your words ([social/index.html:56](social/index.html#L56))
-- [x] **News ticker**: "TODO: your news here" removed on all 18 pages
-- [x] **Footer**: GitHub link to the repo on all 18 pages
+- [x] **Home**: tagline and welcome.txt
+- [x] **Me**: about.txt and favorites.txt (now sticky notes on the desk)
+- [x] **Social overview blurb**
+- [x] **News ticker**: "TODO: your news here" removed
+- [x] **Footer**: GitHub link to the repo on all 17 pages with a footer
 - [ ] **Friends**: add friends to [js/friends.js](js/friends.js) (their buttons go in `images/buttons/`, with permission)
-- [ ] *(optional)* **Splash phrases**: your own short lines in `SPLASHES` ([js/script.js:238](js/script.js#L238))
-- [ ] *(optional)* **Updates** list on Home: keep adding a line when you change the site
+- [ ] *(optional)* **Splash phrases**: your own short lines in `SPLASHES` in [js/script.js](js/script.js)
 
 ## 2. Your art
 Full checklist with sizes: [ART_LIST.md](ART_LIST.md).
 - [ ] 13 tool card images (640 × 360)
 - [ ] 9 desktop icons (48 × 48) + the folder icon (16 × 16)
 - [ ] 3 88 × 31 buttons (make `christopia` your best; others copy it to link to you)
-- [ ] 5 stickers (+ the under-construction still frame), and any new ones you want
+- [ ] 4 stickers in use (sparkle, CD, floppy; the CD is also the splash button), and any new ones you want
 - [ ] 6 Me-desk objects + your portrait
-- [ ] Home welcome image, splash door
+- [ ] Home welcome image
 - [ ] **Collage background** → `images/bg-collage.jpg` (README "Background" has the export steps)
 - [ ] **Favicon** (the browser-tab icon; the site has none yet)
 - [ ] **Alt text** for the two pictures of you/your welcome image: [home.html:86](home.html#L86), [me.html:80](me.html#L80)
@@ -47,5 +42,5 @@ Full checklist with sizes: [ART_LIST.md](ART_LIST.md).
 
 ## Later (after the class)
 - [ ] Home server: move forum, events, guestbook and journal storage there (only `js/storage.js` changes), so posts are shared between visitors
-- [ ] Lab's planned tools: home server dashboard, smart-home controls
+- [ ] The planned services on Home's control panel: home server dashboard, smart-home controls (plus the empty bays)
 - [ ] Fill or delete the empty art folders: `images/gifs/`, `blinkies/`, `stamps/`
