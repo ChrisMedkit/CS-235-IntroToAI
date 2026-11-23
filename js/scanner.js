@@ -1,5 +1,6 @@
 // Notes Scanner page. Uses the Tesseract global from the CDN script (runs fully in the browser).
 import { cleanOcrText, SCAN_STORAGE_KEY } from "./utils.js";
+import { download } from "./dom.js";
 
 const $ = (id) => document.getElementById(id);
 let previewUrl = null;
@@ -67,13 +68,8 @@ async function copyText() {
   }
 }
 
-/** Download #scan-text as notes.txt (Blob + temporary <a download>). */
-function downloadText() {
-  const blob = new Blob([$("scan-text").value], { type: "text/plain" });
-  const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: "notes.txt" });
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000); // revoking at once can cancel the download in Firefox
-}
+/** Download #scan-text as notes.txt. */
+const downloadText = () => download("notes.txt", $("scan-text").value, "text/plain");
 
 /** Save the current text and go to latex.html (the LaTeX page reads SCAN_STORAGE_KEY). */
 function sendToLatex() {

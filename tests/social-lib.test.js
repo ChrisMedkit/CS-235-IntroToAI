@@ -70,8 +70,9 @@ test("splitEvents", () => {
   const a = { ...EVENT, id: "a", start: now + 2e8 };
   const b = { ...EVENT, id: "b", start: now + 1e8 };
   const c = { ...EVENT, id: "c", start: now - 1e8 };
-  const { upcoming, past } = splitEvents([a, b, c], now);
-  assert.deepEqual(upcoming.map((e) => e.id), ["b", "a"]);
+  const d = { ...EVENT, id: "d", start: now - 5 * 60_000 }; // started 5 min ago, no end: still on
+  const { upcoming, past } = splitEvents([a, b, c, d], now);
+  assert.deepEqual(upcoming.map((e) => e.id), ["d", "b", "a"]);
   assert.deepEqual(past.map((e) => e.id), ["c"]);
 });
 
@@ -97,6 +98,12 @@ test("journal crypto: round trip, fresh IV, wrong password fails", async () => {
   assert.deepEqual(await decryptJSON(key, a), pages);
   const wrong = await deriveKey("wrong horse", salt, 1000);
   await assert.rejects(() => decryptJSON(wrong, a));
+});
+
+test("journal crypto: a big journal (200 KB) round-trips", async () => {
+  const key = await deriveKey("correct horse", new Uint8Array(16).fill(7), 1000);
+  const pages = [{ id: "p1", title: "Long", blocks: [{ type: "text", text: "x".repeat(200_000) }] }];
+  assert.deepEqual(await decryptJSON(key, await encryptJSON(key, pages)), pages);
 });
 
 test("markdownShortcut", () => {

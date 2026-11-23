@@ -3,6 +3,7 @@
 // `check` is encryptJSON(key, "christopia") so a wrong password fails fast and clearly.
 // Decrypted pages: [{id, parentId, order, icon, title, blocks: [{id, type, text, html?, checked?, body?, open?}],
 //                    favorite, trashed, createdAt, updatedAt}]
+import { el } from "./dom.js";
 import { load, save } from "./storage.js";
 import {
   deriveKey,
@@ -12,16 +13,13 @@ import {
   buildPageTree,
   searchPages,
   relativeTime,
+  toBase64,
+  fromBase64,
   PBKDF2_ITERATIONS,
 } from "./social-lib.js";
 
 const AUTO_LOCK_MS = 10 * 60 * 1000; // lock after 10 minutes without input
 const $ = (id) => document.getElementById(id);
-const el = (tag, props = {}, ...children) => {
-  const node = Object.assign(document.createElement(tag), props);
-  node.append(...children);
-  return node;
-};
 const ICONS = ["📄", "📓", "📐", "💻", "🧪", "🎮", "🎵", "⭐", "💡", "📅", "🌊", "🍄"];
 const LABELS = {
   text: "Text", h1: "Heading 1", h2: "Heading 2", h3: "Heading 3", todo: "To-do", bullet: "Bulleted list item",
@@ -39,8 +37,6 @@ let trashMode = false;
 const expanded = new Set(); // page ids whose children show in the sidebar
 let lastActivity = Date.now();
 
-const toBase64 = (bytes) => btoa(String.fromCharCode(...bytes));
-const fromBase64 = (text) => Uint8Array.from(atob(text), (c) => c.charCodeAt(0));
 const current = () => pages.find((p) => p.id === currentId);
 const newBlock = (type = "text", text = "") => ({ id: crypto.randomUUID(), type, text });
 
@@ -131,6 +127,11 @@ function openApp(k, v) {
 async function lock() {
   if (!key) return;
   await flush(); // save the last edits while we still have the key
+  if (dirty) {
+    // Locking drops the pages from memory: never do that while edits exist only there.
+    setSaveStatus("Not saved, so not locked: free up browser storage, then lock again");
+    return;
+  }
   key = null;
   vault = null;
   pages = [];

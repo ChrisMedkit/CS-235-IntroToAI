@@ -164,7 +164,7 @@ export function toLatexDocument(body, title = "") {
 }
 
 /**
- * Filter the tool registry for the Hub.
+ * Filter the tool registry (Home's Services panel shows the "planned" ones).
  * @param {import("./tools.js").Tool[]} tools
  * @param {"all"|"live"|"planned"} status
  * @returns {import("./tools.js").Tool[]}  new array, original order

@@ -1,5 +1,6 @@
 // LaTeX Scratchpad page. Uses globals from KaTeX CDN scripts: renderMathInElement (auto-render).
 import { toLatexDocument, SCAN_STORAGE_KEY } from "./utils.js";
+import { download } from "./dom.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -37,10 +38,7 @@ function loadLastScan() {
 
 /** Download toLatexDocument(source) as notes.tex. */
 function downloadTex() {
-  const blob = new Blob([toLatexDocument($("latex-source").value, "Notes")], { type: "application/x-tex" });
-  const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: "notes.tex" });
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000); // revoking at once can cancel the download in Firefox
+  download("notes.tex", toLatexDocument($("latex-source").value, "Notes"), "application/x-tex");
   $("latex-status").textContent = "Saved notes.tex: it compiles with pdflatex or on Overleaf.";
 }
 

@@ -530,7 +530,7 @@ export const GROWTH = {
 };
 
 /** Classes fitComplexity chooses between (2^n and n! never fit real benchmarks). */
-export const FIT_CLASSES = ["1", "log n", "n", "n log n", "n^2", "n^3"];
+const FIT_CLASSES = ["1", "log n", "n", "n log n", "n^2", "n^3"];
 
 /**
  * Which growth class best explains measured times? For each class f, fit t ≈ c·f(n) minimizing
@@ -762,13 +762,4 @@ export function findMatches(pattern, flags, text, limit = 1000) {
     }
   }
   return out;
-}
-
-/**
- * Escape text so it matches literally inside a regex.
- * @param {string} text
- * @returns {string}
- */
-export function escapeRegex(text) {
-  return text.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
 }

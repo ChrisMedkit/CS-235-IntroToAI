@@ -1,6 +1,7 @@
 // Friends page: friends' 88x31 buttons and links (js/friends.js), Christopia's own button code,
 // and a guestbook. Guestbook entries go through storage.js: this browser only for now, shared
 // once storage.js talks to the home server.
+import { el } from "./dom.js";
 import { FRIENDS, NEIGHBORS } from "./friends.js";
 import { load, save } from "./storage.js";
 import { validatePost, relativeTime } from "./social-lib.js";
@@ -19,11 +20,6 @@ function webUrl(text) {
   }
 }
 
-const el = (tag, props = {}, ...children) => {
-  const node = Object.assign(document.createElement(tag), props);
-  node.append(...children);
-  return node;
-};
 // Links to other people's sites: new visitors stay safe, and search engines know we didn't write them.
 const outLink = (href, ...children) => el("a", { href, rel: "noopener ugc" }, ...children);
 

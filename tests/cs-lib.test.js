@@ -18,7 +18,6 @@ import {
   GROWTH,
   explainRegex,
   findMatches,
-  escapeRegex,
   PRESETS,
 } from "../js/cs-lib.js";
 
@@ -284,11 +283,6 @@ test("findMatches: unmatched groups are undefined; empty matches step over emoji
   assert.deepEqual(findMatches("(a)|(b)", "", "b")[0].groups, [undefined, "b"]);
   const matches = findMatches("", "u", "😀x");
   assert.deepEqual(matches.map((m) => m.index), [0, 2, 3], "never lands between the two halves of 😀");
-});
-
-test("escapeRegex makes text literal", () => {
-  const text = "1+1=2? (yes) [a] {b} ^$ | \\ /";
-  assert.ok(new RegExp(escapeRegex(text)).test(text));
 });
 
 test("PRESETS compile and match examples", () => {

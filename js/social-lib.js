@@ -68,6 +68,9 @@ export function relativeTime(then, now) {
  * @property {Record<string, "going"|"maybe"|"no">} rsvps  name -> status
  */
 
+/** An event with no end time lasts one hour (the same rule for the lists and the calendar file). */
+const endOf = (event) => event.end ?? event.start + 3_600_000;
+
 /** @returns {{going: number, maybe: number, no: number, spotsLeft: number|null}} */
 export function rsvpSummary(event) {
   const counts = { going: 0, maybe: 0, no: 0 };
@@ -94,12 +97,12 @@ export function setRsvp(event, name, status) {
 }
 
 /**
- * Split into upcoming (end, or start if no end, is >= now; sorted soonest first) and past
+ * Split into upcoming (still going or not started; sorted soonest first) and past
  * (most recent first).
  * @returns {{upcoming: ChristopiaEvent[], past: ChristopiaEvent[]}}
  */
 export function splitEvents(events, now) {
-  const isUpcoming = (e) => (e.end ?? e.start) >= now;
+  const isUpcoming = (e) => endOf(e) >= now;
   return {
     upcoming: events.filter(isUpcoming).sort((a, b) => a.start - b.start),
     past: events.filter((e) => !isUpcoming(e)).sort((a, b) => b.start - a.start),
@@ -125,7 +128,7 @@ export function toICS(event, now) {
     `UID:${event.id}@christopia`,
     `DTSTAMP:${stamp(now)}`,
     `DTSTART:${stamp(event.start)}`,
-    `DTEND:${stamp(event.end ?? event.start + 3_600_000)}`,
+    `DTEND:${stamp(endOf(event))}`,
     `SUMMARY:${text(event.title)}`,
   ];
   if (event.location) lines.push(`LOCATION:${text(event.location)}`);
@@ -157,8 +160,14 @@ export async function deriveKey(password, salt, iterations = PBKDF2_ITERATIONS) 
   );
 }
 
-const toBase64 = (bytes) => btoa(String.fromCharCode(...new Uint8Array(bytes)));
-const fromBase64 = (text) => Uint8Array.from(atob(text), (c) => c.charCodeAt(0));
+/** Bytes → base64 text, one byte at a time: String.fromCharCode(...bytes) crashes past ~125 KB. */
+export function toBase64(bytes) {
+  let binary = "";
+  for (const byte of new Uint8Array(bytes)) binary += String.fromCharCode(byte);
+  return btoa(binary);
+}
+
+export const fromBase64 = (text) => Uint8Array.from(atob(text), (c) => c.charCodeAt(0));
 
 /**
  * Encrypt any JSON-able value. A fresh random 12-byte IV every call (never reuse an IV).

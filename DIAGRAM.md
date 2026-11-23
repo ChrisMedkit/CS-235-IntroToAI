@@ -95,6 +95,7 @@ flowchart LR
     SC["script.js: taskbar, menus, galleries, services panel, stickers, extras"]
     TL["tools.js: tool registry"]
     STK["stickers.js: sticker list"]
+    DOM["dom.js: el, download"]
   end
   subgraph libs["pure logic (tested in Node)"]
     U["utils.js (math)"]
@@ -102,7 +103,7 @@ flowchart LR
     SL["social-lib.js"]
     ST["storage.js"]
   end
-  SC --> TL & STK & U
+  SC --> TL & STK & U & DOM
   DK["desktop.js (Tools)"] --> TL
   MATH["plotter, matrix, latex, scanner .js"] --> U
   CS["sorting, structures, graphs, bigo, regex .js"] --> CL
@@ -110,6 +111,7 @@ flowchart LR
   CS -. "regex.js starts" .-> RW
   SOC["forum, events, journal, friends-page .js"] --> SL & ST
   SOC --> FR["friends.js: friends list"]
+  SOC & MATH --> DOM
   T["tests/*.test.js"] --> U & CL & SL & ST & TL & STK
 ```
 Page scripts import the pure library for their section; the data files (`tools.js`, `stickers.js`, `friends.js`) are the places you edit to add things.

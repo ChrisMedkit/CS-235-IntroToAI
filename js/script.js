@@ -1,5 +1,6 @@
 // Shared script for every page: mobile nav, taskbar + Start menu, galleries, early-internet extras.
 // Tool pages add their own module (plotter.js, ...) for page-specific behavior.
+import { el } from "./dom.js";
 import { TOOLS } from "./tools.js";
 import { STICKERS } from "./stickers.js";
 import { filterTools } from "./utils.js";
@@ -91,11 +92,6 @@ const SITE = [
 /** Every page a visitor can open, as root-relative hrefs (for Random page). */
 const allPages = () => [...SITE.map((p) => p.href), ...TOOLS.filter((t) => t.status === "live").map((t) => t.href)];
 
-const el = (tag, props = {}, ...children) => {
-  const node = Object.assign(document.createElement(tag), props);
-  node.append(...children);
-  return node;
-};
 const link = (name, href) => el("a", { href: root() + href, textContent: name });
 
 /** <ul class="tree-view"> sitemap: top pages, with tool folders as collapsible <details>. */

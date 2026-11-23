@@ -1,13 +1,9 @@
 // Events page. Events live in storage.js ("events"); see ChristopiaEvent in social-lib.js.
+import { download, el } from "./dom.js";
 import { load, save } from "./storage.js";
 import { rsvpSummary, setRsvp, splitEvents, toICS } from "./social-lib.js";
 
 const $ = (id) => document.getElementById(id);
-const el = (tag, props = {}, ...children) => {
-  const node = Object.assign(document.createElement(tag), props);
-  node.append(...children);
-  return node;
-};
 const STATUSES = [
   ["going", "Going"],
   ["maybe", "Maybe"],
@@ -152,13 +148,10 @@ async function rsvp(eventId, status) {
   document.querySelector(`[data-event-id="${eventId}"][data-rsvp="${status}"]`)?.focus(); // re-render replaced the button
 }
 
-/** Download toICS(event) as <title>.ics (Blob, text/calendar). */
+/** Download toICS(event) as <title>.ics. */
 function downloadICS(event) {
-  const blob = new Blob([toICS(event, Date.now())], { type: "text/calendar" });
   const name = event.title.replace(/[^\w\- ]+/g, "").trim().replace(/\s+/g, "-") || "event";
-  const a = el("a", { href: URL.createObjectURL(blob), download: `${name}.ics` });
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000); // revoking at once can cancel the download in Firefox
+  download(`${name}.ics`, toICS(event, Date.now()), "text/calendar");
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

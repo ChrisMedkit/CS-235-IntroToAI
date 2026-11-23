@@ -103,6 +103,7 @@ Still to do:
 | `js/stickers.js` | Sticker list (data) |
 | `js/friends.js` | Friends and neighbors (data) |
 | `js/utils.js`, `js/cs-lib.js`, `js/social-lib.js`, `js/storage.js` | Pure logic (math, CS, social, saving), unit tested |
+| `js/dom.js` | Shared page helpers: `el()` builds elements, `download()` saves text as a file |
 | `tests/*.test.js` | `npm test` (node:test) |
 | `fonts/` | Rocket Pop, Rocket Pop Italic, Digit Lo-Fi, Minecraft |
 | `images/` | Card placeholders, `icons/` (desktop + folder), `stickers/`, `me/`, `badges/`, `buttons/`, `gifs/`, `blinkies/`, `stamps/`, Real Analysis mosaic |

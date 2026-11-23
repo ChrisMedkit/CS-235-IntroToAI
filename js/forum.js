@@ -1,15 +1,11 @@
 // Forum page. Threads live in storage.js ("forum"): [{id, title, body, author, category,
 // createdAt, score, replies: [{id, body, author, createdAt}]}].
+import { el } from "./dom.js";
 import { load, save } from "./storage.js";
 import { validatePost, sortThreads, relativeTime } from "./social-lib.js";
 
 const $ = (id) => document.getElementById(id);
 const CATEGORIES = { general: "General", math: "Math", cs: "CS", homework: "Homework help", offtopic: "Off-topic" };
-const el = (tag, props = {}, ...children) => {
-  const node = Object.assign(document.createElement(tag), props);
-  node.append(...children);
-  return node;
-};
 
 let threads = [];
 let votes = {}; // threadId -> +1 / -1 (this browser's vote)
