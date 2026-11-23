@@ -41,11 +41,11 @@ Pixel art suits the 98 look.
 - [ ] `images/icons/folder.svg`: **16 × 16**, the little folder beside the Home launch-pad links and in the Tools window
 
 ## 3. 88 × 31 buttons (exactly 88 × 31)
+(`made-with-claude.svg` is no longer shown anywhere; its file is still in `images/badges/` if you want it back.)
 The classic web buttons in every page's footer and on the Home "Buttons" wall. `christopia.svg` is also
 the button other people copy from the Friends page to link to you, so make that one your best.
 
 - [ ] `images/badges/christopia.svg`: Christopia's own button
-- [ ] `images/badges/made-with-claude.svg`: "Made with Claude"
 - [ ] `images/badges/math-inside.svg`: "Σ Math inside"
 - [ ] `images/badges/any-browser.svg`: "Best viewed in any browser"
 - [ ] *(optional)* more of your own: add to `images/badges/` and the Home Buttons wall

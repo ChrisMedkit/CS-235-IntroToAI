@@ -11,8 +11,8 @@ and the assignment write-ups. Search the project for `TODO` to find each spot.
 - [ ] **Me → favorites.txt**: Game, Show, Song, Theorem, Food ([me.html:101](me.html#L101))
 - [ ] **Lab intro**: what the Lab is and what's planned ([lab.html:46](lab.html#L46))
 - [ ] **Social overview blurb**: rewrite in your words ([social/index.html:56](social/index.html#L56))
-- [ ] **News ticker**: replace "TODO: your news here" (same line on 18 pages; ask Claude to change all at once)
-- [ ] **Footer**: "TODO: GitHub link" on 18 pages (the repo link, if you're happy to show it; ask Claude to change all at once)
+- [x] **News ticker**: "TODO: your news here" removed on all 18 pages
+- [x] **Footer**: GitHub link to the repo on all 18 pages
 - [ ] **Friends**: add friends to [js/friends.js](js/friends.js) (their buttons go in `images/buttons/`, with permission)
 - [ ] *(optional)* **Splash phrases**: your own short lines in `SPLASHES` ([js/script.js:238](js/script.js#L238))
 - [ ] *(optional)* **Updates** list on Home: keep adding a line when you change the site
@@ -21,7 +21,7 @@ and the assignment write-ups. Search the project for `TODO` to find each spot.
 Full checklist with sizes: [ART_LIST.md](ART_LIST.md).
 - [ ] 13 tool card images (640 × 360)
 - [ ] 9 desktop icons (48 × 48) + the folder icon (16 × 16)
-- [ ] 4 88 × 31 buttons (make `christopia` your best; others copy it to link to you)
+- [ ] 3 88 × 31 buttons (make `christopia` your best; others copy it to link to you)
 - [ ] 5 stickers (+ the under-construction still frame), and any new ones you want
 - [ ] 6 Me-desk objects + your portrait
 - [ ] Home welcome image, splash door
