@@ -24,7 +24,6 @@
 export const STICKERS = [
   // Splash
   { src: "images/stickers/sparkle.svg", page: "index", x: "14%", y: 120, w: 56, r: -10, pixel: true, phone: true },
-  { src: "images/stickers/cd.svg", page: "index", x: "10%", y: 470, w: 120, r: -6 },
   { src: "images/stickers/floppy.svg", page: "index", right: "14%", y: 440, w: 96, r: 10, pixel: true },
 
   // Home: beside the centered title (empty space at that height)

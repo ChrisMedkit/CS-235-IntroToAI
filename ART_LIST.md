@@ -54,7 +54,7 @@ the button other people copy from the Friends page to link to you, so make that 
 Float over pages; placement is in `js/stickers.js` (README "Add a sticker" explains `x`, `y`, `w`, tilt).
 
 - [ ] `images/stickers/sparkle.svg`: 32 × 32, splash and Home (marked `pixel: true`, drawn crisp)
-- [ ] `images/stickers/cd.svg`: 64 × 64, **the splash page's "Click to run" button** (shown at 160 × 160, spinning, so make it round), plus stickers on the splash and Tools
+- [ ] `images/stickers/cd.svg`: 64 × 64, **the splash page's "Click to run" button** (shown at 160 × 160, spinning, so make it round), plus a sticker on Tools
 - [ ] `images/stickers/floppy.svg`: 48 × 48, splash and Tools (also the "Services" object on the Me desk)
 - [ ] `images/stickers/under-construction.svg` + `under-construction-still.svg`: 120 × 72, **not shown anywhere now** (it was on the Lab page); add it back in `js/stickers.js` if you want it.
       The first can be an animated GIF; the "still" is its first frame, shown when someone has reduced motion turned on.

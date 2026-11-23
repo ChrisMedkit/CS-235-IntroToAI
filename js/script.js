@@ -236,14 +236,18 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matc
 
 // Splash phrases next to the logo: add your own.
 const SPLASHES = [
-  "Now in 3D!",
-  "Epsilon > 0!",
-  "Q.E.D.!",
-  "Has RREF!",
-  "Proof-based!",
-  "Any browser!",
-  "Hi, server!",
-  "Converges!",
+  "Epsilon > 0 :)",
+  "Q.E.D.",
+  "Proof-based",
+  "hello world",
+  "Mad dog!",
+  "Under Construction",
+  "Claude Opus",
+  "AURRRR",
+  "Cathedral in hear",
+  "UW Stout",
+  "Where am i",
+  "Lingering"
 ]; // keep them short (~12 chars) so they don't cover the nav
 
 /** Pick a random splash phrase on every page load. */
