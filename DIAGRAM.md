@@ -49,7 +49,7 @@ flowchart TD
   end
   subgraph HOME["home.html"]
     direction TB
-    HD["header: logo, nav (Home, Tools, Social, Me)"] --> TK["ticker"] --> T2["h1.chrome-title-small + tagline"]
+    HD["header: logo, nav (Home, Tools, Social, Me)"] --> TK["ticker"] --> T2["h1.chrome-title-small + splash text + tagline"]
     T2 --> PORTAL
     subgraph PORTAL["div.portal (3 columns at 1000 px+)"]
       direction LR

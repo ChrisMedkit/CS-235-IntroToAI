@@ -595,15 +595,16 @@ form textarea {
   font-size: 14px;
 }
 
-/* Splash text: yellow, tilted, pulsing, next to the logo (text set by initSplash). */
+/* Splash text: yellow, tilted, pulsing, on the big title's bottom-right corner (splash page and
+   Home only; text set by initSplash). */
 .splash {
   position: absolute;
-  left: 8.6rem;
-  top: 2.3rem;
+  right: -0.5em;
+  bottom: -0.2em;
   margin: 0;
   font-family: var(--font-pixel);
   font-weight: 400;
-  font-size: 0.85rem;
+  font-size: clamp(0.9rem, 2.6vw, 1.6rem);
   color: var(--splash);
   white-space: nowrap;
   pointer-events: none;
@@ -715,14 +716,6 @@ form textarea {
 }
 .title-wrap {
   position: relative;
-}
-/* The Minecraft splash text sits on the title's bottom-right corner here. */
-.title-wrap .splash {
-  left: auto;
-  top: auto;
-  right: -0.5em;
-  bottom: -0.2em;
-  font-size: clamp(0.9rem, 2.6vw, 1.6rem);
 }
 .splash-subtitle,
 .splash-note {
@@ -2341,10 +2334,3 @@ kbd {
   }
 }
 
-/* Small phones: keep the splash from covering the buttons. */
-@media (max-width: 420px) {
-  .splash {
-    left: 7rem;
-    font-size: 0.7rem;
-  }
-}

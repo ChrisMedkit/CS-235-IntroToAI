@@ -56,7 +56,7 @@ Build a multi-page website on a topic you care about, using an LLM as a developm
 | `social/events.html` | new event form, upcoming/past | RSVP with capacity, .ics download | ✅ |
 | `social/journal.html` | lock screen; sidebar + block editor | encrypted vault, nested pages, `/` menu, Markdown shortcuts, KaTeX math, auto-lock | ✅ |
 | `social/friends.html` | Friends (buttons wall, links, neighbors), link_to_me.txt, guestbook.exe | friends from `js/friends.js`; copy button HTML; sign the guestbook (validated, text-only, http(s) links only) | ✅ |
-| every page | header (logo, splash text, nav), ticker, footer (hit counter, badges), taskbar | mobile Menu; Start menu (sitemap tree, Random page, Sound); task button + clock; Esc / click-outside closes menus; sparkles; stickers | ✅ |
+| every page | header (logo, nav), ticker, footer (hit counter, badges), taskbar | mobile Menu; Start menu (sitemap tree, Random page, Sound); task button + clock; Esc / click-outside closes menus; sparkles; stickers | ✅ |
 
 ## Design
 - **Mood:** Windows 98 web desktop meets Neocities, in frosted glass and sky blue. Every section is a [98.css](https://jdan.github.io/98.css/) window (title bar + body) with a hard drop shadow, but the window face is translucent glass (`--glass` + `backdrop-filter` blur), title bars are a glossy ocean-blue gradient (`--title-bar`) and buttons have an Aqua-style gloss (`--gloss`). The page sits on a bubbly sky gradient (`--sky`) or your collage; the taskbar and Start menu sit at the bottom. Light theme only: 98.css hard-codes its colors, and dark mode was dropped by choice. Text on blue stays at 4.5:1 contrast or better.
@@ -64,7 +64,7 @@ Build a multi-page website on a topic you care about, using an LLM as a developm
 - **Chrome title:** CSS only: chrome gradient clipped to the text, a sweeping shine, a navy 3D edge from stacked `drop-shadow` filters, a slow float.
 - **Backgrounds:** splash, Home, Tools, CS and Social (Me is a wood desk) show your collage once exported to `images/bg-collage.jpg` (sky until then). Math pages show the Real Analysis portfolio (8 pages tiled, rotated −30°, 9% opacity) on plain paper.
 - **Panels:** work areas (sorting bars, structure canvas, graph grid, regex highlight, charts, forum/event cards, guestbook entries) are white sunken 98 panels; selections are ocean blue (`--select`); charts use a white plot and the 16-color VGA palette.
-- **Maximalist extras:** splash text by the logo (random phrase), news ticker, sparkle cursor trail, synthesized menu blips (off by default; Sound in the Start menu), hit counter, 88×31 badges, stickers (behind or in front of windows; `js/stickers.js`), the Me desk. All motion stops under `prefers-reduced-motion`; animated stickers swap to a still copy.
+- **Maximalist extras:** splash text on the big title of the splash page and Home (random phrase), news ticker, sparkle cursor trail, synthesized menu blips (off by default; Sound in the Start menu), hit counter, 88×31 badges, stickers (behind or in front of windows; `js/stickers.js`), the Me desk. All motion stops under `prefers-reduced-motion`; animated stickers swap to a still copy.
 - **Breakpoints:** mobile first. 600 px: the Me desk becomes a grid below it. 768 px: inline nav, two-column tool pages. 900 px + mouse: draggable Tools windows. 1000 px: three-column Home portal.
 
 ## Plan

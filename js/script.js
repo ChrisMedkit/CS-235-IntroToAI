@@ -248,7 +248,7 @@ const SPLASHES = [
   "UW Stout",
   "Where am i",
   "Lingering"
-]; // keep them short (~12 chars) so they don't cover the nav
+]; // shown on the big title (splash page and Home); keep them short so they stay on screen on phones
 
 /** Pick a random splash phrase on every page load. */
 function initSplash() {
