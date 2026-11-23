@@ -4,7 +4,7 @@ An indie-web home for an applied math + CS major and their friends, dressed as a
 
 **Live:** https://chrismedkit.github.io/cs235-christopia/
 
-CS235 Project 1: Personal Interest Website with an LLM. See [OUTLINE.md](OUTLINE.md), [DIAGRAM.md](DIAGRAM.md) and [REDESIGN_PLAN.md](REDESIGN_PLAN.md).
+CS235 Project 1: Personal Interest Website with an LLM. See [OUTLINE.md](OUTLINE.md), [DIAGRAM.md](DIAGRAM.md), [REDESIGN_PLAN.md](REDESIGN_PLAN.md) and [ART_LIST.md](ART_LIST.md) (every picture on the site, to swap for your own).
 
 ## Run
 Static site, no build. Open `index.html` (the splash) with VS Code Live Preview, or:

@@ -77,7 +77,7 @@ Done (one commit each, see `PROMPT_LOG.md`):
 - ✅ Indie-web redesign steps 1–8 (`REDESIGN_PLAN.md`): 98.css windows, taskbar + Start menu, Tools desktop, splash + Home portal, sticker layer, Me page, Friends + guestbook (with `storage.js`, `validatePost`, `relativeTime`), tool page polish.
 
 Still to do:
-1. **Your content:** Home tagline + welcome, Now box, Updates, Lab intro, Me page (about, facts, favorites, desk photos), friends in `js/friends.js`, your collage (`images/bg-collage.jpg`), real images replacing `images/*.svg` placeholders and their alt text. Commit.
+1. **Your content:** Home tagline + welcome, Now box, Updates, Lab intro, Me page (about, facts, favorites, desk photos), friends in `js/friends.js`, your collage (`images/bg-collage.jpg`), real images replacing `images/*.svg` placeholders and their alt text (checklist: `ART_LIST.md`), a favicon. Commit.
 2. **Warm-up (spec step 2.4):** ask your LLM the warm-up question; note it in `PROMPT_LOG.md`.
 3. **Redesign step 10 / spec step 8:** run every item in `TEST_REPORT.md`; fix; re-test. Commit.
 4. **Spec step 9 (submit):** finish prompt log "Your decision" rows + reflection, final push, submit the repo and live links.
