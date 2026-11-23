@@ -1,6 +1,6 @@
 # Prompt Log — Christopia
 
-LLM(s) used: Claude Code (Claude Opus 5.5), chat-based agent in the Claude desktop app. TODO: add any other LLM you use.
+LLM(s) used: Claude Code (Claude Opus 5.5), chat-based agent in the Claude desktop app.
 
 Record at least three significant features (page structure, navigation, CSS, responsive layout, JS feature; debugging exchanges count).
 
@@ -55,7 +55,7 @@ Record at least three significant features (page structure, navigation, CSS, res
 | Your decision | TODO: what you kept or changed, and why |
 | Debugging | Contrast check: the rack's amber status text (4.36:1) and the white desk hint on light wood (3.3:1) were under 4.5:1; darkened the rack units and put the hint on a paper tag. Audited all 18 pages at 1280 px and 375 px: no sideways scroll, no broken images, no broken links. |
 
-## 22. Fixes from a whole-repo audit
+## 6. Fixes from a whole-repo audit
 | Field | Entry |
 |---|---|
 | Feature | Fix the six findings of a code audit (`/ponytail:ponytail-audit`) |
@@ -67,33 +67,6 @@ Record at least three significant features (page structure, navigation, CSS, res
 
 ## Warm-up (Step 2.4)
 TODO: ask "What semantic elements should a personal website homepage include?" and note one thing you learned.
-
-## 1. TODO feature
-| Field | Entry |
-|---|---|
-| Feature | |
-| LLM used | |
-| Your prompt | |
-| What it produced | |
-| Your decision | |
-
-## 2. TODO feature
-| Field | Entry |
-|---|---|
-| Feature | |
-| LLM used | |
-| Your prompt | |
-| What it produced | |
-| Your decision | |
-
-## 3. TODO feature
-| Field | Entry |
-|---|---|
-| Feature | |
-| LLM used | |
-| Your prompt | |
-| What it produced | |
-| Your decision | |
 
 ## Reflection
 TODO: what the LLM did well, what you had to correct, how you verified it, and what you own in the final code.
