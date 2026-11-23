@@ -208,6 +208,16 @@ Record at least three significant features (page structure, navigation, CSS, res
 | Your decision | TODO: what you kept or changed, and why |
 | Debugging | Contrast check: white on the first title-bar blue was 3.6:1 and the inactive title bar 1.89:1, both under 4.5:1; darkened them (4.85:1, 4.76:1). Audited all 19 pages at 1280 px and 375 px: no sideways scroll, no script errors, no broken links. |
 
+## 19. Math tools: plotter, Matrix Lab, scanner, LaTeX
+| Field | Entry |
+|---|---|
+| Feature | The four Math tools: Function Plotter, Matrix Lab, Notes Scanner, LaTeX Scratchpad |
+| LLM used | Claude Code (Claude Opus 5.5, agent in the desktop app) |
+| Your prompt | "Implement the math section tools" |
+| What it produced | `js/utils.js`: `sample2D`, `sampleSurface`, `parseMatrix` (fractions, row/entry error messages), `rref` (Gauss-Jordan with partial pivoting, each row operation recorded), `formatNumber`, `cleanOcrText`, `toLatexDocument`. Plotter: add/remove function rows, 2D and 3D (math.js + Plotly), "y = …" accepted, typos named per row, 250 ms debounce, zoom kept across redraws. Matrix Lab: RREF with rank and every step, determinant, inverse (singular detected from the RREF), eigenvalues including complex ones, transpose. Scanner: preview, Tesseract OCR with a progress bar and confidence, copy, .txt download, hand-off to LaTeX. LaTeX: live KaTeX preview (`$`, `$$`, `\(`, `\[`), load last scan, .tex download. |
+| Your decision | TODO: what you kept or changed, and why |
+| Debugging | `1/x` and `tan(x)` drew fake vertical lines because no sample lands exactly on the pole; the plotter now breaks the line where neighboring points are off-screen on opposite sides. Tested: all `utils` tests pass; every matrix operation and error case in the browser; OCR of a generated image (96% confidence, exact text) through to the LaTeX preview; no sideways scroll at 375 px; no console errors. |
+
 ## Warm-up (Step 2.4)
 TODO: ask "What semantic elements should a personal website homepage include?" and note one thing you learned.
 

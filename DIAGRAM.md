@@ -8,17 +8,17 @@ flowchart TD
     D1["Site shell: nav, galleries, Lab filters"]
     D2["CS tools: sorting, data structures, graphs, Big-O, regex"]
     D3["Indie-web redesign 1-9 + glass and sky-blue look"]
-    D1 --> D2 --> D3
+    D4["Math tools: plotter, matrix, scanner, LaTeX"]
+    D1 --> D2 --> D3 --> D4
   end
   subgraph NEXT["Still to do"]
     N1["Your content: text, photos, collage, friends"]
-    N2["Math tools: plotter, matrix, scanner, LaTeX"]
     N3["Social tools: forum, events, journal"]
     N4["Redesign step 10: test report"]
     N5["Submit: prompt log, reflection, links"]
-    N1 --> N2 --> N3 --> N4 --> N5
+    N1 --> N3 --> N4 --> N5
   end
-  D3 --> N1
+  D4 --> N1
 ```
 Where the project stands. Each box is one or more commits; `OUTLINE.md` has the details.
 
@@ -146,19 +146,41 @@ sequenceDiagram
 ```
 A runaway pattern can only be stopped by killing the thread it runs on, so matching lives in a worker.
 
-## Plotter flow (to build)
+## Plotter flow
 ```mermaid
 flowchart TD
-  A["input event (debounced)"] --> B["readWindow"]
+  A["input event (250 ms debounce)"] --> B["readWindow"]
   B --> C{"min < max?"}
   C -- no --> E1["#plot-error"]
   C -- yes --> D{"mode"}
   D -- 2D --> F["compileExpression per row, sample2D"]
+  F --> BR["break the line at asymptotes"]
   D -- 3D --> G["compileExpression per row, sampleSurface"]
-  F --> H["Plotly.react #plot"]
+  BR --> H["Plotly.react #plot"]
   G --> H
+  F & G -. "bad expression" .-> E1
 ```
-How an edit will become a redrawn graph.
+How an edit becomes a redrawn graph. A row with a typo is skipped and named in the error line; the others still draw.
+
+## Scanner to LaTeX
+```mermaid
+sequenceDiagram
+  participant U as You
+  participant SC as scanner.js
+  participant T as Tesseract.js (in the browser)
+  participant LS as localStorage
+  participant LX as latex.js
+  U->>SC: photo + Scan
+  SC->>T: recognize(file, "eng")
+  T-->>SC: progress updates, then text + confidence
+  SC->>SC: cleanOcrText
+  SC->>LS: christopia:lastScan
+  U->>SC: Open in LaTeX editor
+  SC->>LX: latex.html?from=scanner
+  LX->>LS: read last scan
+  LX->>LX: KaTeX preview; Download .tex wraps it with toLatexDocument
+```
+The photo never leaves the browser; the two pages share the text through localStorage.
 
 ## Journal (to build)
 ```mermaid

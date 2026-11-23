@@ -43,10 +43,10 @@ Build a multi-page website on a topic you care about, using an LLM as a developm
 | `tools.html` Tools | Math and CS folder windows: icon grids + status bars | icons from `TOOLS`; drag windows by the title bar (wide mouse screens, positions saved); click brings to front; `#math` / `#cs`; stacked on phones | ✅ |
 | `me.html` Me | desk scene (calculator → Tools, notebook → Journal, phone → Social, headphones → Now, floppy → Lab, photo → About); about.txt; favorites.txt | objects lift + sticky-note labels on hover/focus (always on touch); labeled grid on phones | ✅ (your details TODO) |
 | `lab.html` Lab | intro, filter buttons, tool + planned-service cards | All / Live / Planned filters, live count | ✅ |
-| `math/plotter.html` | controls (mode, expression list, window), graph | add/remove functions, 2D ↔ 3D, live redraw (Plotly) | stub |
-| `math/matrix.html` | input, result + steps | RREF with row-op steps, det, inverse, eigenvalues, transpose | stub |
-| `math/latex.html` | editor, preview | live KaTeX preview, load last scan, download .tex | stub |
-| `math/scanner.html` | upload/camera + preview, typed text | OCR with progress, copy, download, send to LaTeX | stub |
+| `math/plotter.html` | controls (mode, expression list, window), graph | add/remove functions, 2D ↔ 3D, live redraw (Plotly) | ✅ |
+| `math/matrix.html` | input, result + steps | RREF with row-op steps, det, inverse, eigenvalues, transpose | ✅ |
+| `math/latex.html` | editor, preview | live KaTeX preview, load last scan, download .tex | ✅ |
+| `math/scanner.html` | upload/camera + preview, typed text | OCR with progress, copy, download, send to LaTeX | ✅ |
 | `cs/sorting.html` | controls + stats, bars + pseudocode | 6 algorithms, step / play / pause / reset, counters, highlighted line | ✅ |
 | `cs/data-structures.html` | structure, value, ops, log; SVG stage | stack, queue, linked list, BST, min-heap, hash table; path highlighting | ✅ |
 | `cs/graphs.html` | algorithm, draw tool, speed, stats; grid | draw walls/weights, move start/end, BFS/DFS/Dijkstra/A*, random maze | ✅ |
@@ -72,20 +72,17 @@ Build a multi-page website on a topic you care about, using an LLM as a developm
 Done (one commit each, see `PROMPT_LOG.md`):
 - ✅ Site shell: shared header/nav, tool registry, galleries (`renderToolGallery`), mobile Menu, Lab cards + filters (`filterTools`, `renderHub`).
 - ✅ CS tools: sorting, data structures, graphs & pathfinding, Big-O playground, regex builder (all in `js/cs-lib.js` with tests).
+- ✅ Math tools: function plotter (2D + 3D, asymptote breaks), Matrix Lab (RREF with steps, det, inverse, eigenvalues, transpose), Notes Scanner (Tesseract OCR), LaTeX scratchpad (KaTeX preview, scan handoff, .tex download); logic in `js/utils.js` with tests.
 - ✅ Indie-web redesign steps 1–8 (`REDESIGN_PLAN.md`): 98.css windows, taskbar + Start menu, Tools desktop, splash + Home portal, sticker layer, Me page, Friends + guestbook (with `storage.js`, `validatePost`, `relativeTime`), tool page polish.
 
 Still to do:
 1. **Your content:** Home tagline + welcome, Now box, Updates, Lab intro, Me page (about, facts, favorites, desk photos), friends in `js/friends.js`, your collage (`images/bg-collage.jpg`), real images replacing `images/*.svg` placeholders and their alt text. Commit.
 2. **Warm-up (spec step 2.4):** ask your LLM the warm-up question; note it in `PROMPT_LOG.md`.
-3. **Plotter:** `sample2D`, `sampleSurface` (tests), rows, `readWindow`, `compileExpression`, `redraw` 2D then 3D, debounce. Commit.
-4. **Matrix Lab:** `parseMatrix`, `rref` with steps, `formatNumber` (tests), `matrixTable`, `compute`. Commit.
-5. **Scanner:** `cleanOcrText` (test), preview, `scan` + progress, copy/download. Commit.
-6. **LaTeX:** `toLatexDocument` (test), live preview, scanner → LaTeX handoff, download .tex. Commit.
-7. **Forum:** `sortThreads` (test), then `forum.js` (storage and validation are ready). Commit.
-8. **Events:** `rsvpSummary`, `setRsvp`, `splitEvents`, `toICS` (tests), then `events.js`. Commit.
-9. **Journal:** `deriveKey`, `encryptJSON`, `decryptJSON`, then `markdownShortcut`, `buildPageTree`, `searchPages` (tests); setup / unlock / lock / autosave / auto-lock; sidebar, blocks, slash menu, keyboard. Commit.
-10. **Redesign step 10 / spec step 8:** run every item in `TEST_REPORT.md`; fix; re-test. Commit.
-11. **Spec step 9 (submit):** finish prompt log "Your decision" rows + reflection, final push, submit the repo and live links.
+3. **Forum:** `sortThreads` (test), then `forum.js` (storage and validation are ready). Commit.
+4. **Events:** `rsvpSummary`, `setRsvp`, `splitEvents`, `toICS` (tests), then `events.js`. Commit.
+5. **Journal:** `deriveKey`, `encryptJSON`, `decryptJSON`, then `markdownShortcut`, `buildPageTree`, `searchPages` (tests); setup / unlock / lock / autosave / auto-lock; sidebar, blocks, slash menu, keyboard. Commit.
+6. **Redesign step 10 / spec step 8:** run every item in `TEST_REPORT.md`; fix; re-test. Commit.
+7. **Spec step 9 (submit):** finish prompt log "Your decision" rows + reflection, final push, submit the repo and live links.
 
 ## Files
 | File | Purpose |
@@ -95,7 +92,7 @@ Still to do:
 | `tools.html` / `js/desktop.js` | Tools desktop: folder windows, icons from `tools.js`, dragging |
 | `me.html`, `images/me/` | Me page: desk of links (drawings to swap for your photos), about, favorites |
 | `lab.html` / `js/lab.js` | Lab: every tool and planned service, filterable |
-| `math/*.html` / `js/plotter.js`, `matrix.js`, `latex.js`, `scanner.js` | Math tools (stubs) |
+| `math/*.html` / `js/plotter.js`, `matrix.js`, `latex.js`, `scanner.js` | Math tools |
 | `cs/sorting.html` / `js/sorting.js` | Sorting visualizer |
 | `cs/data-structures.html` / `js/structures.js` | Data structure visualizer (SVG) |
 | `cs/graphs.html` / `js/graphs.js` | Grid pathfinding |

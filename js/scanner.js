@@ -1,10 +1,25 @@
 // Notes Scanner page. Uses the Tesseract global from the CDN script (runs fully in the browser).
 import { cleanOcrText, SCAN_STORAGE_KEY } from "./utils.js";
 
+const $ = (id) => document.getElementById(id);
+let previewUrl = null;
+
 /** Show the chosen image in #scan-preview (URL.createObjectURL; revoke the old URL). */
 function showPreview(file) {
-  // TODO (Plan step 9b)
-  void file;
+  if (previewUrl) URL.revokeObjectURL(previewUrl);
+  previewUrl = file ? URL.createObjectURL(file) : null;
+  $("scan-preview").hidden = !file;
+  if (file) $("scan-image").src = previewUrl;
+}
+
+/** Save the text for the LaTeX page; false if this browser won't store it. */
+function saveScan(text) {
+  try {
+    localStorage.setItem(SCAN_STORAGE_KEY, text);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -13,45 +28,71 @@ function showPreview(file) {
  * @param {string} lang  Tesseract language code, e.g. "eng"
  */
 async function scan(file, lang) {
-  // TODO (Plan step 9c):
-  // 1. Disable the Scan button, show #scan-progress.
-  // 2. const { data } = await Tesseract.recognize(file, lang, { logger: updateProgress })
-  // 3. text = cleanOcrText(data.text); put in #scan-text; save to localStorage[SCAN_STORAGE_KEY].
-  // 4. try/catch: show a readable error in #scan-status; finally re-enable the button.
-  void file, lang, cleanOcrText, SCAN_STORAGE_KEY;
+  const button = $("scan-form").querySelector('[type="submit"]');
+  button.disabled = true;
+  Object.assign($("scan-progress"), { hidden: false, value: 0 });
+  $("scan-status").textContent = "Starting…";
+  try {
+    const { data } = await Tesseract.recognize(file, lang, { logger: updateProgress });
+    const text = cleanOcrText(data.text);
+    $("scan-text").value = text;
+    const saved = saveScan(text);
+    $("scan-status").textContent = !text
+      ? "No text found. Try a sharper, brighter photo taken straight on."
+      : `Done (${Math.round(data.confidence)}% confidence). Check it over: OCR misreads messy handwriting and math symbols.` +
+        (saved ? "" : " (This browser won't save it for the LaTeX page.)");
+  } catch (err) {
+    $("scan-status").textContent = `Scan failed: ${err?.message ?? err}. Check your connection (the first scan downloads the language data) and try again.`;
+  } finally {
+    button.disabled = false;
+    $("scan-progress").hidden = true;
+  }
 }
 
 /** Tesseract logger callback: m.status + m.progress (0..1) -> #scan-progress / #scan-status. */
 function updateProgress(m) {
-  // TODO (Plan step 9c)
-  void m;
+  $("scan-progress").value = m.progress ?? 0;
+  const status = m.status.charAt(0).toUpperCase() + m.status.slice(1);
+  $("scan-status").textContent = `${status}… ${Math.round((m.progress ?? 0) * 100)}%`;
 }
 
 /** Copy #scan-text to the clipboard (navigator.clipboard.writeText), confirm in #scan-status. */
 async function copyText() {
-  // TODO (Plan step 9d)
+  try {
+    await navigator.clipboard.writeText($("scan-text").value);
+    $("scan-status").textContent = "Copied to the clipboard.";
+  } catch {
+    $("scan-text").select(); // clipboard blocked: select it so ⌘C / Ctrl+C works
+    $("scan-status").textContent = "Couldn't copy automatically; it's selected, so press Ctrl+C (⌘C on a Mac).";
+  }
 }
 
 /** Download #scan-text as notes.txt (Blob + temporary <a download>). */
 function downloadText() {
-  // TODO (Plan step 9d)
+  const blob = new Blob([$("scan-text").value], { type: "text/plain" });
+  const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: "notes.txt" });
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000); // revoking at once can cancel the download in Firefox
 }
 
 /** Save the current text and go to latex.html (the LaTeX page reads SCAN_STORAGE_KEY). */
 function sendToLatex() {
-  // TODO (Plan step 10c)
+  if (!saveScan($("scan-text").value)) {
+    $("scan-status").textContent = "This browser won't store the text; copy it and paste it into the LaTeX page instead.";
+    return;
+  }
+  location.href = "latex.html?from=scanner";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const fileInput = document.getElementById("scan-file");
-  fileInput?.addEventListener("change", () => showPreview(fileInput.files[0]));
-  document.getElementById("scan-form")?.addEventListener("submit", (e) => {
+  const fileInput = $("scan-file");
+  fileInput.addEventListener("change", () => showPreview(fileInput.files[0]));
+  $("scan-form").addEventListener("submit", (e) => {
     e.preventDefault();
     const file = fileInput.files[0];
-    if (file) scan(file, document.getElementById("scan-lang").value);
+    if (file) scan(file, $("scan-lang").value);
   });
-  document.getElementById("copy-text")?.addEventListener("click", copyText);
-  document.getElementById("download-text")?.addEventListener("click", downloadText);
-  document.getElementById("send-to-latex")?.addEventListener("click", sendToLatex);
-  void updateProgress;
+  $("copy-text").addEventListener("click", copyText);
+  $("download-text").addEventListener("click", downloadText);
+  $("send-to-latex").addEventListener("click", sendToLatex);
 });

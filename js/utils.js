@@ -14,12 +14,20 @@ export const SCAN_STORAGE_KEY = "christopia:lastScan";
  *   not finite (NaN, ±Infinity, throws) so Plotly breaks the line at asymptotes.
  */
 export function sample2D(f, xMin, xMax, n) {
-  // TODO (Plan step 7a):
-  // 1. Throw RangeError if n < 2 or xMin >= xMax.
-  // 2. step = (xMax - xMin) / (n - 1); x_i = xMin + i * step.
-  // 3. y_i = f(x_i); wrap in try/catch; non-finite -> null.
-  void f, xMin, xMax, n;
-  throw new Error("Not implemented");
+  if (!(n >= 2) || !(xMin < xMax)) throw new RangeError("Need n >= 2 and xMin < xMax");
+  const step = (xMax - xMin) / (n - 1);
+  const x = Array.from({ length: n }, (_, i) => (i === n - 1 ? xMax : xMin + i * step));
+  return { x, y: x.map((t) => finiteOrNull(() => f(t))) };
+}
+
+/** f() if it returns a finite number, else null (NaN, ±Infinity, complex, throws). */
+function finiteOrNull(f) {
+  try {
+    const v = f();
+    return typeof v === "number" && Number.isFinite(v) ? v : null;
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -32,9 +40,9 @@ export function sample2D(f, xMin, xMax, n) {
  *   (Plotly surface wants rows indexed by y).
  */
 export function sampleSurface(f, xRange, yRange, n) {
-  // TODO (Plan step 7b): reuse the spacing from sample2D for both axes, then a nested loop.
-  void f, xRange, yRange, n;
-  throw new Error("Not implemented");
+  const { x } = sample2D(() => 0, xRange[0], xRange[1], n);
+  const { x: y } = sample2D(() => 0, yRange[0], yRange[1], n);
+  return { x, y, z: y.map((b) => x.map((a) => finiteOrNull(() => f(a, b)))) };
 }
 
 /**
@@ -45,9 +53,24 @@ export function sampleSurface(f, xRange, yRange, n) {
  *   (message says which row/entry, shown to the user).
  */
 export function parseMatrix(text) {
-  // TODO (Plan step 8a): trim, split lines, drop blank lines, split entries, parse, check widths.
-  void text;
-  throw new Error("Not implemented");
+  const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+  if (!lines.length) throw new Error("Type a matrix: one row per line.");
+  const rows = lines.map((line, r) =>
+    line.split(/[\s,]+/).filter(Boolean).map((entry, c) => {
+      const parts = entry.split("/");
+      const value = parts.length === 2 ? Number(parts[0]) / Number(parts[1]) : parts.length === 1 ? Number(entry) : NaN;
+      if (!Number.isFinite(value) || parts.some((p) => p === "")) {
+        throw new Error(`Row ${r + 1}, entry ${c + 1}: "${entry}" is not a number.`);
+      }
+      return value;
+    }),
+  );
+  rows.forEach((row, r) => {
+    if (row.length !== rows[0].length) {
+      throw new Error(`Row ${r + 1} has ${row.length} entries but row 1 has ${rows[0].length}.`);
+    }
+  });
+  return rows;
 }
 
 /**
@@ -59,15 +82,46 @@ export function parseMatrix(text) {
  *   op is human readable, e.g. "R2 ← R2 − 4·R1", "R1 ↔ R3", "R2 ← (1/3)·R2".
  */
 export function rref(A, eps = 1e-10) {
-  // TODO (Plan step 8b), follow the algorithm from Linear Algebra:
-  // 1. Copy A. lead = 0.
-  // 2. For each row r: find pivot row (largest |value| in column lead at or below r; partial
-  //    pivoting). If none, lead++ and retry; stop when lead == columns.
-  // 3. Swap into place (record), scale pivot to 1 (record), eliminate the column in every
-  //    other row (record each), lead++.
-  // 4. Snap |x| < eps to 0 so -0 and 1e-17 don't show.
-  void A, eps;
-  throw new Error("Not implemented");
+  const M = A.map((row) => [...row]);
+  const rows = M.length;
+  const cols = rows ? M[0].length : 0;
+  const steps = [];
+  const snap = () => M.forEach((row) => row.forEach((v, c) => (row[c] = Math.abs(v) < eps ? 0 : v)));
+  const record = (op) => {
+    snap();
+    steps.push({ op, matrix: M.map((row) => [...row]) });
+  };
+  let lead = 0;
+  for (let r = 0; r < rows && lead < cols; r++) {
+    // Partial pivoting: the largest |value| in this column at or below row r.
+    let pivot = -1;
+    while (lead < cols) {
+      pivot = r;
+      for (let i = r + 1; i < rows; i++) if (Math.abs(M[i][lead]) > Math.abs(M[pivot][lead])) pivot = i;
+      if (Math.abs(M[pivot][lead]) >= eps) break;
+      lead++;
+    }
+    if (lead >= cols) break;
+    if (pivot !== r) {
+      [M[r], M[pivot]] = [M[pivot], M[r]];
+      record(`R${r + 1} ↔ R${pivot + 1}`);
+    }
+    const p = M[r][lead];
+    if (Math.abs(p - 1) >= eps) {
+      M[r] = M[r].map((v) => v / p);
+      record(`R${r + 1} ← (1/${formatNumber(p)})·R${r + 1}`);
+    }
+    for (let i = 0; i < rows; i++) {
+      const k = M[i][lead];
+      if (i === r || Math.abs(k) < eps) continue;
+      M[i] = M[i].map((v, c) => v - k * M[r][c]);
+      record(k > 0 ? `R${i + 1} ← R${i + 1} − ${formatNumber(k)}·R${r + 1}` : `R${i + 1} ← R${i + 1} + ${formatNumber(-k)}·R${r + 1}`);
+    }
+    lead++;
+  }
+  snap();
+  // Round away float noise like 0.9999999999 so exact answers look exact.
+  return { matrix: M.map((row) => row.map((v) => (Math.abs(v - Math.round(v)) < eps ? Math.round(v) + 0 : v))), steps };
 }
 
 /**
@@ -78,9 +132,8 @@ export function rref(A, eps = 1e-10) {
  * @returns {string}
  */
 export function formatNumber(x, digits = 4) {
-  // TODO (Plan step 8c)
-  void x, digits;
-  throw new Error("Not implemented");
+  const rounded = Number(x.toFixed(digits));
+  return String(rounded === 0 ? 0 : rounded);
 }
 
 /**
@@ -90,9 +143,12 @@ export function formatNumber(x, digits = 4) {
  * @returns {string}
  */
 export function cleanOcrText(raw) {
-  // TODO (Plan step 9a)
-  void raw;
-  throw new Error("Not implemented");
+  return raw
+    .replace(/\r\n?/g, "\n")
+    .replace(/(\w)-\n(\w)/g, "$1$2")
+    .replace(/[ \t]+$/gm, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }
 
 /**
@@ -102,9 +158,9 @@ export function cleanOcrText(raw) {
  * @returns {string}  starts with \documentclass, includes amsmath/amssymb, ends with \end{document}
  */
 export function toLatexDocument(body, title = "") {
-  // TODO (Plan step 10a)
-  void body, title;
-  throw new Error("Not implemented");
+  const head = title ? `\\title{${title}}\n\\date{}\n` : "";
+  const make = title ? "\\maketitle\n\n" : "";
+  return `\\documentclass{article}\n\\usepackage{amsmath,amssymb}\n${head}\\begin{document}\n${make}${body.trim()}\n\\end{document}\n`;
 }
 
 /**
