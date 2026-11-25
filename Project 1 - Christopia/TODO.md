@@ -37,7 +37,7 @@ few visible TODOs. Work top to bottom: the earlier steps protect the most points
 
 ### Step 6: Submit — you
 - [ ] Final commit and push; open the live site once more.
-- [ ] Submit: the repo link (https://github.com/ChrisMedkit/cs235-christopia), the Pages link (https://chrismedkit.github.io/cs235-christopia/), and the prompt log and test report (`PROMPT_LOG.docx`, `TEST_REPORT.docx`, plain-text Word copies of the `.md` files).
+- [ ] Submit: the repo link (https://github.com/ChrisMedkit/CS-235-IntroToAI/tree/main/Project%201%20-%20Christopia), the Pages link (https://chrismedkit.github.io/CS-235-IntroToAI/Project%201%20-%20Christopia/), and the prompt log and test report (`PROMPT_LOG.docx`, `TEST_REPORT.docx`, plain-text Word copies of the `.md` files).
 
 ## Optional (nice, not graded)
 - [ ] Friends in [js/friends.js](js/friends.js); the rest of the art in [ART_LIST.md](ART_LIST.md) (icons, buttons, stickers, desk objects); collage background; favicon.

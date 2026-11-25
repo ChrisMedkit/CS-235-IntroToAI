@@ -2,7 +2,7 @@
 
 An indie-web home for an applied math + CS major and their friends, dressed as a Windows 98 desktop: a Tools desktop (Math and CS tools), Social (forum, events, journal, friends + guestbook), a Me desk, and a Services control panel on Home for what's next.
 
-**Live:** https://chrismedkit.github.io/cs235-christopia/
+**Live:** https://chrismedkit.github.io/CS-235-IntroToAI/Project%201%20-%20Christopia/
 
 CS235 Project 1: Personal Interest Website with an LLM. See [OUTLINE.md](OUTLINE.md), [DIAGRAM.md](DIAGRAM.md), [REDESIGN_PLAN.md](REDESIGN_PLAN.md) and [ART_LIST.md](ART_LIST.md) (every picture on the site, to swap for your own).
 

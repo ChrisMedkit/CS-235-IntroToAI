@@ -1,6 +1,6 @@
 # Christopia: Personal Interest Website with an LLM — CS235
 **Due:** not stated  ·  **Type:** Web (static HTML/CSS/JS + CDN libraries)  ·  **Points:** 100 (5 criteria × 20)
-See [DIAGRAM.md](DIAGRAM.md) for diagrams, [REDESIGN_PLAN.md](REDESIGN_PLAN.md) for the indie-web redesign, spec images in [assignment/](assignment/). Live: https://chrismedkit.github.io/cs235-christopia/
+See [DIAGRAM.md](DIAGRAM.md) for diagrams, [REDESIGN_PLAN.md](REDESIGN_PLAN.md) for the indie-web redesign, spec images in [assignment/](assignment/). Live: https://chrismedkit.github.io/CS-235-IntroToAI/Project%201%20-%20Christopia/
 
 ## Summary
 Build a multi-page website on a topic you care about, using an LLM as a development partner, and document that use. Christopia is an indie-web home on the internet for an applied math + CS major and their friends: a splash page with a door, a Home portal, a **Tools** desktop (Math folder: plotter, Matrix Lab, LaTeX, notes scanner; CS folder: sorting, data structures, graphs & pathfinding, Big-O, regex builder), **Social** (forum, events, encrypted journal, friends + guestbook), **Me** (a desk of links and about windows) and a **Lab** for planned things (home server, smart home). Everything sits in Windows 98-style windows (98.css) with maximalist extras around them. Graded on content, design/CSS, the JS features, code quality, and the prompt log + reflection.

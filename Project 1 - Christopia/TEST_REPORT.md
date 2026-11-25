@@ -2,7 +2,7 @@
 
 Tested on November 22, 2026, in Chrome (the browser built into the Claude desktop app), on a local copy
 of the site served from this folder: the same files that are pushed to GitHub Pages
-(https://chrismedkit.github.io/cs235-christopia/). Every page was checked at desktop (1280 px) and phone
+(https://chrismedkit.github.io/CS-235-IntroToAI/Project%201%20-%20Christopia/). Every page was checked at desktop (1280 px) and phone
 (375 px) width.
 
 The 18 pages: `index` (splash), `home`, `tools`, `me`; `math/` plotter, matrix, latex, scanner;
