@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Me</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body data-root="">
+    <!-- Shared header: identical on every page except aria-current. -->
+    <header class="site-header">
+      <a class="brand" href="home.html">Christopia</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="tools.html">Tools</a></li>
+          <li><a href="social/index.html">Social</a></li>
+          <li><a href="me.html" aria-current="page">Me</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
+    <div class="ticker" role="marquee" aria-label="Site news">
+      <p class="ticker-track">
+        Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
+        Every Math, CS and Social tool is live &#9733; New: a private journal, a forum and events
+        &#9733;
+      </p>
+    </div>
+
+    <!-- The whole page is the desk: two sticky notes and the objects (each object is a link). -->
+    <main class="me-main desk-page">
+      <h1 class="desk-nameplate">Me</h1>
+      <p class="scene-hint">Choose my items</p>
+
+      <div class="desk-layout">
+        <article class="sticky-note note-about" id="about" aria-labelledby="about-heading">
+          <h2 id="about-heading">about.txt</h2>
+          <img
+            class="me-photo"
+            src="images/me/me.jpg"
+            alt="Chris in a maroon long-sleeve shirt, slouched in a striped camp chair with a takeout tray, giving the camera a sleepy look"
+            width="96"
+            height="96"
+          />
+          <p>Hello im Chris, enjoy</p>
+          <dl class="facts">
+            <div>
+              <dt>Studying</dt>
+              <dd>Applied math + computer science</dd>
+            </div>
+            <div>
+              <dt>Into</dt>
+              <dd>
+                Machine learning, sports (soccer &amp; football), building web tools, video games,
+                home servers / self-hosting
+              </dd>
+            </div>
+            <div>
+              <dt>Currently</dt>
+              <dd>Studying for finals</dd>
+            </div>
+            <div>
+              <dt>Find me</dt>
+              <dd>
+                <a
+                  href="https://www.youtube.com/@Chrisballz221"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >YouTube</a
+                >
+              </dd>
+            </div>
+          </dl>
+          <h3>Why Christopia?</h3>
+          <p>An interactive union of my ideas and work tools</p>
+        </article>
+
+        <!-- The objects: replace each image with a cut-out photo of your own thing (transparent PNG),
+             keep the label text. Positions live in css/style.css (.desk-calculator etc.). -->
+        <nav class="scene" aria-label="Things on my desk">
+          <ul>
+            <li class="scene-item desk-calculator">
+              <a href="tools.html"
+                ><img src="images/me/calculator.svg" alt="" /><span class="scene-label"
+                  ><span class="visually-hidden">Calculator: </span>Tools</span
+                ></a
+              >
+            </li>
+            <li class="scene-item desk-notebook">
+              <a href="social/journal.html"
+                ><img src="images/me/notebook.svg" alt="" /><span class="scene-label"
+                  ><span class="visually-hidden">Notebook: </span>Journal</span
+                ></a
+              >
+            </li>
+            <li class="scene-item desk-phone">
+              <a href="social/index.html"
+                ><img src="images/me/phone.svg" alt="" /><span class="scene-label"
+                  ><span class="visually-hidden">Phone: </span>Social</span
+                ></a
+              >
+            </li>
+            <li class="scene-item desk-headphones">
+              <a
+                href="https://open.spotify.com/user/7uwuwcvbcmrpahqd10aedct3b"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><img src="images/me/headphones.svg" alt="" /><span class="scene-label"
+                  ><span class="visually-hidden">Headphones: </span>Spotify</span
+                ></a
+              >
+            </li>
+            <li class="scene-item desk-floppy">
+              <a href="home.html#services"
+                ><img src="images/stickers/floppy.svg" alt="" /><span class="scene-label"
+                  ><span class="visually-hidden">Floppy disk: </span>Services</span
+                ></a
+              >
+            </li>
+            <li class="scene-item desk-polaroid">
+              <a href="#about"
+                ><img src="images/me/polaroid.svg" alt="" /><span class="scene-label"
+                  ><span class="visually-hidden">Photo: </span>About me</span
+                ></a
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <article
+          class="sticky-note note-favorites"
+          id="favorites"
+          aria-labelledby="favorites-heading"
+        >
+          <h2 id="favorites-heading">favorites.txt</h2>
+          <ul class="favorites">
+            <li><strong>Game:</strong> The Legend of Zelda: Breath of the Wild</li>
+            <li><strong>Show:</strong> The Bear</li>
+            <li><strong>Song:</strong> Por las noches (Peso Pluma)</li>
+            <li><strong>Theorem:</strong> The chess Elo rating scheme</li>
+            <li><strong>Food:</strong> Kimchi jjigae</li>
+          </ul>
+        </article>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
+      <ul class="badges" aria-label="Site badges">
+        <li><img src="images/badges/christopia.svg" alt="Christopia" width="88" height="31" /></li>
+        <li>
+          <img src="images/badges/math-inside.svg" alt="Math inside" width="88" height="31" />
+        </li>
+        <li>
+          <img
+            src="images/badges/any-browser.svg"
+            alt="Best viewed in any browser"
+            width="88"
+            height="31"
+          />
+        </li>
+      </ul>
+      <p>
+        &copy; 2026 Christopia.
+        <a
+          href="https://github.com/ChrisMedkit/cs235-christopia"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
+      </p>
+    </footer>
+
+    <script type="module" src="js/script.js"></script>
+  </body>
+</html>

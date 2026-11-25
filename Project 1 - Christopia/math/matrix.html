@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Matrix Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body class="math-bg" data-root="../">
+    <!-- Shared header: identical on every page except aria-current. -->
+    <header class="site-header">
+      <a class="brand" href="../home.html">Christopia</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../home.html">Home</a></li>
+          <li><a href="../tools.html" aria-current="page">Tools</a></li>
+          <li><a href="../social/index.html">Social</a></li>
+          <li><a href="../me.html">Me</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
+    <div class="ticker" role="marquee" aria-label="Site news">
+      <p class="ticker-track">
+        Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
+        Every Math, CS and Social tool is live &#9733; New: a private journal, a forum and events
+        &#9733;
+      </p>
+    </div>
+
+    <nav class="address-bar" aria-label="Breadcrumb">
+      <span class="address-label" aria-hidden="true">Address</span>
+      <ol class="address">
+        <li><a href="../tools.html">Tools</a></li>
+        <li><a href="../tools.html#math">Math</a></li>
+        <li aria-current="page">Matrix Lab</li>
+      </ol>
+    </nav>
+
+    <main class="tool-layout">
+      <section class="window" id="matrix-input" aria-labelledby="matrix-heading">
+        <div class="title-bar">
+          <h1 class="title-bar-text" id="matrix-heading">
+            <img src="../images/icons/matrix.svg" alt="" width="16" height="16" /> Matrix Lab<span
+              class="title-bar-program"
+              aria-hidden="true"
+            >
+              - matrix.exe</span
+            >
+          </h1>
+        </div>
+        <div class="window-body">
+          <form id="matrix-form">
+            <!-- One row per line, entries separated by spaces or commas. Fractions like 1/2 allowed. -->
+            <label for="matrix-text">Matrix A</label>
+            <textarea id="matrix-text" rows="6" spellcheck="false">
+  1 2 3
+  4 5 6
+  7 8 10</textarea
+            >
+
+            <fieldset>
+              <legend>Operation</legend>
+              <div class="field-row">
+                <input id="op-rref" type="radio" name="op" value="rref" checked /><label
+                  for="op-rref"
+                  >RREF (with steps)</label
+                >
+              </div>
+              <div class="field-row">
+                <input id="op-det" type="radio" name="op" value="det" /><label for="op-det"
+                  >Determinant</label
+                >
+              </div>
+              <div class="field-row">
+                <input id="op-inv" type="radio" name="op" value="inv" /><label for="op-inv"
+                  >Inverse</label
+                >
+              </div>
+              <div class="field-row">
+                <input id="op-eigs" type="radio" name="op" value="eigs" /><label for="op-eigs"
+                  >Eigenvalues</label
+                >
+              </div>
+              <div class="field-row">
+                <input id="op-transpose" type="radio" name="op" value="transpose" /><label
+                  for="op-transpose"
+                  >Transpose</label
+                >
+              </div>
+            </fieldset>
+
+            <button type="submit">Compute</button>
+          </form>
+          <p id="matrix-error" class="error" role="alert"></p>
+        </div>
+      </section>
+
+      <section class="window" id="matrix-output" aria-labelledby="result-heading">
+        <div class="title-bar">
+          <h2 class="title-bar-text" id="result-heading">Result</h2>
+        </div>
+        <div class="window-body">
+          <div id="matrix-result"></div>
+          <h3>Steps</h3>
+          <!-- Row operations from rref(); each step is an <li> with the operation and matrix. -->
+          <ol id="matrix-steps"></ol>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
+      <ul class="badges" aria-label="Site badges">
+        <li>
+          <img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" />
+        </li>
+        <li>
+          <img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" />
+        </li>
+        <li>
+          <img
+            src="../images/badges/any-browser.svg"
+            alt="Best viewed in any browser"
+            width="88"
+            height="31"
+          />
+        </li>
+      </ul>
+      <p>
+        &copy; 2026 Christopia.
+        <a
+          href="https://github.com/ChrisMedkit/cs235-christopia"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
+      </p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/13.2.0/math.min.js"></script>
+    <script type="module" src="../js/script.js"></script>
+    <script type="module" src="../js/matrix.js"></script>
+  </body>
+</html>

@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body data-root="">
+    <!-- Shared header: identical on every page except aria-current. -->
+    <header class="site-header">
+      <a class="brand" href="home.html">Christopia</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="home.html" aria-current="page">Home</a></li>
+          <li><a href="tools.html">Tools</a></li>
+          <li><a href="social/index.html">Social</a></li>
+          <li><a href="me.html">Me</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
+    <div class="ticker" role="marquee" aria-label="Site news">
+      <p class="ticker-track">
+        Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
+        Every Math, CS and Social tool is live &#9733; New: a private journal, a forum and events
+        &#9733;
+      </p>
+    </div>
+
+    <main class="home-main">
+      <div class="home-title">
+        <div class="title-wrap">
+          <h1 class="chrome-title chrome-title-small">Christopia</h1>
+          <p class="splash" aria-hidden="true">Now in 3D!</p>
+        </div>
+        <p class="home-tagline">Glorious Wonderland</p>
+      </div>
+
+      <!-- Portal: left nav, center welcome + gallery, right now/updates (one column on phones). -->
+      <div class="portal">
+        <div class="portal-col">
+          <section class="window" id="launch" aria-labelledby="launch-heading">
+            <div class="title-bar">
+              <h2 class="title-bar-text" id="launch-heading">Launch pad</h2>
+            </div>
+            <div class="window-body">
+              <ul class="launch-pad">
+                <li>
+                  <a href="tools.html"
+                    ><img src="images/icons/folder.svg" alt="" width="16" height="16" /> Tools</a
+                  >
+                </li>
+                <li>
+                  <a href="social/index.html"
+                    ><img src="images/icons/folder.svg" alt="" width="16" height="16" /> Social</a
+                  >
+                </li>
+                <li>
+                  <a href="me.html"
+                    ><img src="images/icons/folder.svg" alt="" width="16" height="16" /> Me</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </section>
+        </div>
+
+        <div class="portal-col">
+          <section class="window" id="welcome" aria-labelledby="welcome-heading">
+            <div class="title-bar">
+              <h2 class="title-bar-text" id="welcome-heading">welcome.txt</h2>
+            </div>
+            <div class="window-body">
+              <!-- TODO: your welcome, in your words: who you are, what this place is, what to try first. -->
+              <img
+                class="welcome-image"
+                src="images/hero.jpg"
+                alt="Sunset over a lake from a stone shoreline path, with two friends in silhouette, one taking a photo with a small camera"
+                width="640"
+                height="360"
+              />
+              <p>
+                Welcome all, embrace and enjoy this AI generated interactive space. With the use of
+                Claude Opus 5.5, online research, and my own education and interests, this website
+                serves as a space to reflect my mind
+              </p>
+              <p>
+                Start with the <a href="tools.html">Tools</a> desktop, or press
+                <strong>Start</strong> at the bottom left to see every page.
+              </p>
+            </div>
+          </section>
+
+          <section class="window" id="tools" aria-labelledby="tools-heading">
+            <div class="title-bar">
+              <h2 class="title-bar-text" id="tools-heading">All tools</h2>
+            </div>
+            <div class="window-body">
+              <!-- Sideways scroll-snap gallery. Static cards are the no-JS fallback;
+                   renderToolGallery() in js/script.js re-renders them from js/tools.js. -->
+              <ul class="tool-gallery" id="tool-gallery">
+                <li class="tool-card">
+                  <a href="math/plotter.html">
+                    <img
+                      src="images/plotter.svg"
+                      alt="Function Plotter preview"
+                      width="640"
+                      height="360"
+                    />
+                    <h3>Function Plotter</h3>
+                    <p>Graph y = f(x) in 2D and z = f(x, y) in 3D.</p>
+                  </a>
+                </li>
+                <li class="tool-card">
+                  <a href="math/matrix.html">
+                    <img
+                      src="images/matrix.svg"
+                      alt="Matrix Lab preview"
+                      width="640"
+                      height="360"
+                    />
+                    <h3>Matrix Lab</h3>
+                    <p>RREF with row steps, determinant, inverse, eigenvalues.</p>
+                  </a>
+                </li>
+                <li class="tool-card">
+                  <a href="math/latex.html">
+                    <img
+                      src="images/latex.svg"
+                      alt="LaTeX Scratchpad preview"
+                      width="640"
+                      height="360"
+                    />
+                    <h3>LaTeX Scratchpad</h3>
+                    <p>Write math, see it rendered, export .tex.</p>
+                  </a>
+                </li>
+                <li class="tool-card">
+                  <a href="math/scanner.html">
+                    <img
+                      src="images/scanner.svg"
+                      alt="Notes Scanner preview"
+                      width="640"
+                      height="360"
+                    />
+                    <h3>Notes Scanner</h3>
+                    <p>Photo of your notes in, typed text out.</p>
+                  </a>
+                </li>
+                <li class="tool-card">
+                  <a href="cs/sorting.html">
+                    <img
+                      src="images/sorting.svg"
+                      alt="Sorting Visualizer preview"
+                      width="640"
+                      height="360"
+                    />
+                    <h3>Sorting Visualizer</h3>
+                    <p>Watch six sorting algorithms compare and swap, step by step.</p>
+                  </a>
+                </li>
+                <li class="tool-card">
+                  <a href="cs/data-structures.html">
+                    <img
+                      src="images/structures.svg"
+                      alt="Data Structures preview"
+                      width="640"
+                      height="360"
+                    />
+                    <h3>Data Structures</h3>
+                    <p>Stacks, queues, linked lists, BSTs, heaps and hash tables, animated.</p>
+                  </a>
+                </li>
+                <li class="tool-card">
+                  <a href="cs/graphs.html">
+                    <img
+                      src="images/graphs.svg"
+                      alt="Graphs &amp; Pathfinding preview"
+                      width="640"
+                      height="360"
+                    />
+                    <h3>Graphs &amp; Pathfinding</h3>
+                    <p>BFS, DFS, Dijkstra and A* on a grid you draw.</p>
+                  </a>
+                </li>
+                <li class="tool-card">
+                  <a href="cs/big-o.html">
+                    <img
+                      src="images/bigo.svg"
+                      alt="Big-O Playground preview"
+                      width="640"
+                      height="360"
+                    />
+                    <h3>Big-O Playground</h3>
+                    <p>Compare growth rates and benchmark real algorithms.</p>
+                  </a>
+                </li>
+                <li class="tool-card">
+                  <a href="cs/regex.html">
+                    <img
+                      src="images/regex.svg"
+                      alt="Regex Builder preview"
+                      width="640"
+                      height="360"
+                    />
+                    <h3>Regex Builder</h3>
+                    <p>Build a regular expression from blocks, see it explained and matched.</p>
+                  </a>
+                </li>
+                <li class="tool-card">
+                  <a href="social/forum.html">
+                    <img src="images/forum.svg" alt="Forum preview" width="640" height="360" />
+                    <h3>Forum</h3>
+                    <p>Threads and replies for classes, projects and anything else.</p>
+                  </a>
+                </li>
+                <li class="tool-card">
+                  <a href="social/events.html">
+                    <img src="images/events.svg" alt="Events preview" width="640" height="360" />
+                    <h3>Events</h3>
+                    <p>Create events, RSVP, and add them to your calendar.</p>
+                  </a>
+                </li>
+                <li class="tool-card">
+                  <a href="social/journal.html">
+                    <img
+                      src="images/journal.svg"
+                      alt="Private Journal preview"
+                      width="640"
+                      height="360"
+                    />
+                    <h3>Private Journal</h3>
+                    <p>Password-locked, encrypted notes with a Notion-style editor.</p>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </div>
+
+        <div class="portal-col">
+          <!-- Control panel: services that aren't tools yet. renderServices() in js/script.js re-renders
+               it from the "planned" entries in js/tools.js plus empty bays; this static copy is the no-JS fallback. -->
+          <section class="window" id="services" aria-labelledby="services-heading">
+            <div class="title-bar">
+              <h2 class="title-bar-text" id="services-heading">
+                Services<span class="title-bar-program" aria-hidden="true"> - control panel</span>
+              </h2>
+            </div>
+            <div class="window-body">
+              <div class="rack">
+                <ul class="rack-units" id="rack-units">
+                  <li class="rack-unit">
+                    <span class="led led-amber" aria-hidden="true"></span
+                    ><span class="unit-name">Home Server</span
+                    ><span class="unit-status">Offline · coming soon</span
+                    ><span class="unit-note">Status of services on the home server.</span>
+                  </li>
+                  <li class="rack-unit">
+                    <span class="led led-amber" aria-hidden="true"></span
+                    ><span class="unit-name">Smart Home</span
+                    ><span class="unit-status">Offline · coming soon</span
+                    ><span class="unit-note">Lights and devices.</span>
+                  </li>
+                  <li class="rack-unit empty">
+                    <span class="led" aria-hidden="true"></span
+                    ><span class="unit-name">Empty bay</span
+                    ><span class="unit-status">Coming soon</span>
+                  </li>
+                  <li class="rack-unit empty">
+                    <span class="led" aria-hidden="true"></span
+                    ><span class="unit-name">Empty bay</span
+                    ><span class="unit-status">Coming soon</span>
+                  </li>
+                  <li class="rack-unit empty">
+                    <span class="led" aria-hidden="true"></span
+                    ><span class="unit-name">Empty bay</span
+                    ><span class="unit-status">Coming soon</span>
+                  </li>
+                  <li class="rack-unit empty">
+                    <span class="led" aria-hidden="true"></span
+                    ><span class="unit-name">Empty bay</span
+                    ><span class="unit-status">Coming soon</span>
+                  </li>
+                </ul>
+              </div>
+              <p class="rack-footer" id="rack-summary">0 online · 2 planned · 4 empty bays</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
+      <ul class="badges" aria-label="Site badges">
+        <li><img src="images/badges/christopia.svg" alt="Christopia" width="88" height="31" /></li>
+        <li>
+          <img src="images/badges/math-inside.svg" alt="Math inside" width="88" height="31" />
+        </li>
+        <li>
+          <img
+            src="images/badges/any-browser.svg"
+            alt="Best viewed in any browser"
+            width="88"
+            height="31"
+          />
+        </li>
+      </ul>
+      <p>
+        &copy; 2026 Christopia.
+        <a
+          href="https://github.com/ChrisMedkit/cs235-christopia"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
+      </p>
+    </footer>
+
+    <script type="module" src="js/script.js"></script>
+  </body>
+</html>

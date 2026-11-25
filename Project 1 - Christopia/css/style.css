@@ -1,0 +1,2363 @@
+/* Christopia shared stylesheet (every page). Loads after 98.css, which draws the windows,
+   buttons, inputs, fieldsets and scrollbars. This file adds the page layout, the maximalist
+   extras (background, splash text, ticker, stickers later) and the tools' own visuals.
+   98.css hard-codes its colors, so there is one light theme. */
+
+/* Y2K display fonts (cufonfonts, free for personal use) and the Minecraft font
+   (Craftron Gaming on dafont, 100% free). Paths are relative to this file. */
+@font-face {
+  font-family: "Rocket Pop";
+  src: url("../fonts/rocketpop.woff") format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Rocket Pop Italic";
+  src: url("../fonts/rocketpopital.woff") format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Digit LoFi";
+  src: url("../fonts/digit-lo-fi.woff") format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Minecraft";
+  src: url("../fonts/minecraft.ttf") format("truetype");
+  font-display: swap;
+}
+
+:root {
+  /* Sky with soft bubbles (the old glossy theme), shown until the collage image is added. */
+  --sky: radial-gradient(circle at 15% 20%, rgb(255 255 255 / 0.9) 0 6%, transparent 7%),
+    radial-gradient(circle at 80% 30%, rgb(255 255 255 / 0.7) 0 4%, transparent 5%),
+    radial-gradient(circle at 60% 85%, rgb(255 255 255 / 0.6) 0 8%, transparent 9%),
+    linear-gradient(180deg, #8fd8fb 0%, #d9f1fc 45%, #f6fbfe 100%);
+  --glass: rgb(236 247 253 / 0.72); /* window and bar faces: frosted, the page shows through */
+  --pressed: #cfe8f7; /* pressed-in toggles and the current nav item */
+  --select: #0b6fa4; /* selections and focus highlights (white text on it) */
+  /* Glossy button face from the old theme: bright top half, soft blue bottom half. */
+  --gloss: linear-gradient(180deg, #ffffff 0%, #f1f8fc 48%, #dceef8 52%, #f4fafd 100%);
+  /* Title bars: light-blue gradient with a glossy top highlight. */
+  --title-bar: linear-gradient(180deg, rgb(255 255 255 / 0.35) 0 45%, transparent 55%),
+    linear-gradient(90deg, #0b5f8f, #1878ad);
+  --paper: #ece8dc; /* math pages: light enough for the faded proofs to read */
+  --surface: #ffffff;
+  --text: #000000;
+  --muted: #444444;
+  --accent: #0b6fa4;
+  --accent-strong: #0b5f8f;
+  --accent-text: #ffffff;
+  --error: #a00000;
+  --border: #808080;
+  --splash: #ffff00;
+  --pill: 0;
+  --space: 1rem;
+  --font: "M PLUS Rounded 1c", system-ui, -apple-system, "Segoe UI", sans-serif; /* reading text */
+  --font-ui: "Pixelated MS Sans Serif", Arial, sans-serif; /* 98.css's pixel font for chrome */
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --font-display: "Rocket Pop", var(--font);
+  --font-heading: "Rocket Pop Italic", var(--font);
+  --font-digital: "Digit LoFi", var(--mono);
+  --font-pixel: "Minecraft", var(--mono);
+  --header-h: 3rem;
+  /* 98.css's own bevels, reused for links styled as buttons, sunken fields and pressed toggles. */
+  --bevel-out: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080,
+    inset 2px 2px #dfdfdf;
+  --bevel-in: inset -1px -1px #ffffff, inset 1px 1px #808080, inset -2px -2px #dfdfdf,
+    inset 2px 2px #0a0a0a;
+  --shadow: 4px 4px 0 rgb(0 0 0 / 0.35); /* hard drop shadow: the indie-web touch */
+  /* Title-bar blue (98.css's own gradient), used for the ticker and sorting bars. */
+  --gloss-accent: linear-gradient(90deg, #0b5f8f, #1878ad);
+
+  /* Home/tool background. Export your Photoshop collage to images/bg-collage.jpg
+     (see README "Background"), then replace `none` with: url("../images/bg-collage.jpg") */
+  --bg-collage: none;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+  background:
+    var(--bg-collage) center / cover fixed,
+    var(--sky) fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Math pages: plain paper and the Real Analysis portfolio, tiled, rotated, barely visible. */
+body.math-bg {
+  background: var(--paper);
+}
+body.math-bg::before {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: -1;
+  background: url("../images/real-analysis-bg.png") repeat;
+  background-size: 1100px auto;
+  transform: rotate(-30deg);
+  opacity: 0.09;
+  pointer-events: none;
+}
+
+main {
+  flex: 1;
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: var(--space);
+  display: grid;
+  gap: calc(var(--space) * 1.25);
+  align-content: start;
+}
+
+::selection {
+  background: var(--select);
+  color: #ffffff;
+}
+
+a {
+  color: #0000ee;
+}
+a:visited {
+  color: #551a8b;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.error {
+  color: var(--error);
+}
+
+[hidden] {
+  display: none !important; /* must win over display: grid/flex below */
+}
+
+/* ---------- Windows (98.css) ---------- */
+.window {
+  min-width: 0;
+  box-shadow: var(--bevel-out), var(--shadow);
+}
+/* 98.css sets the whole window in its 11 px pixel font; reading text uses the body font.
+   Buttons, inputs, labels and legends still get 98.css's font from their own rules. */
+.window-body {
+  font-family: var(--font);
+  font-size: 15px;
+  -webkit-font-smoothing: auto;
+}
+.title-bar-text {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #ffffff;
+  letter-spacing: 0;
+}
+/* Glass + light blue over the 98 shapes: 98.css keeps the bevels, borders and fonts;
+   these replace its silver faces and navy title bars. */
+.window {
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  backdrop-filter: blur(12px) saturate(1.4);
+}
+.title-bar {
+  background: var(--title-bar);
+}
+.title-bar.inactive {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.3) 0 45%, transparent 55%),
+    linear-gradient(90deg, #4f687a, #5d7688); /* white text stays above 4.5:1 */
+}
+.title-bar-text {
+  text-shadow: 1px 1px 0 rgb(0 0 0 / 0.35); /* keeps white titles readable on the lighter blue */
+}
+button,
+.button,
+#site-nav li a,
+.sub-nav a,
+.launch-pad a,
+.autorun-label,
+.data-table th {
+  background: var(--gloss);
+}
+.site-header,
+.sub-nav,
+.address-bar,
+.site-footer,
+.taskbar {
+  -webkit-backdrop-filter: blur(10px) saturate(1.3);
+  backdrop-filter: blur(10px) saturate(1.3);
+}
+
+/* A page's own title: twice the pixel size, so the pixels stay crisp. */
+h1.title-bar-text {
+  font-size: 22px;
+  padding: 2px 4px;
+}
+.window-body > h2,
+.window-body h2 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: 1.35rem;
+  color: var(--accent);
+  margin: 1rem 0 0.5rem;
+}
+.window-body h3 {
+  font-size: 1.05rem;
+  margin: 0.75rem 0 0.35rem;
+}
+
+/* Links that act like 98 buttons (hero button, forum "New thread"). */
+.button {
+  display: inline-block;
+  min-width: 75px;
+  min-height: 23px;
+  padding: 4px 12px;
+  background: var(--glass);
+  box-shadow: var(--bevel-out);
+  color: #000000;
+  font: 11px var(--font-ui);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+.button:visited {
+  color: #000000;
+}
+.button:active {
+  box-shadow: var(--bevel-in);
+}
+/* A toggle that is on looks pressed in (e.g. the graph tool buttons). */
+[role="group"] > button[aria-pressed="true"] {
+  box-shadow: var(--bevel-in);
+  background: var(--pressed);
+}
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ---------- Header: a 98 menu bar ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem var(--space);
+  padding: 0.35rem var(--space);
+  min-height: var(--header-h);
+  background: var(--glass);
+  box-shadow: var(--bevel-out);
+  flex-wrap: wrap;
+}
+.brand {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  text-decoration: none;
+  margin-right: auto;
+  text-shadow: 2px 2px 0 #ffffff;
+}
+.brand:visited {
+  color: var(--accent);
+}
+
+#site-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+/* Nav links look like 98 buttons; the current page is pressed in. */
+#site-nav li a {
+  display: block;
+  min-width: 75px;
+  padding: 4px 12px;
+  text-align: center;
+  background: var(--glass);
+  box-shadow: var(--bevel-out);
+  color: #000000;
+  font: 11px var(--font-ui);
+  text-decoration: none;
+}
+#site-nav a[aria-current="page"] {
+  box-shadow: var(--bevel-in);
+  background: var(--pressed);
+  font-weight: 700;
+}
+#site-nav {
+  display: none; /* mobile: behind the Menu button (toggleNav sets .open) */
+  width: 100%;
+  order: 10;
+}
+#site-nav.open {
+  display: block;
+}
+
+/* ---------- Section sub-nav (Math / CS / Social): a row of 98 tabs ---------- */
+.sub-nav {
+  padding: 0.35rem var(--space) 0;
+  background: var(--glass);
+  box-shadow: inset 0 -1px #808080;
+  overflow-x: auto;
+}
+.sub-nav ul {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  gap: 2px;
+  width: min(1200px, 100%);
+}
+.sub-nav a {
+  display: block;
+  white-space: nowrap;
+  padding: 3px 10px 4px;
+  background: var(--glass);
+  box-shadow:
+    inset -1px 0 #0a0a0a,
+    inset 1px 1px #ffffff,
+    inset -2px 0 #808080,
+    inset 2px 2px #dfdfdf;
+  color: #000000;
+  font: 11px var(--font-ui);
+  text-decoration: none;
+}
+.sub-nav a[aria-current="page"] {
+  font-weight: 700;
+  padding-bottom: 6px;
+  margin-bottom: -1px; /* the selected tab sits on top of the strip, like 98 tabs */
+}
+
+/* ---------- Tool pages: 98 Explorer address bar (C:\Tools\Math\Plotter) ---------- */
+.address-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px var(--space);
+  background: var(--glass);
+  box-shadow: inset 0 -1px #808080;
+  font: 11px var(--font-ui);
+}
+.address {
+  list-style: none;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  padding: 3px 6px;
+  min-height: 21px;
+  background: #ffffff;
+  box-shadow: var(--bevel-in);
+}
+.address::before {
+  content: "C:\\";
+  content: "C:\\" / ""; /* decoration: screen readers just hear the links */
+}
+.address li + li::before {
+  content: "\\";
+  content: "\\" / "";
+}
+.address a,
+.address a:visited {
+  color: var(--accent);
+}
+
+/* ---------- Tools desktop (desktop.js) ---------- */
+.desktop {
+  position: relative;
+  display: grid;
+  gap: calc(var(--space) * 1.25);
+}
+/* Wide screens with a mouse: windows float where you drag them. */
+.desktop.is-draggable {
+  display: block;
+}
+.desktop.is-draggable .desktop-window {
+  position: absolute;
+  width: min(460px, 47%);
+}
+.desktop.is-draggable .title-bar {
+  cursor: move;
+  touch-action: none;
+}
+.title-bar-text img {
+  vertical-align: -3px;
+  margin-right: 3px;
+  image-rendering: pixelated;
+}
+h1.title-bar-text img {
+  width: 24px;
+  height: 24px;
+  vertical-align: -4px;
+}
+.title-bar-program {
+  font-weight: 400;
+}
+/* The folder view: white sunken area with icons and labels, like 98 Explorer. */
+.icon-grid {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 14px 6px;
+  min-height: 140px;
+  background: #ffffff;
+  box-shadow: var(--bevel-in);
+}
+.icon-grid a,
+.icon-grid a:visited {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 2px;
+  color: #000000;
+  font: 11px var(--font-ui);
+  text-align: center;
+  text-decoration: none;
+}
+.icon-grid img {
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+}
+.icon-grid span {
+  padding: 1px 3px;
+}
+/* 98 selection: navy label; keyboard focus adds the dotted rectangle. */
+.icon-grid a:hover span,
+.icon-grid a:focus-visible span {
+  background: var(--select);
+  color: #ffffff;
+}
+.icon-grid a:focus-visible {
+  outline: none;
+}
+.icon-grid a:focus-visible span {
+  outline: 1px dotted #ffffff;
+  outline-offset: -1px;
+}
+
+/* ---------- Shared bits for tool pages ---------- */
+.tool-layout {
+  grid-template-columns: 1fr;
+}
+#plot,
+.plot {
+  width: 100%;
+  min-height: 420px;
+  background: #ffffff;
+  box-shadow: var(--bevel-in);
+}
+/* 98.css sets textareas and tables in its 11 px pixel font; code and data read better in mono/body text. */
+textarea {
+  width: 100%;
+  font-family: var(--mono);
+  font-size: 13px;
+}
+/* Field labels sit above their input; radio/checkbox labels stay next to their box. */
+form label:not(.field-row label),
+.window-body > label {
+  display: flex;
+  margin-top: 0.6rem;
+}
+form input:not([type="radio"], [type="checkbox"]),
+form select,
+form textarea {
+  width: 100%;
+}
+.notice {
+  padding: 0.5rem 0.75rem;
+  background: #ffffe1; /* 98 tooltip yellow */
+  border: 1px solid #000000;
+  font-size: 0.9rem;
+}
+.empty-state,
+.meta {
+  color: var(--muted);
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 6px;
+  margin: var(--space) 0 0;
+}
+.stats div {
+  background: var(--surface);
+  box-shadow: var(--bevel-in);
+  padding: 0.35rem 0.6rem;
+}
+.stats dt {
+  font: 11px var(--font-ui);
+  color: var(--muted);
+}
+.stats dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 1.05rem;
+  white-space: nowrap; /* keep O(n log n) on one line */
+  color: var(--accent);
+}
+/* Radio groups: 98 radio buttons laid out in a wrapping row. */
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+}
+.field-row {
+  display: flex;
+  align-items: center;
+  min-height: 20px;
+}
+#bigo-classes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+}
+.data-table {
+  width: 100%;
+  margin-top: var(--space);
+  font: 0.9rem var(--font);
+  white-space: normal; /* 98.css tables are nowrap */
+  background: var(--surface);
+  box-shadow: var(--bevel-in);
+}
+.data-table caption {
+  font: 11px var(--font-ui);
+  text-align: left;
+  padding: 0.25rem 0;
+}
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 0.3rem 0.5rem;
+  border-bottom: 1px solid #dfdfdf;
+  overflow-wrap: anywhere; /* long matches (emails, URLs) must not push a phone screen sideways */
+}
+.data-table th {
+  background: var(--glass);
+  box-shadow: var(--bevel-out);
+  font: 700 11px var(--font-ui);
+}
+.output {
+  white-space: pre-wrap;
+  background: var(--surface);
+  box-shadow: var(--bevel-in);
+  padding: 0.6rem;
+  min-height: 2.5rem;
+}
+/* 98.css makes every <button> at least 75 x 23 px; these small ones opt out. */
+.cell,
+.token-palette button,
+.vote button,
+.remove-expr,
+.page-icon,
+.page-tree button,
+.sidebar-action {
+  min-width: 0;
+  min-height: 0;
+}
+.token-palette button {
+  padding: 2px 8px;
+}
+.token-palette code {
+  font-size: 13px;
+}
+.regex-input input {
+  height: 26px;
+  font-family: var(--mono);
+  font-size: 14px;
+}
+
+/* Splash text: yellow, tilted, pulsing, on the big title's bottom-right corner (splash page and
+   Home only; text set by initSplash). */
+.splash {
+  position: absolute;
+  right: -0.5em;
+  bottom: -0.2em;
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-weight: 400;
+  font-size: clamp(0.9rem, 2.6vw, 1.6rem);
+  color: var(--splash);
+  white-space: nowrap;
+  pointer-events: none;
+  transform: rotate(-14deg);
+  text-shadow:
+    1px 1px 0 #4a4300,
+    -1px -1px 0 #4a4300,
+    1px -1px 0 #4a4300,
+    -1px 1px 0 #4a4300;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .splash {
+    animation: splash-pulse 0.55s ease-in-out infinite alternate;
+  }
+}
+@keyframes splash-pulse {
+  to {
+    transform: rotate(-14deg) scale(1.1);
+  }
+}
+
+/* ---------- News ticker ---------- */
+.ticker {
+  overflow: hidden;
+  background: var(--gloss-accent);
+  color: var(--accent-text);
+  font-family: var(--font-digital);
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--accent-strong);
+  text-shadow: 0 1px 1px rgb(0 0 0 / 0.3);
+}
+.ticker-track {
+  margin: 0;
+  padding: 0.3rem var(--space);
+  white-space: nowrap;
+  display: inline-block;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ticker-track {
+    padding-left: 100%;
+    animation: ticker 30s linear infinite;
+  }
+  .ticker:hover .ticker-track,
+  .ticker:focus-within .ticker-track {
+    animation-play-state: paused;
+  }
+}
+@keyframes ticker {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* ---------- Chrome title (splash + Home): CSS-only, no image file ---------- */
+.chrome-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(3rem, 13vw, 9rem);
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  /* Layer 1: a white shine that sweeps across; layer 2: the chrome (sky, horizon line, ground). */
+  background:
+    linear-gradient(100deg, transparent 42%, rgb(255 255 255 / 0.95) 50%, transparent 58%) -150% 0 /
+      60% 100% no-repeat,
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #dce6ef 28%,
+      #7e90a3 49%,
+      #f6f9fb 51%,
+      #b7c5d3 76%,
+      #ffffff 100%
+    );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* A navy 3D edge: drop-shadow follows the clipped letters (text-shadow would sit on top of them). */
+  filter: drop-shadow(1px 1px 0 #0b5f8f) drop-shadow(1px 1px 0 #0b5f8f)
+    drop-shadow(2px 2px 0 #083d5c) drop-shadow(5px 6px 0 rgb(0 0 0 / 0.35));
+}
+.chrome-title-small {
+  font-size: clamp(2.2rem, 7vw, 4.75rem);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .chrome-title {
+    animation:
+      title-float 3.5s ease-in-out infinite alternate,
+      title-shine 6s linear infinite;
+  }
+}
+@keyframes title-float {
+  to {
+    transform: translateY(-8px);
+  }
+}
+@keyframes title-shine {
+  0%,
+  55% {
+    background-position:
+      -150% 0,
+      0 0;
+  }
+  100% {
+    background-position:
+      250% 0,
+      0 0;
+  }
+}
+
+/* ---------- Splash page (index.html) ---------- */
+.splash-main {
+  min-height: calc(100vh - 34px); /* the taskbar */
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1.25rem;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+.title-wrap {
+  position: relative;
+}
+.splash-subtitle,
+.splash-note {
+  margin: 0;
+  max-width: 34rem;
+  color: #083d5c;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 0.8);
+}
+.splash-note {
+  font: 11px var(--font-ui);
+}
+/* CD-ROM autorun button: a spinning disc with a 98-style label under it. */
+.autorun,
+.autorun:visited {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  color: #000000;
+  text-decoration: none;
+}
+.autorun img {
+  width: 160px;
+  height: auto;
+  border-radius: 50%;
+  filter: drop-shadow(4px 6px 0 rgb(0 0 0 / 0.3));
+}
+.autorun-label {
+  padding: 6px 16px;
+  box-shadow: var(--bevel-out);
+  font: 11px var(--font-ui);
+}
+.autorun:hover .autorun-label,
+.autorun:focus-visible .autorun-label {
+  background: var(--select);
+  color: #ffffff;
+}
+.autorun:active .autorun-label {
+  box-shadow: var(--bevel-in);
+}
+.autorun:focus-visible {
+  outline: 1px dotted #000000;
+  outline-offset: 6px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .autorun img {
+    animation: cd-spin 6s linear infinite;
+  }
+  .autorun:hover img,
+  .autorun:focus-visible img {
+    animation-duration: 0.8s; /* "reading the disc" */
+  }
+}
+@keyframes cd-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* ---------- Home page (home.html): title + portal columns ---------- */
+.home-title {
+  display: grid;
+  justify-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0;
+  text-align: center;
+}
+.home-tagline {
+  margin: 0;
+  color: #083d5c;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 0.8);
+}
+.portal {
+  display: grid;
+  gap: calc(var(--space) * 1.25);
+  align-items: start;
+}
+.portal-col {
+  display: grid;
+  gap: calc(var(--space) * 1.25);
+  min-width: 0;
+}
+.launch-pad {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.launch-pad a,
+.launch-pad a:visited {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: var(--glass);
+  box-shadow: var(--bevel-out);
+  color: #000000;
+  font: 11px var(--font-ui);
+  text-decoration: none;
+}
+.launch-pad a:active {
+  box-shadow: var(--bevel-in);
+}
+.buttons-wall {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.buttons-wall img {
+  display: block;
+  width: 88px;
+  height: 31px;
+  image-rendering: pixelated;
+}
+.welcome-image {
+  display: block;
+  float: right;
+  width: min(45%, 260px);
+  margin: 0 0 0.5rem 0.75rem;
+  box-shadow: var(--bevel-in);
+}
+/* Services control panel: a little server rack. Amber light = planned, dark = empty bay. */
+.rack {
+  padding: 10px 18px;
+  border-radius: 4px;
+  box-shadow: var(--bevel-in);
+  /* rack rails with screw holes down both sides */
+  background-image: radial-gradient(circle, #111 2px, transparent 2.5px),
+    radial-gradient(circle, #111 2px, transparent 2.5px), linear-gradient(180deg, #3a4148, #23282d);
+  background-size:
+    10px 24px,
+    10px 24px,
+    auto;
+  background-position:
+    4px 6px,
+    right 4px top 6px,
+    0 0;
+  background-repeat: repeat-y, repeat-y, no-repeat;
+}
+.rack-units {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.rack-unit {
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  column-gap: 8px;
+  align-items: center;
+  padding: 7px 10px;
+  background: linear-gradient(180deg, #4b535b, #3d444b);
+  border: 1px solid #1b1f23;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18);
+  color: #f2f6f8;
+}
+.rack-unit .unit-name {
+  font: 700 0.95rem var(--font);
+}
+.rack-unit .unit-status,
+.rack-unit .unit-note {
+  grid-column: 2;
+  font: 11px var(--font-ui);
+}
+.rack-unit .unit-status {
+  color: #ffd27a;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.rack-unit .unit-note {
+  color: #d6dee4;
+}
+.rack-unit.empty {
+  background: repeating-linear-gradient(90deg, #2f353b 0 3px, #353c42 3px 6px); /* vent slots */
+}
+.rack-unit.empty .unit-name,
+.rack-unit.empty .unit-status {
+  color: #b9c3ca;
+}
+.led {
+  grid-row: 1 / span 3;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #1c2024;
+  box-shadow: inset 0 0 0 1px #000;
+}
+.led-amber {
+  background: #ffb000;
+  box-shadow: 0 0 6px #ffb000;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .led-amber {
+    animation: led-blink 1.6s steps(2, jump-none) infinite;
+  }
+}
+@keyframes led-blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+.rack-footer {
+  margin: 0.5rem 0 0;
+  font: 11px var(--font-ui);
+  color: var(--muted);
+}
+
+/* ---------- Me page (me.html): a desk whose objects are links ---------- */
+.scene-hint {
+  margin-top: 0;
+}
+/* The whole page is the desk: wood planks drawn with gradients (no image file). */
+.desk-page {
+  width: min(1400px, 100%);
+  min-height: 80vh;
+  margin-block: var(--space);
+  padding: calc(var(--space) * 1.5);
+  background: repeating-linear-gradient(
+      90deg,
+      transparent 0 calc(25% - 2px),
+      rgb(60 35 15 / 0.55) calc(25% - 2px) 25%
+    ),
+    repeating-linear-gradient(0deg, rgb(255 255 255 / 0.05) 0 3px, transparent 3px 11px),
+    linear-gradient(180deg, #b9824b, #9c6a38);
+  box-shadow: var(--bevel-in), var(--shadow);
+  color: #ffffff;
+}
+/* A brass nameplate instead of a window title. */
+.desk-nameplate {
+  justify-self: center;
+  margin: 0;
+  padding: 0.2rem 1.6rem;
+  background: linear-gradient(180deg, #f6e27a, #c9a227 55%, #e9cf5c);
+  border: 2px solid #7a5a12;
+  border-radius: 4px;
+  box-shadow: 0 3px 0 rgb(0 0 0 / 0.35);
+  color: #3b2a05;
+  font: 400 1.6rem var(--font-display);
+  letter-spacing: 0.08em;
+}
+.desk-page .scene-hint {
+  justify-self: center;
+  margin: 0;
+  padding: 2px 10px;
+  background: #fffbe6; /* a paper tag: white text on the light wood was too faint */
+  box-shadow: 2px 2px 0 rgb(0 0 0 / 0.3);
+  color: #3b2a05;
+  font: 700 11px var(--font-ui);
+}
+/* Notes | objects | notes on wide screens; objects first, then the notes, on smaller ones. */
+.desk-layout {
+  display: grid;
+  gap: calc(var(--space) * 2);
+  align-items: start;
+}
+.scene {
+  position: relative;
+  aspect-ratio: 16 / 10;
+}
+@media (min-width: 600px) and (max-width: 1099px) {
+  .desk-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+  .desk-layout .scene {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+}
+@media (min-width: 1100px) {
+  .desk-layout {
+    grid-template-columns: minmax(250px, 1fr) minmax(0, 1.7fr) minmax(220px, 0.9fr);
+  }
+}
+
+/* Sticky notes: yellow Post-its, a little tilted, with tape on top. */
+.sticky-note {
+  position: relative;
+  padding: 1.6rem 1.1rem 1.1rem;
+  background: linear-gradient(180deg, #fff59a, #ffeb6e);
+  color: #1d1a0a;
+  box-shadow: 3px 6px 10px rgb(0 0 0 / 0.35);
+  transform: rotate(var(--tilt, -2deg));
+}
+.note-favorites {
+  --tilt: 2.5deg;
+}
+.sticky-note::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 90px;
+  height: 22px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: rgb(255 255 255 / 0.55);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
+}
+.sticky-note h2,
+.sticky-note h3 {
+  margin: 0 0 0.5rem;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Marker Felt", var(--font);
+  color: #1d1a0a;
+}
+.sticky-note h2 {
+  font-size: 1.35rem;
+}
+.sticky-note h3 {
+  margin-top: 0.9rem;
+  font-size: 1.05rem;
+}
+.sticky-note p {
+  margin: 0 0 0.5rem;
+}
+.sticky-note a {
+  color: #0b4f7a;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sticky-note {
+    transition: transform 0.2s;
+  }
+  .sticky-note:hover {
+    transform: rotate(0deg) scale(1.02);
+  }
+}
+.scene ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* Each object: --x/--y from the desk's top-left (%), --w its width (% of the desk), --r its tilt. */
+.scene-item {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  transform: rotate(var(--r, 0deg));
+}
+.desk-calculator {
+  --x: 7%;
+  --y: 12%;
+  --w: 10%;
+  --r: -8deg;
+}
+.desk-notebook {
+  --x: 24%;
+  --y: 22%;
+  --w: 17%;
+  --r: -5deg;
+}
+.desk-phone {
+  --x: 50%;
+  --y: 10%;
+  --w: 8%;
+  --r: 12deg;
+}
+.desk-headphones {
+  --x: 66%;
+  --y: 40%;
+  --w: 17%;
+  --r: -14deg;
+}
+.desk-floppy {
+  --x: 47%;
+  --y: 60%;
+  --w: 10%;
+  --r: 9deg;
+}
+.desk-polaroid {
+  --x: 84%;
+  --y: 8%;
+  --w: 11%;
+  --r: 7deg;
+}
+.scene-item a {
+  position: relative;
+  display: block;
+  text-decoration: none;
+}
+.scene-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(4px 6px 0 rgb(0 0 0 / 0.35));
+}
+/* Sticky-note label under the object; shown on hover/focus (always on touch screens). */
+.scene-label {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, 6px) rotate(calc(var(--r, 0deg) * -1));
+  padding: 2px 8px;
+  background: #ffef7a;
+  box-shadow: 2px 2px 0 rgb(0 0 0 / 0.3);
+  color: #000000;
+  font: 700 11px var(--font-ui);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+}
+.scene-item a:hover .scene-label,
+.scene-item a:focus-visible .scene-label {
+  opacity: 1;
+}
+.scene-item a:focus-visible {
+  outline: 2px dotted #ffffff;
+  outline-offset: 4px;
+}
+@media (hover: none) {
+  .scene-label {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .scene-item img {
+    transition:
+      transform 0.15s,
+      filter 0.15s;
+  }
+  .scene-item a:hover img,
+  .scene-item a:focus-visible img {
+    transform: translateY(-6px);
+    filter: drop-shadow(6px 12px 2px rgb(0 0 0 / 0.3));
+  }
+}
+/* Phones: the desk is too small to aim at, so the same objects line up in a grid with labels. */
+@media (max-width: 599px) {
+  .scene {
+    aspect-ratio: auto;
+    padding: 12px;
+  }
+  .scene ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px 10px;
+  }
+  .scene-item {
+    position: static;
+    width: auto;
+    transform: none;
+  }
+  .scene-item img {
+    width: 64px;
+    margin: 0 auto;
+  }
+  .scene-label {
+    position: static;
+    display: block;
+    width: max-content;
+    margin: 8px auto 0;
+    transform: none;
+    opacity: 1;
+  }
+}
+.me-photo {
+  float: left;
+  margin: 0 0.75rem 0.5rem 0;
+  box-shadow: var(--bevel-in);
+}
+.facts {
+  clear: both;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+/* Ruled lines on the note instead of boxes. */
+.facts div {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  gap: 0.5rem;
+  padding: 4px 0;
+  border-bottom: 1px dashed rgb(0 0 0 / 0.25);
+}
+.facts dt {
+  font: 700 11px var(--font-ui);
+  align-self: center;
+}
+.facts dd {
+  margin: 0;
+}
+.favorites {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+/* ---------- Home: scrolling tool gallery = console "channel" tiles ---------- */
+.tool-gallery {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0.25rem var(--space);
+  display: flex;
+  gap: var(--space);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+.tool-card {
+  flex: 0 0 min(80%, 300px);
+  scroll-snap-align: start;
+  background: var(--glass);
+  box-shadow: var(--bevel-out), var(--shadow);
+  transition: transform 0.15s;
+}
+.tool-card:hover,
+.tool-card:focus-within {
+  border-color: var(--accent);
+  box-shadow:
+    var(--bevel-out),
+    0 0 0 2px var(--select),
+    var(--shadow);
+  transform: translateY(-3px);
+}
+.tool-card a {
+  display: block;
+  padding: 0.75rem;
+  color: var(--text);
+  text-decoration: none;
+}
+.tool-card img {
+  border-radius: 0;
+}
+.tool-card h3 {
+  margin: 0.5rem 0 0.25rem;
+}
+
+.expression-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.expression-row input {
+  flex: 1;
+  min-width: 0;
+}
+#expression-list {
+  padding-left: 1.2rem;
+}
+.ranges {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+.ranges label {
+  display: grid;
+}
+.ranges input {
+  width: 100%;
+}
+
+/* Matrix Lab: bracketed matrices; each RREF step is its operation over the matrix it gives. */
+table.matrix {
+  border-collapse: collapse;
+  margin: 0.4rem 0;
+  font-family: var(--mono);
+  border-inline: 2px solid var(--text); /* the [ ] brackets */
+}
+table.matrix td {
+  padding: 0.15rem 0.6rem;
+  text-align: right;
+}
+#matrix-result,
+#latex-preview {
+  background: var(--surface);
+  box-shadow: var(--bevel-in);
+  padding: 0.75rem;
+  overflow-x: auto; /* wide matrices and long equations scroll inside, not the page */
+}
+#matrix-steps li {
+  margin-bottom: 0.6rem;
+}
+#matrix-steps code {
+  font-weight: 700;
+}
+
+/* LaTeX preview keeps the line breaks you type. */
+#latex-preview {
+  min-height: 12rem;
+  white-space: pre-wrap;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+#latex-preview .katex-display {
+  white-space: normal;
+}
+
+/* Notes Scanner */
+#scan-preview img {
+  display: block;
+  max-width: 100%;
+  max-height: 22rem;
+  object-fit: contain;
+  box-shadow: var(--bevel-in);
+}
+#scan-progress {
+  width: 100%;
+}
+
+/* ---------- Footer: hit counter + 88x31 badges ---------- */
+.site-footer {
+  padding: var(--space);
+  text-align: center;
+  color: var(--text);
+  background: var(--glass);
+  box-shadow:
+    inset 0 1px #ffffff,
+    inset 0 2px #dfdfdf;
+}
+.badges {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+}
+.badges img {
+  display: block;
+  width: 88px;
+  height: 31px;
+  image-rendering: pixelated;
+}
+.hit-counter {
+  display: inline-block;
+  font-family: var(--font-digital);
+  font-size: 1.15rem;
+  letter-spacing: 0.15em;
+  color: #7fffd4;
+  background: #0b1420;
+  padding: 0.1rem 0.5rem;
+  box-shadow: var(--bevel-in);
+}
+
+/* ---------- Taskbar + Start menu (built by initTaskbar in script.js) ---------- */
+body {
+  padding-bottom: 34px; /* room for the fixed taskbar */
+}
+.taskbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  padding: 2px 3px;
+  background: var(--glass);
+  box-shadow:
+    inset 0 1px #dfdfdf,
+    inset 0 2px #ffffff;
+}
+.start-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 0 8px;
+  font-weight: 700;
+}
+.start-button[aria-expanded="true"] {
+  box-shadow: var(--bevel-in);
+}
+.start-logo {
+  color: var(--accent);
+  font-size: 13px;
+}
+.task-button {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 45vw;
+  height: 23px;
+  padding: 0 10px;
+  background: var(--pressed);
+  box-shadow: var(--bevel-in);
+  font: 700 11px var(--font-ui);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tray {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  height: 23px;
+  padding: 0 10px;
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #808080;
+  font: 11px var(--font-ui);
+}
+.start-menu {
+  position: fixed;
+  left: 2px;
+  bottom: 31px;
+  z-index: 41;
+  display: flex;
+  width: min(260px, calc(100vw - 4px));
+  max-height: calc(100vh - 40px);
+}
+/* The vertical "Christopia98" stripe down the side, like the Windows 98 Start menu. */
+.start-menu-banner {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  padding: 8px 3px;
+  background: linear-gradient(0deg, #0b5f8f, #1878ad);
+  color: #cfe8f7;
+  font: 700 20px var(--font-display);
+  letter-spacing: 0.05em;
+}
+.start-menu-banner b {
+  color: #ffffff;
+}
+.start-menu-items {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 3px;
+  overflow-y: auto;
+}
+.start-menu .tree-view {
+  font-size: 11px;
+}
+.start-menu .tree-view a {
+  color: #000000;
+}
+.start-menu hr {
+  width: 100%;
+  margin: 2px 0;
+  border: 0;
+  box-shadow:
+    inset 0 1px #808080,
+    inset 0 -1px #ffffff;
+  height: 2px;
+}
+/* Menu items: flat until hovered or focused, then navy like a 98 menu highlight. */
+.start-item {
+  width: 100%;
+  min-width: 0;
+  padding: 4px 8px 4px 26px;
+  text-align: left;
+  background: none;
+  box-shadow: none;
+  position: relative;
+}
+.start-item:hover,
+.start-item:focus-visible {
+  background: var(--select);
+  color: #ffffff;
+  outline: none;
+}
+/* Sound is a checkable menu item: the tick shows aria-pressed (empty alt text for screen readers). */
+.start-item[aria-pressed="true"]::before {
+  content: "✓";
+  content: "✓" / "";
+  position: absolute;
+  left: 9px;
+}
+
+/* ---------- Stickers (placed by initStickers from js/stickers.js) ----------
+   Stacking, bottom to top: page background, stickers "behind", page content (windows, bars),
+   stickers "front", sticky header (10), taskbar (40). */
+body {
+  position: relative; /* the sticker layers cover the whole page, not just the screen */
+}
+main,
+.ticker,
+.address-bar,
+.sub-nav,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+.sticker-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden; /* a sticker near the edge must never cause sideways scrolling */
+  pointer-events: none;
+}
+.sticker-layer.front {
+  z-index: 5;
+}
+.sticker {
+  position: absolute;
+  transform: rotate(var(--r, 0deg));
+}
+.sticker img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(3px 3px 0 rgb(0 0 0 / 0.3));
+}
+.sticker img.pixel {
+  image-rendering: pixelated;
+}
+.sticker-link {
+  display: block;
+  pointer-events: auto; /* only link stickers catch clicks */
+}
+.sticker-link:focus-visible {
+  outline: 2px dotted #ffffff;
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sticker-link:hover img {
+    transform: rotate(-4deg) scale(1.08);
+    transition: transform 0.15s;
+  }
+}
+/* Phones: only stickers marked phone: true, so small screens don't get buried. */
+@media (max-width: 767px) {
+  .sticker:not(.phone) {
+    display: none;
+  }
+}
+
+/* ---------- Sparkle cursor trail (spawned by initSparkles) ---------- */
+.sparkle {
+  position: fixed;
+  z-index: 100;
+  pointer-events: none;
+  color: var(--splash);
+  font-size: 14px;
+  text-shadow: 0 0 6px #ffffff;
+  animation: sparkle 0.7s ease-out forwards;
+}
+@keyframes sparkle {
+  to {
+    opacity: 0;
+    transform: translate(var(--dx), 18px) scale(0.3) rotate(90deg);
+  }
+}
+
+/* `hidden` must win over display: grid/flex set below. */
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- Sorting ---------- */
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px; /* 120 bars must fit a 375 px phone */
+  height: 320px;
+  padding: 0.5rem;
+  background: var(--surface);
+  box-shadow: var(--bevel-in);
+}
+.bar {
+  flex: 1;
+  min-width: 0;
+  border-radius: 4px 4px 0 0;
+  background: var(--gloss-accent);
+}
+.bar.comparing {
+  background: #ffcf3f;
+}
+.bar.swapping {
+  background: #ff6b6b;
+}
+.bar.sorted {
+  background: #4cd08a;
+}
+.pseudocode {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  padding-left: 2rem;
+}
+.pseudocode li {
+  white-space: pre;
+  padding: 0 0.3rem;
+}
+.pseudocode li.active {
+  background: var(--select);
+  color: #ffffff;
+}
+
+/* ---------- Data structures ---------- */
+.ds-scroll {
+  overflow-x: auto;
+  background: var(--surface);
+  box-shadow: var(--bevel-in);
+  padding: 0.5rem 0;
+}
+.ds-canvas {
+  display: block;
+  margin: 0 auto; /* centered when small; auto margins drop to 0 when it overflows */
+}
+/* SVG nodes drawn by structures.js. .hit = on the search path, .focus = the target. */
+.ds-node rect,
+.ds-node circle {
+  fill: var(--surface);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+.ds-node text,
+.ds-label {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 15px;
+  dominant-baseline: central;
+}
+.ds-node text {
+  fill: var(--text);
+  text-anchor: middle;
+}
+.ds-node.hit rect,
+.ds-node.hit circle {
+  fill: #ffe94a;
+  stroke: #c9a800;
+}
+.ds-node.hit text {
+  fill: #1b2733;
+}
+.ds-node.focus rect,
+.ds-node.focus circle {
+  fill: var(--accent);
+  stroke: var(--accent-strong);
+}
+.ds-node.focus text {
+  fill: #ffffff;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ds-node.hit,
+  .ds-node.focus {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ds-pop 0.45s ease-out both;
+    animation-delay: var(--d, 0ms);
+  }
+}
+@keyframes ds-pop {
+  from {
+    transform: scale(1.25);
+  }
+}
+.ds-edge {
+  stroke: var(--muted);
+  stroke-width: 2;
+}
+.ds-arrowhead {
+  fill: var(--muted);
+}
+.ds-pointer {
+  fill: var(--bg);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+.ds-label {
+  fill: var(--muted);
+}
+.log {
+  max-height: 14rem;
+  overflow-y: auto;
+  font-size: 0.9rem;
+}
+
+/* ---------- Graphs ---------- */
+.grid-board {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 41), 1fr);
+  gap: 1px;
+  background: var(--border); /* shows through the 1px gaps as grid lines */
+  border: 2px solid transparent;
+  box-shadow: var(--bevel-in);
+  overflow: hidden;
+  touch-action: none; /* drag to draw on touch screens */
+}
+.cell {
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: none;
+}
+.grid-board .cell:hover {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+.grid-board .cell:active {
+  transform: none; /* the shared button press effect would jiggle the grid */
+}
+.cell:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: -2px;
+}
+/* background-color (not the shorthand) so the weight dot survives visited/path colors. */
+.cell.wall {
+  background-color: #34495e;
+}
+.cell.weight {
+  background-color: #f5b041;
+  background-image: radial-gradient(circle, #8a5a00 28%, transparent 32%);
+}
+.cell.visited {
+  background-color: #9fdcf7;
+}
+.cell.path {
+  background-color: #ffe94a;
+}
+.cell.start {
+  background-color: #2ecc71;
+}
+.cell.end {
+  background-color: #e74c3c;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cell.visited,
+  .cell.path {
+    animation: cell-in 0.3s ease-out;
+  }
+}
+@keyframes cell-in {
+  from {
+    transform: scale(0.4);
+  }
+}
+.legend {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+}
+.legend .cell {
+  display: inline-block;
+  width: 1rem;
+  vertical-align: middle;
+  border: 1px solid var(--border);
+}
+
+/* ---------- Regex ---------- */
+.regex-input {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--mono);
+  font-size: 1.2rem;
+}
+.regex-input input {
+  font-family: var(--mono);
+}
+#regex-pattern {
+  flex: 1;
+  min-width: 0;
+}
+.token-palette h3 {
+  font-size: 0.95rem;
+  margin: 0.75rem 0 0.35rem;
+}
+.token-palette button {
+  padding: 0.25rem 0.7rem;
+}
+.explain {
+  font-size: 0.9rem;
+}
+.explain code,
+.data-table code {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0 0.3rem;
+}
+.highlight {
+  white-space: pre-wrap;
+  font-family: var(--mono);
+  background: var(--surface);
+  box-shadow: var(--bevel-in);
+  padding: 0.6rem;
+  min-height: 3rem;
+}
+.highlight .empty-match {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin: 0 -1px;
+  vertical-align: text-bottom;
+  background: #e74c3c;
+}
+#regex-flags-help code {
+  font-weight: 700;
+}
+.highlight mark {
+  background: #ffe94a;
+  color: #1b2733;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px #c9a800;
+}
+
+/* ---------- Forum ---------- */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: var(--space) 0;
+}
+.thread-list,
+.reply-list,
+.event-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+.thread-list > li,
+.reply-list > li,
+.event-list > li {
+  background: var(--surface);
+  box-shadow: var(--bevel-in);
+  padding: 0.75rem;
+}
+.thread-list > li:hover {
+  outline: 1px dotted var(--select);
+  outline-offset: -4px;
+}
+#new-thread summary {
+  list-style: none;
+  margin-top: var(--space);
+}
+#new-thread summary::-webkit-details-marker {
+  display: none;
+}
+.vote {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.vote button {
+  padding: 0.1rem 0.6rem;
+}
+.post-body {
+  white-space: pre-wrap;
+}
+/* Thread titles are buttons that read like links. */
+.thread-link {
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  font: 700 1rem var(--font);
+  color: var(--accent-strong);
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.thread-link[aria-current="true"] {
+  color: var(--text);
+  text-decoration: none;
+}
+.thread-list .meta,
+.event-list .meta {
+  margin: 0.2rem 0 0;
+}
+.event-list h3 {
+  margin: 0 0 0.2rem;
+}
+.rsvp-counts {
+  font-weight: 700;
+}
+.event-list button[aria-pressed="true"],
+.vote button[aria-pressed="true"] {
+  background: var(--pressed);
+  box-shadow: var(--bevel-in);
+}
+
+/* ---------- Friends page (social/friends.html) ---------- */
+.window-stack {
+  display: grid;
+  gap: calc(var(--space) * 1.25);
+  align-content: start;
+  min-width: 0;
+}
+.friend-list {
+  margin: 0.5rem 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.3rem;
+}
+.pixel-button {
+  display: block;
+  image-rendering: pixelated;
+}
+.gb-entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.gb-entries > li:not(.empty-state) {
+  padding: 6px 10px;
+  background: var(--surface);
+  box-shadow: var(--bevel-in);
+}
+.gb-meta {
+  margin: 0;
+  font: 11px var(--font-ui);
+}
+.gb-message {
+  margin: 0.25rem 0 0;
+  white-space: pre-wrap; /* keep the visitor's line breaks without trusting any HTML */
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Journal (Notion-style) ---------- */
+.journal-main {
+  width: min(1400px, 100%);
+}
+.lock-card {
+  width: min(440px, 100%);
+  justify-self: center;
+  margin-top: 8vh;
+}
+/* The window holds a title bar, then the sidebar | editor grid. */
+.journal-app > .window-body {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 75vh;
+  margin: 0;
+}
+.journal-sidebar {
+  display: grid;
+  align-content: start;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  background: rgb(0 0 0 / 0.03);
+  border-right: 1px solid var(--border);
+  font-size: 0.92rem;
+}
+.sidebar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.sidebar-label {
+  font-family: var(--font);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0.75rem 0 0;
+}
+/* Sidebar actions and tree rows are quiet, Notion-like, not glossy pills. */
+.sidebar-action,
+.page-tree button {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  box-shadow: none;
+  padding: 0.25rem 0.5rem;
+  font-weight: 400;
+}
+.sidebar-action:hover,
+.page-tree button:hover,
+.page-tree [aria-selected="true"] > button {
+  background: rgb(41 182 246 / 0.12);
+  box-shadow: none;
+}
+.page-tree {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.page-tree ul {
+  list-style: none;
+  padding-left: 1rem;
+}
+.journal-editor {
+  padding: 1rem clamp(1rem, 5vw, 4rem) 4rem;
+  background: var(--surface);
+  min-width: 0;
+}
+.editor-topbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.editor-topbar nav {
+  margin-right: auto;
+}
+.editor-topbar button {
+  padding: 0.15rem 0.6rem;
+  font-size: 0.85rem;
+}
+.breadcrumb {
+  list-style: none;
+  display: flex;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+}
+.breadcrumb li + li::before {
+  content: "/";
+  margin-right: 0.3rem;
+}
+.page-header {
+  max-width: 720px;
+  margin: 2.5rem auto 1rem;
+}
+.page-icon {
+  font-size: 3rem;
+  line-height: 1;
+  padding: 0.2rem;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+.page-title {
+  display: block;
+  width: 100%;
+  font-size: 2.4rem;
+  font-weight: 800;
+  border: 0;
+  background: none;
+  padding: 0;
+}
+.page-title:focus {
+  box-shadow: none;
+}
+.page-meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.blocks {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.block {
+  padding: 0.2rem 0.3rem;
+  border-radius: 4px;
+  outline: none;
+  min-height: 1.6em;
+}
+.block:hover {
+  background: rgb(0 0 0 / 0.03);
+}
+.block:empty:focus::before {
+  content: attr(data-placeholder);
+  color: var(--muted);
+}
+.block[data-type="h1"] {
+  font-size: 1.9rem;
+  font-weight: 800;
+  margin-top: 1.2rem;
+}
+.block[data-type="h2"] {
+  font-size: 1.45rem;
+  font-weight: 800;
+  margin-top: 1rem;
+}
+.block[data-type="h3"] {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.block[data-type="quote"] {
+  border-left: 3px solid var(--text);
+  padding-left: 0.9rem;
+}
+.block[data-type="callout"] {
+  background: rgb(41 182 246 / 0.12);
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+.block[data-type="code"] {
+  font-family: var(--mono);
+  white-space: pre;
+  background: var(--bg);
+  padding: 0.75rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+.slash-menu {
+  position: absolute;
+  z-index: 20;
+  list-style: none;
+  margin: 0;
+  padding: 0.3rem;
+  width: 260px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgb(16 42 67 / 0.25);
+}
+.slash-menu li {
+  display: grid;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.slash-menu li span {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.slash-menu li[aria-selected="true"],
+.slash-menu li:hover {
+  background: rgb(41 182 246 / 0.15);
+}
+/* Notion-like text in the journal: the body font instead of 98.css's 11 px pixel font, and room
+   for the big page title (98.css fixes inputs at 21 px tall). */
+.page-tree button,
+.sidebar-action,
+.page-icon,
+.page-title,
+.crumb,
+.breadcrumb,
+.editor-topbar,
+#page-search {
+  font-family: var(--font);
+}
+.page-header .page-title {
+  height: auto; /* beats 98.css's input[type="text"] { height: 21px } */
+  line-height: 1.2;
+  font-size: 2.4rem;
+}
+.page-icon {
+  min-width: 0;
+  min-height: 0;
+}
+.journal-sidebar .sidebar-label {
+  font: 700 0.75rem var(--font);
+  letter-spacing: 0.04em;
+}
+
+/* Block rows: a marker / checkbox / arrow, then the editable block. */
+.journal-editor {
+  position: relative; /* the slash menu is placed inside it */
+}
+.blocks {
+  counter-reset: num;
+}
+.block-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+.block-row > .block,
+.toggle-main {
+  flex: 1;
+  min-width: 0;
+}
+.marker {
+  flex: 0 0 1.4em;
+  text-align: right;
+}
+.block-row[data-type="bullet"] .marker::before {
+  content: "•";
+}
+/* Numbers restart after anything that isn't a numbered item, like Notion. */
+.block-row:not([data-type="number"]) {
+  counter-reset: num;
+}
+.block-row[data-type="number"] {
+  counter-increment: num;
+}
+.block-row[data-type="number"] .marker::before {
+  content: counter(num) ".";
+}
+.block-row[data-type="todo"] input + label {
+  padding-left: 18px; /* room for 98.css's drawn checkbox; the label has no text of its own */
+}
+.block-row.checked .block {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+.block-row hr {
+  flex: 1;
+  margin: 0.8rem 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+.toggle-arrow,
+.tree-toggle,
+.tree-add {
+  min-width: 0;
+  min-height: 0;
+  padding: 0 0.3rem;
+  background: none;
+  box-shadow: none;
+}
+.toggle-body {
+  margin-left: 0.3rem;
+  padding: 0.2rem 0.3rem 0.2rem 0.8rem;
+  border-left: 2px solid var(--border);
+  outline: none;
+  min-height: 1.6em;
+}
+.toggle-body:empty:focus::before {
+  content: attr(data-placeholder);
+  color: var(--muted);
+}
+.block-row[data-type="math"] {
+  display: block;
+}
+.block-row[data-type="math"] .block {
+  font-family: var(--mono);
+  background: var(--paper);
+  display: none;
+}
+.block-row[data-type="math"].editing .block {
+  display: block;
+}
+.math-out {
+  cursor: pointer;
+  padding: 0.2rem;
+  color: var(--muted);
+}
+.math-out .katex {
+  color: var(--text);
+}
+/* Sidebar tree: toggle, page name, + for a sub-page. */
+.tree-row {
+  display: flex;
+  align-items: center;
+}
+.page-tree .tree-row .page-link {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.page-tree .tree-toggle,
+.page-tree .tree-add {
+  width: auto;
+  flex: 0 0 1.4rem;
+  text-align: center;
+}
+.page-tree [aria-current="page"] {
+  background: rgb(41 182 246 / 0.18);
+  font-weight: 700;
+}
+.trash-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0;
+}
+.trash-row span {
+  flex: 1 1 100%;
+}
+.page-tree .trash-row button {
+  width: auto;
+  box-shadow: var(--bevel-out);
+  background: var(--gloss);
+}
+.crumb {
+  min-width: 0;
+  min-height: 0;
+  padding: 0 0.2rem;
+  background: none;
+  box-shadow: none;
+}
+#open-trash[aria-pressed="true"] {
+  background: var(--pressed);
+}
+
+.shortcuts {
+  max-width: 720px;
+  margin: 3rem auto 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.shortcuts dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 1rem;
+}
+.shortcuts dd {
+  margin: 0;
+}
+kbd {
+  font-family: var(--mono);
+  font-size: 0.8em;
+  padding: 0 0.3rem;
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--surface);
+}
+
+/* ---------- Wider screens ---------- */
+@media (min-width: 768px) {
+  .nav-toggle {
+    display: none;
+  }
+  #site-nav {
+    display: block;
+    width: auto;
+    order: 0;
+  }
+  #site-nav ul {
+    flex-direction: row;
+    padding: 0;
+  }
+  .tool-layout {
+    grid-template-columns: minmax(280px, 1fr) 2fr;
+  }
+  .journal-app > .window-body {
+    grid-template-columns: 260px minmax(0, 1fr);
+  }
+}
+
+/* Home portal: three columns once there's room for them. */
+@media (min-width: 1000px) {
+  .portal {
+    grid-template-columns: 200px minmax(0, 1fr) 250px;
+  }
+}

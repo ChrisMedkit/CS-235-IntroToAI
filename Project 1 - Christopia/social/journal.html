@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Private Journal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body data-root="../">
+    <!-- Shared header: identical on every page except aria-current. -->
+    <header class="site-header">
+      <a class="brand" href="../home.html">Christopia</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../home.html">Home</a></li>
+          <li><a href="../tools.html">Tools</a></li>
+          <li><a href="../social/index.html" aria-current="page">Social</a></li>
+          <li><a href="../me.html">Me</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
+    <div class="ticker" role="marquee" aria-label="Site news">
+      <p class="ticker-track">
+        Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
+        Every Math, CS and Social tool is live &#9733; New: a private journal, a forum and events
+        &#9733;
+      </p>
+    </div>
+
+    <nav class="sub-nav" aria-label="Social pages">
+      <ul>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="forum.html">Forum</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="journal.html" aria-current="page">Journal</a></li>
+        <li><a href="friends.html">Friends</a></li>
+      </ul>
+    </nav>
+
+    <main class="journal-main">
+      <!-- Lock screen. The setup form shows the first time (no vault yet), the unlock form after. -->
+      <section id="journal-lock" class="window lock-card" aria-labelledby="lock-heading">
+        <div class="title-bar">
+          <h1 class="title-bar-text" id="lock-heading">
+            Private Journal<span class="title-bar-program" aria-hidden="true"> - journal.exe</span>
+          </h1>
+        </div>
+        <div class="window-body">
+          <form id="setup-form" hidden>
+            <label for="setup-password">Create a password</label>
+            <input
+              id="setup-password"
+              type="password"
+              minlength="8"
+              autocomplete="new-password"
+              required
+            />
+            <label for="setup-confirm">Confirm password</label>
+            <input
+              id="setup-confirm"
+              type="password"
+              minlength="8"
+              autocomplete="new-password"
+              required
+            />
+            <button type="submit">Create journal</button>
+          </form>
+
+          <form id="unlock-form">
+            <label for="unlock-password">Password</label>
+            <input id="unlock-password" type="password" autocomplete="current-password" required />
+            <button type="submit">Unlock</button>
+          </form>
+
+          <p id="lock-error" class="error" role="alert"></p>
+          <p class="notice">
+            Pages are encrypted in this browser with a key made from your password (AES-GCM). The
+            password is never stored or sent anywhere, so if you forget it the journal can't be
+            recovered.
+          </p>
+        </div>
+      </section>
+
+      <!-- The app: hidden until unlocked. Layout: sidebar | editor. -->
+      <div id="journal-app" class="window journal-app" hidden>
+        <div class="title-bar">
+          <span class="title-bar-text" aria-hidden="true">Journal</span>
+        </div>
+        <div class="window-body">
+          <aside id="journal-sidebar" class="journal-sidebar" aria-label="Pages">
+            <div class="sidebar-top">
+              <strong>Journal</strong>
+              <button type="button" id="lock-now">Lock</button>
+            </div>
+            <label for="page-search" class="visually-hidden">Search pages</label>
+            <input id="page-search" type="search" placeholder="Search" />
+            <button type="button" id="new-page" class="sidebar-action">+ New page</button>
+
+            <h2 class="sidebar-label">Favorites</h2>
+            <ul id="favorite-list" class="page-tree"></ul>
+            <h2 class="sidebar-label">Pages</h2>
+            <!-- renderTree(): nested <ul>; each page row has a disclosure toggle, icon, title, "+" for a sub-page. -->
+            <ul id="page-tree" class="page-tree" aria-label="All pages"></ul>
+            <button type="button" id="open-trash" class="sidebar-action">Trash</button>
+          </aside>
+
+          <section id="journal-editor" class="journal-editor" aria-label="Editor">
+            <div class="editor-topbar">
+              <nav aria-label="Breadcrumb"><ol id="breadcrumb" class="breadcrumb"></ol></nav>
+              <span id="save-status" class="save-status" role="status">Saved</span>
+              <button type="button" id="favorite-toggle" aria-pressed="false">☆ Favorite</button>
+              <button type="button" id="delete-page">Move to trash</button>
+            </div>
+
+            <div class="page-header">
+              <button type="button" id="page-icon" class="page-icon" aria-label="Change page icon">
+                📄
+              </button>
+              <label for="page-title" class="visually-hidden">Page title</label>
+              <input id="page-title" class="page-title" type="text" placeholder="Untitled" />
+              <p id="page-meta" class="page-meta"></p>
+            </div>
+
+            <!-- Block editor: one .block per paragraph/heading/to-do/etc. (renderBlocks).
+                 Typing "/" opens #slash-menu; Markdown shortcuts convert on space (markdownShortcut). -->
+            <div id="blocks" class="blocks">
+              <div
+                class="block"
+                data-type="text"
+                contenteditable="true"
+                data-placeholder="Type '/' for commands"
+              ></div>
+            </div>
+
+            <ul id="slash-menu" class="slash-menu" role="listbox" aria-label="Insert block" hidden>
+              <li role="option" data-type="text">
+                <strong>Text</strong><span>Plain paragraph</span>
+              </li>
+              <li role="option" data-type="h1">
+                <strong>Heading 1</strong><span>Big section heading</span>
+              </li>
+              <li role="option" data-type="h2">
+                <strong>Heading 2</strong><span>Medium heading</span>
+              </li>
+              <li role="option" data-type="h3">
+                <strong>Heading 3</strong><span>Small heading</span>
+              </li>
+              <li role="option" data-type="todo">
+                <strong>To-do list</strong><span>Checkbox item</span>
+              </li>
+              <li role="option" data-type="bullet">
+                <strong>Bulleted list</strong><span>Simple bullet</span>
+              </li>
+              <li role="option" data-type="number">
+                <strong>Numbered list</strong><span>1, 2, 3</span>
+              </li>
+              <li role="option" data-type="toggle">
+                <strong>Toggle</strong><span>Hide content inside</span>
+              </li>
+              <li role="option" data-type="quote"><strong>Quote</strong><span>Pull quote</span></li>
+              <li role="option" data-type="callout">
+                <strong>Callout</strong><span>Highlighted note</span>
+              </li>
+              <li role="option" data-type="code">
+                <strong>Code</strong><span>Monospace block</span>
+              </li>
+              <li role="option" data-type="math">
+                <strong>Math equation</strong><span>LaTeX, rendered with KaTeX</span>
+              </li>
+              <li role="option" data-type="divider">
+                <strong>Divider</strong><span>Horizontal line</span>
+              </li>
+            </ul>
+
+            <details class="shortcuts">
+              <summary>Keyboard shortcuts</summary>
+              <dl>
+                <dt><kbd>/</kbd></dt>
+                <dd>Block menu (on an empty line)</dd>
+                <dt><kbd>#</kbd> <kbd>##</kbd> <kbd>###</kbd> + space</dt>
+                <dd>Headings</dd>
+                <dt><kbd>-</kbd> or <kbd>*</kbd> + space</dt>
+                <dd>Bulleted list</dd>
+                <dt><kbd>1.</kbd> + space</dt>
+                <dd>Numbered list</dd>
+                <dt><kbd>[]</kbd> + space</dt>
+                <dd>To-do</dd>
+                <dt><kbd>&gt;</kbd> + space</dt>
+                <dd>Quote</dd>
+                <dt><kbd>```</kbd></dt>
+                <dd>Code block</dd>
+                <dt><kbd>---</kbd></dt>
+                <dd>Divider</dd>
+                <dt><kbd>$$</kbd> + space</dt>
+                <dd>Math equation</dd>
+                <dt><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>B</kbd> / <kbd>I</kbd></dt>
+                <dd>Bold / italic</dd>
+                <dt><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>K</kbd></dt>
+                <dd>Search pages</dd>
+                <dt><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>L</kbd></dt>
+                <dd>Lock now</dd>
+              </dl>
+            </details>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
+      <ul class="badges" aria-label="Site badges">
+        <li>
+          <img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" />
+        </li>
+        <li>
+          <img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" />
+        </li>
+        <li>
+          <img
+            src="../images/badges/any-browser.svg"
+            alt="Best viewed in any browser"
+            width="88"
+            height="31"
+          />
+        </li>
+      </ul>
+      <p>
+        &copy; 2026 Christopia.
+        <a
+          href="https://github.com/ChrisMedkit/cs235-christopia"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
+      </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script type="module" src="../js/script.js"></script>
+    <script type="module" src="../js/journal.js"></script>
+  </body>
+</html>

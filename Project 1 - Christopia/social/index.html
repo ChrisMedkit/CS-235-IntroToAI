@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Social</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body data-root="../">
+    <!-- Shared header: identical on every page except aria-current. -->
+    <header class="site-header">
+      <a class="brand" href="../home.html">Christopia</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../home.html">Home</a></li>
+          <li><a href="../tools.html">Tools</a></li>
+          <li><a href="../social/index.html" aria-current="page">Social</a></li>
+          <li><a href="../me.html">Me</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
+    <div class="ticker" role="marquee" aria-label="Site news">
+      <p class="ticker-track">
+        Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
+        Every Math, CS and Social tool is live &#9733; New: a private journal, a forum and events
+        &#9733;
+      </p>
+    </div>
+
+    <nav class="sub-nav" aria-label="Social pages">
+      <ul>
+        <li><a href="index.html" aria-current="page">Overview</a></li>
+        <li><a href="forum.html">Forum</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="journal.html">Journal</a></li>
+        <li><a href="friends.html">Friends</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <section class="window" id="section-intro">
+        <div class="title-bar">
+          <h1 class="title-bar-text">Social</h1>
+        </div>
+        <div class="window-body">
+          <p>
+            Hang out here: post in the forum, RSVP to what's coming up, sign the guestbook, or keep
+            your own locked journal.
+          </p>
+        </div>
+      </section>
+
+      <section class="window" id="section-tools" aria-labelledby="section-tools-heading">
+        <div class="title-bar">
+          <h2 class="title-bar-text" id="section-tools-heading">Tools</h2>
+        </div>
+        <div class="window-body">
+          <!-- Static cards are the no-JS fallback; renderToolGallery() re-renders them from js/tools.js. -->
+          <ul class="tool-gallery" id="tool-gallery" data-section="social">
+            <li class="tool-card">
+              <a href="../social/forum.html">
+                <img src="../images/forum.svg" alt="Forum preview" width="640" height="360" />
+                <h3>Forum</h3>
+                <p>Threads and replies for classes, projects and anything else.</p>
+              </a>
+            </li>
+            <li class="tool-card">
+              <a href="../social/events.html">
+                <img src="../images/events.svg" alt="Events preview" width="640" height="360" />
+                <h3>Events</h3>
+                <p>Create events, RSVP, and add them to your calendar.</p>
+              </a>
+            </li>
+            <li class="tool-card">
+              <a href="../social/journal.html">
+                <img
+                  src="../images/journal.svg"
+                  alt="Private Journal preview"
+                  width="640"
+                  height="360"
+                />
+                <h3>Private Journal</h3>
+                <p>Password-locked, encrypted notes with a Notion-style editor.</p>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
+      <ul class="badges" aria-label="Site badges">
+        <li>
+          <img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" />
+        </li>
+        <li>
+          <img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" />
+        </li>
+        <li>
+          <img
+            src="../images/badges/any-browser.svg"
+            alt="Best viewed in any browser"
+            width="88"
+            height="31"
+          />
+        </li>
+      </ul>
+      <p>
+        &copy; 2026 Christopia.
+        <a
+          href="https://github.com/ChrisMedkit/cs235-christopia"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
+      </p>
+    </footer>
+
+    <script type="module" src="../js/script.js"></script>
+  </body>
+</html>

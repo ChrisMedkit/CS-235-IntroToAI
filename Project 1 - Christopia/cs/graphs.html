@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Christopia: Graphs & Pathfinding</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.21/dist/98.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body data-root="../">
+    <!-- Shared header: identical on every page except aria-current. -->
+    <header class="site-header">
+      <a class="brand" href="../home.html">Christopia</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+      <nav id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../home.html">Home</a></li>
+          <li><a href="../tools.html" aria-current="page">Tools</a></li>
+          <li><a href="../social/index.html">Social</a></li>
+          <li><a href="../me.html">Me</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- News ticker: edit the text here (same on every page). Pauses on hover. -->
+    <div class="ticker" role="marquee" aria-label="Site news">
+      <p class="ticker-track">
+        Welcome to Christopia &#9733; Now in 98: windows, a Start menu and a Tools desktop &#9733;
+        Every Math, CS and Social tool is live &#9733; New: a private journal, a forum and events
+        &#9733;
+      </p>
+    </div>
+
+    <nav class="address-bar" aria-label="Breadcrumb">
+      <span class="address-label" aria-hidden="true">Address</span>
+      <ol class="address">
+        <li><a href="../tools.html">Tools</a></li>
+        <li><a href="../tools.html#cs">CS</a></li>
+        <li aria-current="page">Graphs &amp; Pathfinding</li>
+      </ol>
+    </nav>
+
+    <main class="tool-layout">
+      <section class="window" id="graph-controls" aria-labelledby="graph-heading">
+        <div class="title-bar">
+          <h1 class="title-bar-text" id="graph-heading">
+            <img src="../images/icons/graphs.svg" alt="" width="16" height="16" /> Graphs &amp;
+            Pathfinding<span class="title-bar-program" aria-hidden="true"> - graphs.exe</span>
+          </h1>
+        </div>
+        <div class="window-body">
+          <label for="graph-algorithm">Algorithm</label>
+          <select id="graph-algorithm">
+            <option value="bfs">Breadth-first search</option>
+            <option value="dfs">Depth-first search</option>
+            <option value="dijkstra">Dijkstra</option>
+            <option value="astar">A* (Manhattan)</option>
+          </select>
+
+          <fieldset class="segmented" id="graph-tool">
+            <legend>Draw</legend>
+            <div class="field-row">
+              <input id="tool-wall" type="radio" name="tool" value="wall" checked /><label
+                for="tool-wall"
+                >Wall</label
+              >
+            </div>
+            <div class="field-row">
+              <input id="tool-weight" type="radio" name="tool" value="weight" /><label
+                for="tool-weight"
+                >Weight (5)</label
+              >
+            </div>
+            <div class="field-row">
+              <input id="tool-start" type="radio" name="tool" value="start" /><label
+                for="tool-start"
+                >Start</label
+              >
+            </div>
+            <div class="field-row">
+              <input id="tool-end" type="radio" name="tool" value="end" /><label for="tool-end"
+                >End</label
+              >
+            </div>
+            <div class="field-row">
+              <input id="tool-erase" type="radio" name="tool" value="erase" /><label
+                for="tool-erase"
+                >Erase</label
+              >
+            </div>
+          </fieldset>
+
+          <label for="graph-speed">Speed</label>
+          <input id="graph-speed" type="range" min="1" max="100" value="60" />
+
+          <div class="button-row">
+            <button type="button" id="graph-run" class="button primary">Run</button>
+            <button type="button" id="graph-step">Step</button>
+            <button type="button" id="graph-clear-path">Clear path</button>
+            <button type="button" id="graph-clear-all">Clear all</button>
+            <button type="button" id="graph-maze">Random maze</button>
+          </div>
+
+          <dl class="stats">
+            <div>
+              <dt>Visited</dt>
+              <dd id="graph-visited">0</dd>
+            </div>
+            <div>
+              <dt>Path length</dt>
+              <dd id="graph-length">0</dd>
+            </div>
+            <div>
+              <dt>Path cost</dt>
+              <dd id="graph-cost">0</dd>
+            </div>
+          </dl>
+          <p id="graph-status" role="status"></p>
+        </div>
+      </section>
+
+      <section class="window" id="graph-stage" aria-labelledby="graph-stage-heading">
+        <div class="title-bar">
+          <h2 class="title-bar-text" id="graph-stage-heading">Grid</h2>
+        </div>
+        <div class="window-body">
+          <!-- buildGrid() fills this with one <button class="cell"> per square (keyboard + mouse drawing). -->
+          <div id="graph-grid" class="grid-board"></div>
+          <ul class="legend" aria-label="Legend">
+            <li><span class="cell start"></span> Start</li>
+            <li><span class="cell end"></span> End</li>
+            <li><span class="cell wall"></span> Wall</li>
+            <li><span class="cell weight"></span> Weight</li>
+            <li><span class="cell visited"></span> Visited</li>
+            <li><span class="cell path"></span> Path</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>You are visitor <span class="hit-counter">000000</span> (from this browser)</p>
+      <ul class="badges" aria-label="Site badges">
+        <li>
+          <img src="../images/badges/christopia.svg" alt="Christopia" width="88" height="31" />
+        </li>
+        <li>
+          <img src="../images/badges/math-inside.svg" alt="Math inside" width="88" height="31" />
+        </li>
+        <li>
+          <img
+            src="../images/badges/any-browser.svg"
+            alt="Best viewed in any browser"
+            width="88"
+            height="31"
+          />
+        </li>
+      </ul>
+      <p>
+        &copy; 2026 Christopia.
+        <a
+          href="https://github.com/ChrisMedkit/cs235-christopia"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub</a
+        >
+      </p>
+    </footer>
+
+    <script type="module" src="../js/script.js"></script>
+    <script type="module" src="../js/graphs.js"></script>
+  </body>
+</html>
