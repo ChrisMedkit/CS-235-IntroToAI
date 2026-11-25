@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Momentum Tennis — Mini Games</title>
+  <meta name="description" content="Play-money blackjack and slots that share your site credits.">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/script.js"></script>
+  <script type="module" src="js/blackjack.js"></script>
+  <script type="module" src="js/slots.js"></script>
+</head>
+<body>
+  <!-- Shared header: identical on every page -->
+  <header class="site-header">
+    <a class="brand" href="index.html">Momentum<span class="brand-accent">Tennis</span></a>
+    <div class="wallet" aria-live="polite">
+      <span class="wallet-label">Balance</span>
+      <span class="wallet-amount"><span id="wallet-balance">1000</span> credits</span>
+      <button id="wallet-reset" class="btn btn-small" type="button">Reset credits</button>
+      <p id="wallet-empty" class="wallet-empty" hidden>Out of credits — reset to keep playing.</p>
+    </div>
+    <button id="nav-toggle" class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button>
+  </header>
+  <nav id="site-nav" class="site-nav" aria-label="Main">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="model.html">How the Model Works</a></li>
+      <li><a href="games.html" aria-current="page">Mini Games</a></li>
+      <li><a href="play-safe.html">Play Safe</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="game-grid" class="content" aria-labelledby="games-heading">
+      <h1 id="games-heading">Mini Games</h1>
+      <p>Same play-money credits as the replay. Each card shows how much the game pays back over time.</p>
+      <div class="card-grid">
+        <article class="game-card">
+          <h2>🃏 Blackjack</h2>
+          <p class="rtp">Returns about <span id="rtp-blackjack">99.5</span> credits per 100 bet over time (approx.)</p>
+          <a class="btn btn-accent" href="#blackjack">Play</a>
+        </article>
+        <article class="game-card">
+          <h2>🎰 Slots</h2>
+          <p class="rtp">Returns about <span id="rtp-slots">—</span> credits per 100 bet over time</p>
+          <a class="btn btn-accent" href="#slots">Play</a>
+        </article>
+        <article class="game-card is-locked">
+          <h2>🔒 Coming soon</h2>
+          <p>More games on the way.</p>
+        </article>
+      </div>
+    </section>
+    <section id="blackjack" class="content game" aria-labelledby="bj-heading">
+      <h2 id="bj-heading">Blackjack</h2>
+      <p>Get closer to 21 than the dealer without going over. The dealer stands on all 17s, blackjack pays 3:2, and you can double down on your first two cards.</p>
+      <div class="table-felt">
+        <h3>Dealer <span id="bj-dealer-total" class="hand-total"></span></h3>
+        <div id="bj-dealer" class="hand" aria-label="Dealer's cards"></div>
+        <h3>You <span id="bj-player-total" class="hand-total"></span></h3>
+        <div id="bj-player" class="hand" aria-label="Your cards"></div>
+      </div>
+      <div class="game-controls">
+        <label class="field">
+          <span>Stake (credits)</span>
+          <input id="bj-stake" type="number" min="1" step="1" inputmode="numeric" value="10">
+        </label>
+        <button id="bj-deal" class="btn btn-accent" type="button">Deal</button>
+        <button id="bj-hit" class="btn" type="button" disabled>Hit</button>
+        <button id="bj-stand" class="btn" type="button" disabled>Stand</button>
+        <button id="bj-double" class="btn" type="button" disabled>Double</button>
+      </div>
+      <p id="bj-status" class="replay-status" role="status"></p>
+    </section>
+    <section id="slots" class="content game" aria-labelledby="slots-heading">
+      <h2 id="slots-heading">Slots</h2>
+      <p>Three reels, one line. Match three symbols, or land exactly two tennis balls.
+        Returns about <strong id="slots-rtp-text">—</strong> credits per 100 bet over time.</p>
+      <div id="slot-reels" class="reels" aria-live="polite" aria-label="Reels">
+        <div class="reel">🎾</div><div class="reel">🍓</div><div class="reel">🏆</div>
+      </div>
+      <div class="game-controls">
+        <label class="field">
+          <span>Stake (credits)</span>
+          <input id="slots-stake" type="number" min="1" step="1" inputmode="numeric" value="5">
+        </label>
+        <button id="slots-spin" class="btn btn-accent" type="button">Spin</button>
+      </div>
+      <p id="slots-status" class="replay-status" role="status"></p>
+      <table class="paytable">
+        <caption>Pay table (credits back per 1 credit bet)</caption>
+        <thead><tr><th scope="col">Line</th><th scope="col">Pays</th></tr></thead>
+        <tbody id="slots-paytable"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Shared footer: identical on every page -->
+  <footer class="site-footer">
+    <p><strong>Play money only. No real betting.</strong> Credits have no cash value. <a href="play-safe.html">Play Safe</a></p>
+    <p>CS235 Project 1 · Data: 2024 MCM Problem C (2023 Wimbledon). <a href="images/CREDITS.md">Image credits</a></p>
+  </footer>
+</body>
+</html>

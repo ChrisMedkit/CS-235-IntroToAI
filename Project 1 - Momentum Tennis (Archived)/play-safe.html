@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Momentum Tennis — Play Safe</title>
+  <meta name="description" content="Disclaimers, healthy gambling habits and where to get help.">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/script.js"></script>
+</head>
+<body>
+  <!-- Shared header: identical on every page -->
+  <header class="site-header">
+    <a class="brand" href="index.html">Momentum<span class="brand-accent">Tennis</span></a>
+    <div class="wallet" aria-live="polite">
+      <span class="wallet-label">Balance</span>
+      <span class="wallet-amount"><span id="wallet-balance">1000</span> credits</span>
+      <button id="wallet-reset" class="btn btn-small" type="button">Reset credits</button>
+      <p id="wallet-empty" class="wallet-empty" hidden>Out of credits — reset to keep playing.</p>
+    </div>
+    <button id="nav-toggle" class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button>
+  </header>
+  <nav id="site-nav" class="site-nav" aria-label="Main">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="model.html">How the Model Works</a></li>
+      <li><a href="games.html">Mini Games</a></li>
+      <li><a href="play-safe.html" aria-current="page">Play Safe</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="disclaimer" class="content">
+      <h1>Play Safe</h1>
+      <p><strong>Momentum Tennis is a play-money demo built for a class project.</strong> Credits have no cash value,
+        can't be bought, and can't be cashed out. There are no prizes. Nothing here is real gambling, and nothing here is
+        betting advice.</p>
+      <p>We built it to show how odds are made — and why, over time, the house always comes out ahead.</p>
+    </section>
+
+    <section id="habits" class="content">
+      <h2>Healthy habits</h2>
+      <ul>
+        <li>Treat betting as paid entertainment, not a way to make money.</li>
+        <li>Set a time and money limit before you start, and stop when you reach it.</li>
+        <li>Never chase losses by betting more to win them back.</li>
+        <li>Don't bet when you're stressed, upset or drinking.</li>
+        <li>Keep it to money you can afford to lose — never rent, bills or borrowed money.</li>
+      </ul>
+    </section>
+
+    <section id="warning-signs" class="content">
+      <h2>Warning signs</h2>
+      <ul>
+        <li>Thinking about betting most of the time, or needing bigger bets for the same thrill.</li>
+        <li>Hiding betting from family or friends, or lying about losses.</li>
+        <li>Borrowing money or selling things to keep betting.</li>
+        <li>Feeling restless or irritable when you try to cut back.</li>
+        <li>Betting getting in the way of school, work or relationships.</li>
+      </ul>
+    </section>
+
+    <section id="help" class="content">
+      <h2>Where to get help</h2>
+      <p>Help is free, confidential and available 24/7:</p>
+      <ul>
+        <li><strong>National Problem Gambling Helpline:</strong> call or text <a href="tel:18006973738">1-800-MY-RESET (1-800-697-3738)</a>, or chat at <a href="https://www.ncpgambling.org/chat/">ncpgambling.org/chat</a>.</li>
+        <li><strong>Wisconsin Council on Problem Gambling:</strong> call <a href="tel:18004262535">1-800-426-2535</a> (1-800-GAMBLE-5) or text 850-888-4673. More at <a href="https://wi-problemgamblers.org/">wi-problemgamblers.org</a>.</li>
+      </ul>
+    </section>
+
+    <section id="faq" class="content faq">
+      <h2>FAQ</h2>
+      <details>
+        <summary>Can I cash out my credits?</summary>
+        <p>No. Credits are play money with no cash value. They can't be bought, sold, withdrawn or exchanged for prizes.</p>
+      </details>
+      <details>
+        <summary>Is this real gambling?</summary>
+        <p>No. No real money is involved at any point. It's an educational demo for a college web design project.</p>
+      </details>
+      <details>
+        <summary>Why does the house always win?</summary>
+        <p>Every price includes a margin. A true 50/50 bet pays 1.90 instead of 2.00, and slots pay back about 92 credits
+          per 100 over time. One bet can win, but across many bets the margin adds up. See
+          <a href="model.html#odds">From probability to odds</a>.</p>
+      </details>
+      <details>
+        <summary>How are the odds made?</summary>
+        <p>A tennis model estimates each player's chance from the points played so far, then a 5% house margin is added.
+          The <a href="model.html">How the Model Works</a> page walks through it.</p>
+      </details>
+      <details>
+        <summary>I ran out of credits. What now?</summary>
+        <p>Press <strong>Reset credits</strong> at the top of any page to go back to 1,000. If running out of real money
+          has ever been a problem for you, please reach out to one of the helplines above.</p>
+      </details>
+      <details>
+        <summary>Is "Match Replay" live?</summary>
+        <p>No. It replays real points from the 2023 Wimbledon men's singles, as if they were happening now.</p>
+      </details>
+    </section>
+  </main>
+
+  <!-- Shared footer: identical on every page -->
+  <footer class="site-footer">
+    <p><strong>Play money only. No real betting.</strong> Credits have no cash value. <a href="play-safe.html">Play Safe</a></p>
+    <p>CS235 Project 1 · Data: 2024 MCM Problem C (2023 Wimbledon). <a href="images/CREDITS.md">Image credits</a></p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+*.swp
+
+# Brainstorming / visual companion scratch files
+.superpowers/
+
+# Local Claude Code preview config
+.claude/

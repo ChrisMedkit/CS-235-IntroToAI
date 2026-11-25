@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Momentum Tennis — Home</title>
+  <meta name="description" content="Play-money tennis odds from public momentum models, replayed point by point.">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/script.js"></script>
+  <script type="module" src="js/replay.js"></script>
+</head>
+<body>
+  <!-- Shared header: identical on every page -->
+  <header class="site-header">
+    <a class="brand" href="index.html">Momentum<span class="brand-accent">Tennis</span></a>
+    <div class="wallet" aria-live="polite">
+      <span class="wallet-label">Balance</span>
+      <span class="wallet-amount"><span id="wallet-balance">1000</span> credits</span>
+      <button id="wallet-reset" class="btn btn-small" type="button">Reset credits</button>
+      <p id="wallet-empty" class="wallet-empty" hidden>Out of credits — reset to keep playing.</p>
+    </div>
+    <button id="nav-toggle" class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button>
+  </header>
+  <nav id="site-nav" class="site-nav" aria-label="Main">
+    <ul>
+      <li><a href="index.html" aria-current="page">Home</a></li>
+      <li><a href="model.html">How the Model Works</a></li>
+      <li><a href="games.html">Mini Games</a></li>
+      <li><a href="play-safe.html">Play Safe</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <!-- Banner carousel: informational slides only -->
+    <section id="banner" class="banner" aria-roledescription="carousel" aria-label="Featured">
+      <div class="banner-track">
+        <article class="banner-slide is-active" aria-roledescription="slide" aria-label="1 of 3">
+          <img class="banner-img" src="images/banner-court.jpg" alt="Aerial view of red clay tennis courts surrounded by trees, beside a canal and a neighborhood of houses">
+          <div class="banner-text">
+            <h2>Featured replay: the 2023 final</h2>
+            <p>Relive Alcaraz vs Djokovic point by point, with the model's win chances.</p>
+            <a class="btn" href="#replay">Watch the replay</a>
+          </div>
+        </article>
+        <article class="banner-slide" aria-roledescription="slide" aria-label="2 of 3">
+          <div class="banner-text">
+            <h2>Three ways to play</h2>
+            <p>Bet on the next point, the next game, or the match winner.</p>
+            <a class="btn" href="#mode-picker">Pick a mode</a>
+          </div>
+        </article>
+        <article class="banner-slide" aria-roledescription="slide" aria-label="3 of 3">
+          <div class="banner-text">
+            <h2>New: Blackjack and Slots</h2>
+            <p>Use the same play-money credits in our mini games.</p>
+            <a class="btn" href="games.html">Play mini games</a>
+          </div>
+        </article>
+      </div>
+      <div class="banner-controls">
+        <button class="banner-prev btn btn-small" type="button" aria-label="Previous slide">‹</button>
+        <button class="banner-pause btn btn-small" type="button" aria-pressed="false">Pause</button>
+        <button class="banner-next btn btn-small" type="button" aria-label="Next slide">›</button>
+      </div>
+    </section>
+
+    <!-- Sport and mode picker -->
+    <section id="sport-picker" class="picker" aria-labelledby="sport-heading">
+      <h2 id="sport-heading">Pick a sport</h2>
+      <div class="tab-row" role="group" aria-label="Sports">
+        <button class="tab is-active" type="button" aria-pressed="true">Tennis</button>
+        <button class="tab" type="button" disabled>Soccer <span class="soon">Coming soon</span></button>
+        <button class="tab" type="button" disabled>Football <span class="soon">Coming soon</span></button>
+        <button class="tab" type="button" disabled>Basketball <span class="soon">Coming soon</span></button>
+      </div>
+    </section>
+
+    <section id="mode-picker" class="picker" aria-labelledby="mode-heading">
+      <h2 id="mode-heading">Pick a mode</h2>
+      <div class="tab-row" role="group" aria-label="Bet modes">
+        <button class="tab is-active" type="button" data-mode="point" aria-pressed="true">Next point</button>
+        <button class="tab" type="button" data-mode="game" aria-pressed="false">Next game</button>
+        <button class="tab" type="button" data-mode="match" aria-pressed="false">Match winner</button>
+      </div>
+    </section>
+
+    <!-- Match replay: replayed data, never labeled "live" -->
+    <section id="replay" class="replay" aria-labelledby="replay-heading">
+      <div class="replay-head">
+        <h2 id="replay-heading">Match Replay</h2>
+        <label class="field">
+          <span>Match</span>
+          <select id="match-select"></select>
+        </label>
+      </div>
+
+      <div class="replay-grid">
+        <div class="replay-main">
+          <table id="scoreboard" class="scoreboard">
+            <caption class="visually-hidden">Current score</caption>
+            <thead>
+              <tr><th scope="col">Player</th><th scope="col">Sets</th><th scope="col">Games</th><th scope="col">Points</th><th scope="col">Win chance</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+
+          <div class="replay-controls">
+            <button id="replay-play" class="btn" type="button">Play</button>
+            <button id="replay-step" class="btn btn-ghost" type="button">Next point</button>
+            <label class="field">
+              <span>Speed</span>
+              <select id="replay-speed">
+                <option value="0.5">0.5×</option>
+                <option value="1" selected>1×</option>
+                <option value="2">2×</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Jump to set</span>
+              <select id="replay-jump"></select>
+            </label>
+          </div>
+
+          <figure class="momentum">
+            <svg id="momentum-chart" viewBox="0 0 600 160" role="img" aria-label="Momentum chart: above the line favors the first player"></svg>
+            <figcaption>Momentum: above the line favors <span id="momentum-p1">player 1</span>, below favors <span id="momentum-p2">player 2</span>.</figcaption>
+          </figure>
+        </div>
+
+        <aside id="bet-slip" class="bet-slip" aria-labelledby="slip-heading">
+          <h3 id="slip-heading">Bet slip</h3>
+          <p class="slip-mode">Mode: <strong id="slip-mode-label">Next point</strong></p>
+          <div id="slip-picks" class="slip-picks"></div>
+          <label class="field">
+            <span>Stake (credits)</span>
+            <input id="slip-stake" type="number" min="1" step="1" inputmode="numeric" value="10">
+          </label>
+          <button id="slip-place" class="btn btn-accent" type="button">Place bet</button>
+          <h4>Open bets</h4>
+          <ul id="open-bets" class="open-bets"></ul>
+        </aside>
+      </div>
+
+      <p id="replay-status" class="replay-status" role="status"></p>
+    </section>
+  </main>
+
+  <!-- Shared footer: identical on every page -->
+  <footer class="site-footer">
+    <p><strong>Play money only. No real betting.</strong> Credits have no cash value. <a href="play-safe.html">Play Safe</a></p>
+    <p>CS235 Project 1 · Data: 2024 MCM Problem C (2023 Wimbledon). <a href="images/CREDITS.md">Image credits</a></p>
+  </footer>
+</body>
+</html>

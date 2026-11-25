@@ -1,0 +1,317 @@
+/* ==========================================================================
+   Momentum Tennis — shared stylesheet
+   Dark sportsbook theme: dark surfaces, bright green accent, bold sans-serif.
+   ========================================================================== */
+
+/* ---------- Design tokens ---------- */
+:root {
+  --bg: #0b0f14;
+  --surface: #151b23;
+  --surface-2: #1d2530;
+  --border: #2a3441;
+  --text: #e8edf3;          /* 15.6:1 on --bg */
+  --muted: #a3adbb;         /* 8.4:1 on --bg */
+  --accent: #2fe07a;        /* bright green */
+  --accent-ink: #062611;    /* text on accent buttons */
+  --loss: #ff7a7a;
+  --gold: #ffd166;
+  --radius: 10px;
+  --gap: 1rem;
+  --max: 1150px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.55;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--accent); }
+a:hover { text-decoration-thickness: 2px; }
+
+h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 .6rem; font-weight: 800; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+h2 { font-size: clamp(1.3rem, 3vw, 1.7rem); }
+
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block;
+  padding: .55rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, transform .1s;
+}
+.btn:hover { border-color: var(--accent); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn-small { padding: .3rem .65rem; font-size: .85rem; }
+.btn-ghost { background: transparent; }
+.btn-accent { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn-accent:hover { background: #5cf097; }
+
+/* ---------- Header, wallet, nav ---------- */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--gap);
+  padding: .8rem max(1rem, calc((100% - var(--max)) / 2));
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand { font-size: 1.35rem; font-weight: 900; color: var(--text); text-decoration: none; letter-spacing: -.02em; }
+.brand-accent { color: var(--accent); }
+
+.wallet { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; }
+.wallet-label { color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; }
+.wallet-amount { font-weight: 800; color: var(--gold); font-variant-numeric: tabular-nums; }
+.wallet-empty { margin: 0; flex-basis: 100%; color: var(--loss); font-size: .85rem; }
+
+.nav-toggle { display: none; }
+
+.site-nav { background: var(--surface); border-bottom: 1px solid var(--border); }
+.site-nav ul {
+  display: flex;
+  gap: .25rem;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 1rem;
+  list-style: none;
+}
+.site-nav a {
+  display: block;
+  padding: .7rem .9rem;
+  color: var(--muted);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+}
+.site-nav a:hover { color: var(--text); }
+.site-nav a[aria-current="page"] { color: var(--text); border-bottom-color: var(--accent); }
+
+/* ---------- Layout ---------- */
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* let long content (e.g. match names) shrink instead of widening the page */
+  gap: calc(var(--gap) * 1.5);
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.content,
+.picker,
+.replay {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+
+.content-img { border-radius: var(--radius); margin-top: 1rem; max-height: 360px; width: 100%; object-fit: cover; }
+
+/* ---------- Banner carousel ---------- */
+.banner {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: linear-gradient(120deg, #0f3d24, #121a24 60%);
+  min-height: 240px;
+}
+.banner-slide { display: none; position: relative; min-height: 240px; }
+.banner-slide.is-active { display: grid; animation: slide-in .4s ease-out; }
+.banner-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .35; }
+.banner-text { position: relative; align-self: center; padding: 1.5rem 1.5rem 3.5rem; max-width: 640px; }
+.banner-text p { color: var(--text); }
+.banner-controls { position: absolute; right: 1rem; bottom: 1rem; display: flex; gap: .4rem; }
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- Pickers (sport / mode tabs) ---------- */
+.tab-row { display: flex; flex-wrap: wrap; gap: .5rem; }
+.tab {
+  padding: .6rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.tab.is-active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.tab:disabled { color: var(--muted); cursor: not-allowed; }
+.soon { display: block; font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+
+/* ---------- Form fields ---------- */
+.field { display: inline-flex; flex-direction: column; gap: .2rem; font-size: .85rem; color: var(--muted); }
+.field select,
+.field input {
+  min-width: 0;
+  padding: .45rem .6rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;
+}
+
+/* ---------- Replay ---------- */
+.replay-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--gap); margin-bottom: 1rem; }
+.replay-head .field { min-width: 0; max-width: 100%; }
+.replay-head select { width: 100%; max-width: 100%; text-overflow: ellipsis; }
+.replay-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: var(--gap); }
+.replay-main { min-width: 0; }
+
+.scoreboard { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.scoreboard th, .scoreboard td { padding: .5rem; text-align: center; border-bottom: 1px solid var(--border); }
+.scoreboard th:first-child, .scoreboard td:first-child { text-align: left; }
+.scoreboard thead th { color: var(--muted); font-size: .8rem; text-transform: uppercase; }
+.scoreboard .is-serving::after { content: " ●"; color: var(--gold); }
+.win-bar { display: block; height: 6px; margin-top: .25rem; border-radius: 3px; background: var(--accent); transition: width .3s; }
+
+.replay-controls { display: flex; flex-wrap: wrap; align-items: end; gap: .6rem; margin: 1rem 0; }
+
+.momentum { margin: 0; }
+.momentum svg { width: 100%; height: auto; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; }
+.momentum figcaption { color: var(--muted); font-size: .85rem; margin-top: .3rem; }
+.momentum-line { fill: none; stroke: var(--accent); stroke-width: 2; }
+.momentum-axis { stroke: var(--border); stroke-width: 1; }
+
+.replay-status { min-height: 1.5em; margin: 1rem 0 0; font-weight: 700; }
+.replay-status.is-win { color: var(--accent); }
+.replay-status.is-loss { color: var(--loss); }
+
+/* ---------- Bet slip ---------- */
+.bet-slip { display: flex; flex-direction: column; gap: .7rem; padding: 1rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); }
+.bet-slip h3, .bet-slip h4 { margin: 0; }
+.slip-mode { margin: 0; color: var(--muted); }
+.slip-picks { display: grid; gap: .5rem; }
+.odds-btn {
+  display: flex; justify-content: space-between; align-items: center; gap: .5rem;
+  padding: .6rem .8rem;
+  border: 1px solid var(--border); border-radius: 8px;
+  background: var(--bg); color: var(--text);
+  font: inherit; text-align: left; cursor: pointer;
+}
+.odds-btn[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.odds-value { font-weight: 900; color: var(--accent); font-variant-numeric: tabular-nums; }
+.open-bets { margin: 0; padding: 0; list-style: none; display: grid; gap: .4rem; font-size: .9rem; }
+.open-bets li { padding: .4rem .6rem; background: var(--bg); border-radius: 6px; }
+
+/* ---------- Mini games ---------- */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--gap); margin-top: 1rem; }
+.game-card { padding: 1.1rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); }
+.game-card.is-locked { opacity: .6; }
+.rtp { color: var(--muted); font-size: .9rem; }
+
+.table-felt { padding: 1rem; border-radius: var(--radius); background: #0f3d24; margin: 1rem 0; }
+.hand { display: flex; flex-wrap: wrap; gap: .4rem; min-height: 5.5rem; margin: .4rem 0 1rem; }
+.card {
+  display: grid; place-items: center;
+  width: 3.6rem; height: 5rem;
+  border-radius: 6px; background: #fff; color: #111;
+  font-weight: 800; font-size: 1.1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,.4);
+}
+.card.is-red { color: #c0182b; }
+.card.is-hidden { background: repeating-linear-gradient(45deg, #1f6f43, #1f6f43 6px, #185a36 6px, #185a36 12px); color: transparent; }
+.game-controls { display: flex; flex-wrap: wrap; align-items: end; gap: .6rem; }
+
+.reels { display: flex; gap: .6rem; margin: 1rem 0; }
+.reel {
+  display: grid; place-items: center;
+  width: 5rem; height: 5rem;
+  border: 2px solid var(--border); border-radius: var(--radius);
+  background: var(--bg); font-size: 2.6rem;
+}
+.reels.is-spinning .reel { animation: reel-spin .12s linear infinite; }
+@keyframes reel-spin { 50% { transform: translateY(-6px); opacity: .5; } }
+
+.paytable { border-collapse: collapse; margin-top: .5rem; }
+.paytable th, .paytable td { padding: .3rem .7rem; border-bottom: 1px solid var(--border); text-align: left; }
+
+/* ---------- FAQ accordion (<details>) ---------- */
+.faq details { border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2); margin-bottom: .5rem; }
+.faq summary { padding: .8rem 1rem; font-weight: 700; cursor: pointer; }
+.faq details[open] summary { color: var(--accent); }
+.faq details > *:not(summary) { margin: 0 1rem 1rem; }
+
+/* ---------- Model page bits ---------- */
+.formula { padding: .8rem 1rem; background: var(--bg); border-left: 3px solid var(--accent); border-radius: 6px; font-family: ui-monospace, Menlo, Consolas, monospace; overflow-x: auto; }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  padding: 1.5rem 1rem;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  text-align: center;
+  font-size: .9rem;
+}
+.site-footer p { margin: .3rem 0; }
+
+/* ---------- Small screens (under 600px) ---------- */
+@media (max-width: 600px) {
+  .nav-toggle { display: inline-block; padding: .45rem .8rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2); color: var(--text); font: inherit; font-weight: 700; }
+  .site-nav { display: none; }
+  .site-nav.nav-open { display: block; }
+  .site-nav ul { flex-direction: column; padding: 0; }
+  .site-nav a { border-bottom: 1px solid var(--border); border-left: 3px solid transparent; }
+  .site-nav a[aria-current="page"] { border-bottom-color: var(--border); border-left-color: var(--accent); }
+  .wallet { order: 3; flex-basis: 100%; }
+}
+
+/* Replay sidebar stacks below the main column on tablets and phones */
+@media (max-width: 860px) {
+  .replay-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- Respect "reduce motion" ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* Set dividers on the model page's momentum chart */
+.momentum-set { stroke: var(--border); stroke-width: 1; stroke-dasharray: 4 4; }
+.model-chart { width: 100%; height: auto; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; }
+.content ul { padding-left: 1.2rem; }
+.content li + li { margin-top: .35rem; }
+
+/* Very narrow phones: tighten the scoreboard so it fits */
+@media (max-width: 400px) {
+  .scoreboard { font-size: .85rem; }
+  .scoreboard th, .scoreboard td { padding: .4rem .25rem; }
+  .scoreboard thead th { font-size: .65rem; letter-spacing: 0; }
+  .replay, .content, .picker { padding: 1rem .75rem; }
+}
