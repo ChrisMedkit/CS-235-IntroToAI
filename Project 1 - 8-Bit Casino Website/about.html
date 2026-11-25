@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="About Longshot and the rules of its four games." />
+    <title>About | Longshot</title>
+    <!-- Inline gold-chip favicon: no extra file, and no favicon.ico 404 -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%230b0d10'/%3E%3Ccircle cx='8' cy='8' r='5' fill='%23f5c542'/%3E%3C/svg%3E" />
+    <!-- Inter (Google Fonts); falls back to the system font offline -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- Shared header + nav: identical to index.html except aria-current. -->
+    <header class="site-header">
+      <a class="site-logo" href="index.html">Long<span>shot</span></a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="play.html">Play</a></li>
+          <li><a href="about.html" aria-current="page">About</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Text section 1: what the casino is (your own words). -->
+      <section id="the-casino" class="about-section">
+        <h1>About Longshot</h1>
+        <p>TODO: what Longshot is and where the idea came from, in your own words.</p>
+        <p>TODO: why a sportsbook look: the sites, games or sports that inspired it.</p>
+        <p class="note">Every game uses play-money chips. Nothing here involves real money.</p>
+      </section>
+
+      <!-- Text section 2: rules per game. The ids are link targets from the Home game cards. -->
+      <section id="the-games" class="about-section">
+        <h2>The Games</h2>
+        <img
+          src="images/about.png"
+          alt="Stacks of casino chips on a green felt table"
+          width="640"
+          height="360"
+        />
+
+        <article id="horse-racing" class="game-rules">
+          <h3>Horse Racing</h3>
+          <p>Place your chips on one horse before the starting bell. The horses race across the track, and if yours crosses the finish line first, you win back your bet times that horse's odds.</p>
+        </article>
+
+        <article id="slots" class="game-rules">
+          <h3>Slots</h3>
+          <p>Choose your bet and pull the lever. Three reels spin and stop one by one. Line up three matching symbols on the middle row to win; rarer symbols pay more.</p>
+        </article>
+
+        <article id="blackjack" class="game-rules">
+          <h3>Blackjack</h3>
+          <p>You and the dealer each get two cards. Number cards count as their value, face cards count as 10 and aces count as 1 or 11. Hit to take another card or stand to stop. Get closer to 21 than the dealer without going over to win.</p>
+        </article>
+
+        <article id="roulette" class="game-rules">
+          <h3>Roulette</h3>
+          <p>Bet on a single number, a color (red or black) or odd and even, then spin the wheel. If the ball lands on your pick, you win. A single number pays the most because it is the hardest to hit.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 TODO: Your Name &middot; Longshot uses play money only, for fun.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
